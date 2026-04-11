@@ -1,0 +1,8 @@
+.app {
+  width: 100%;
+  min-height: 100vh;
+  /* File watching test: 19:26:00 */
+}
+.app-content {
+    display: flex;
+}

@@ -1,20 +1,24 @@
 import { useState } from "react";
-import LoginForm from "./components/LoginForm";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
+import LandingPage from "./components/LandingPage";
+import About from "./components/About";
+import Contact from "./components/Contact";
 import Menu from "./components/Menu";
 import WasteForm from "./components/WasteForm";
 import WasteInventory from "./components/WasteInventory";
 import History from "./components/History";
-import "./App.css";
-// File watch test - HMR testing
 
-type MenuItem = "add-waste" | "view-inventory" | "view-history";
+export type MenuItem = "add-waste" | "view-inventory" | "view-history";
 
-type CurrentView =
+export type CurrentView =
   | "login"
   | "menu"
   | "add-waste"
   | "view-inventory"
-  | "view-history";
+  | "view-history"
+  | "about"
+  | "contact";
 
 function App() {
   const [currentView, setCurrentView] = useState<CurrentView>("login");
@@ -35,13 +39,7 @@ function App() {
   };
 
   const handleMenuSelect = (item: MenuItem) => {
-    if (item === "add-waste") {
-      setCurrentView("add-waste");
-    } else if (item === "view-inventory") {
-      setCurrentView("view-inventory");
-    } else if (item === "view-history") {
-      setCurrentView("view-history");
-    }
+    setCurrentView(item);
   };
 
   const handleWasteAdded = () => {
@@ -50,30 +48,47 @@ function App() {
   };
 
   return (
-    <div className="app">
-      {currentView === "login" && (
-        <LoginForm onLoginSuccess={handleLoginSuccess} />
-      )}
+    <div className="bg-background font-body-md text-on-background min-h-screen flex flex-col m-0 p-0">
+      <Header 
+        currentView={currentView} 
+        setCurrentView={setCurrentView} 
+        userId={userId} 
+        onLogout={handleLogout} 
+      />
 
-      {currentView !== "login" && userId && (
-        <div className="app-content">
-          <Menu
-            onSelectMenu={handleMenuSelect}
-            onLogout={handleLogout}
-            username={username}
-          />
-          {currentView === "add-waste" && (
-            <WasteForm userId={userId} onWasteAdded={handleWasteAdded} />
-          )}
+      <main className="w-full flex-grow flex flex-col">
+        {/* Vistas Deslogueadas / Informativas */}
+        {currentView === "login" && !userId && (
+          <LandingPage onLoginSuccess={handleLoginSuccess} />
+        )}
+        {currentView === "about" && <About />}
+        {currentView === "contact" && <Contact />}
 
-          {currentView === "view-inventory" && (
-            <WasteInventory key={refreshKey} />
-          )}
-          {currentView === "view-history" && (
-            <History userId={userId} key={refreshKey} />
-          )}
-        </div>
-      )}
+        {/* Vistas Internas de la App */}
+        {currentView !== "login" && currentView !== "about" && currentView !== "contact" && userId && (
+          <div className="max-w-7xl mx-auto w-full px-margin py-xl flex-grow">
+            <Menu
+              onSelectMenu={handleMenuSelect}
+              onLogout={handleLogout}
+              username={username}
+            />
+            
+            <div className="mt-md bg-surface-container-lowest p-xl rounded-xl shadow-sm border border-outline-variant/30">
+              {currentView === "add-waste" && (
+                <WasteForm userId={userId} onWasteAdded={handleWasteAdded} />
+              )}
+              {currentView === "view-inventory" && (
+                <WasteInventory key={`inv-${refreshKey}`} />
+              )}
+              {currentView === "view-history" && (
+                <History userId={userId} key={`hist-${refreshKey}`} />
+              )}
+            </div>
+          </div>
+        )}
+      </main>
+
+      <Footer />
     </div>
   );
 }

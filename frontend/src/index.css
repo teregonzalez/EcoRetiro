@@ -1,23 +1,123 @@
+/* Importar fuentes de Google */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap');
+
+/* Directivas de Tailwind */
+/* stylelint-disable at-rule-no-unknown */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+/* stylelint-enable at-rule-no-unknown */
+
+/* Reset global */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', sans-serif;
 }
 
-#root {
-  width: 100%;
+/* Clases utilitarias globales */
+@layer utilities {
+  .material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    display: inline-block;
+    vertical-align: middle;
+    font-family: 'Material Symbols Outlined';
+    font-size: 24px;
+    line-height: 1;
+  }
+
+  .hero-gradient {
+    background: linear-gradient(135deg, rgba(0, 69, 13, 0.9) 0%, rgba(43, 91, 181, 0.8) 100%);
+  }
+
+  /* Animaciones suave */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes slideInLeft {
+    from {
+      opacity: 0;
+      transform: translateX(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  .animate-fade-in {
+    animation: fadeIn 0.3s ease-in-out;
+  }
+
+  .animate-slide-in-left {
+    animation: slideInLeft 0.3s ease-in-out;
+  }
 }
 
-.app {
-  width: 100%;
-  min-height: 100vh;
+/* Componentes personalizados */
+@layer components {
+  .transition-smooth {
+    @apply transition-all duration-300 ease-in-out;
+  }
+
+  .btn-primary {
+    @apply bg-primary text-white px-xl py-4 rounded-lg font-bold shadow-md hover:bg-primary-container active:scale-[0.98] transition-all;
+  }
+
+  .btn-secondary {
+    @apply bg-secondary-container text-on-secondary-container px-xl py-4 rounded-lg font-bold hover:scale-105 active:scale-95 transition-all;
+  }
+
+  .btn-outline {
+    @apply border-2 border-primary text-primary py-3 rounded-lg font-bold hover:bg-primary/5 transition-all;
+  }
+
+  .input-field {
+    @apply w-full px-4 py-3 bg-white border border-outline rounded-lg focus:ring-2 focus:ring-secondary/20 focus:border-secondary outline-none transition-all placeholder:text-outline-variant;
+  }
+
+  /* Scrollbar personalizado */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
+}
+
+/* Responsive design improvements */
+@media (max-width: 768px) {
+  .font-display-lg {
+    @apply text-headline-lg-mobile;
+  }
 }

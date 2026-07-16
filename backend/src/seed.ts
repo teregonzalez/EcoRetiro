@@ -35,7 +35,7 @@ const seedData = () => {
       }
     );
 
-    // Agregar usuario de prueba
+    // Agregar usuario de prueba (Administrador)
     db.run(
       'INSERT OR IGNORE INTO users (username, password) VALUES (?, ?)',
       ['test@example.com', 'password123'],
@@ -46,6 +46,32 @@ const seedData = () => {
           console.log('✅ Test user created successfully!');
           console.log('📧 Username: test@example.com');
           console.log('🔒 Password: password123');
+        }
+      }
+    );
+
+    // Agregar Empresa Generadora (PYME)
+    db.run(
+      `INSERT INTO users (username, password) VALUES (?, ?)`,
+      ['pyme@elbosque.cl', 'password123'],
+      (err) => {
+        if (err) {
+          console.error('Error al insertar PYME:', err.message);
+        } else {
+          console.log('✅ Empresa Generadora de prueba agregada (pyme@elbosque.cl)');
+        }
+      }
+    );
+
+    // Agregar Empresa Receptora (Reciclador)
+    db.run(
+      `INSERT INTO users (username, password) VALUES (?, ?)`,
+      ['reciclador@elbosque.cl', 'password123'],
+      (err) => {
+        if (err) {
+          console.error('Error al insertar Reciclador:', err.message);
+        } else {
+          console.log('✅ Empresa Receptora de prueba agregada (reciclador@elbosque.cl)');
         }
       }
     );

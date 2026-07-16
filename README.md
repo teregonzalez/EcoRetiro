@@ -123,6 +123,32 @@ cd frontend
 npm run build
 ```
 
+### Test Data & Credentials
+
+To easily test the application without registering new users, you can seed the SQLite database with predefined test accounts. Run the following command inside the backend directory:
+
+```bash
+npm run seed
+Once the database is seeded, you can log in using the following roles:
+```
+1. Waste manager (Admin)
+
+Email: test@example.com
+
+Password: password123
+
+2. Waste Generator (PYME)
+
+Email: pyme@elbosque.cl
+
+Password: password123
+
+3. Waste Recycler (Receptora)
+
+Email: reciclador@elbosque.cl
+
+Password: password123
+
 ## License
 
 MIT

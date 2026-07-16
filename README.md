@@ -131,23 +131,24 @@ To easily test the application without registering new users, you can seed the S
 npm run seed
 Once the database is seeded, you can log in using the following roles:
 ```
-1. Waste manager (Admin)
+### 🔑 Credenciales de Prueba (MVP)
 
-Email: test@example.com
+Para probar los distintos módulos y flujos de la plataforma (acceso basado en roles), utiliza las siguientes cuentas generadas por defecto:
 
-Password: password123
+**1. Administrador (Gestor ECORETIRO)**
+*   **Rol:** Gestión de cuentas, catálogo de residuos y supervisión global.
+*   **Correo:** `test@example.com`
+*   **Contraseña:** `password123`
 
-2. Waste Generator (PYME)
+**2. Empresa Generadora (PYME)**
+*   **Rol:** Ingreso de residuos disponibles y seguimiento (tracking).
+*   **Correo:** `pyme@elbosque.cl`
+*   **Contraseña:** `password123`
 
-Email: pyme@elbosque.cl
-
-Password: password123
-
-3. Waste Recycler (Receptora)
-
-Email: reciclador@elbosque.cl
-
-Password: password123
+**3. Empresa Receptora (Reciclador)**
+*   **Rol:** Exploración del catálogo, adjudicación de retiros y carga de certificados.
+*   **Correo:** `reciclador@elbosque.cl`
+*   **Contraseña:** `password123`
 
 ## License
 

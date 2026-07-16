@@ -1,0 +1,58 @@
+@startuml Modelo de datos de MPV
+!theme plain
+hide circle
+skinparam linetype ortho
+skinparam EntityBackgroundColor #F9F9FC
+skinparam EntityBorderColor #333333
+skinparam EntityAttributeFontName Arial
+
+entity "Roles" as roles {
+  * ID_Rol : INT <<PK>>
+  --
+  Nombre_Rol : VARCHAR
+}
+
+entity "Usuarios_Empresas" as usuarios {
+  * ID_Usuario : INT <<PK>>
+  --
+  RUT_Empresa : VARCHAR
+  Razon_Social : VARCHAR
+  Correo : VARCHAR
+  Contrasena : VARCHAR
+  Nombre_Contacto : VARCHAR
+  Telefono : VARCHAR
+  ID_Rol : INT <<FK>>
+  Direccion_Geolocalizacion : VARCHAR
+  Estado_Cuenta : VARCHAR
+  Fecha_Registro : DATETIME
+}
+
+entity "Catalogo_Residuos" as catalogo {
+  * ID_Categoria : INT <<PK>>
+  --
+  Nombre_Residuo : VARCHAR
+  Unidad_Medida : VARCHAR
+  Estado_Categoria : VARCHAR
+}
+
+entity "Solicitudes_Retiro" as solicitudes {
+  * ID_Solicitud : INT <<PK>>
+  --
+  ID_PYME : INT <<FK>>
+  ID_Reciclador : INT <<FK>> (Null)
+  ID_Categoria : INT <<FK>>
+  Volumen_Cantidad : DECIMAL
+  Estado_Tracking : VARCHAR
+  Fecha_Publicacion : DATETIME
+  Fecha_Recoleccion : DATETIME
+  Fecha_Procesamiento : DATETIME
+  URL_Certificado : VARCHAR
+}
+
+' Relaciones
+roles ||--o{ usuarios : "Define (ID_Rol)"
+usuarios ||--o{ solicitudes : "Genera (ID_PYME)"
+usuarios |o--o{ solicitudes : "Retira (ID_Reciclador)"
+catalogo ||--o{ solicitudes : "Clasifica (ID_Categoria)"
+
+@enduml

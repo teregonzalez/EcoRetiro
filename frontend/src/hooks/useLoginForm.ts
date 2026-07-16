@@ -7,7 +7,7 @@ interface UseLoginFormProps {
 }
 
 export const useLoginForm = ({ onLoginSuccess }: UseLoginFormProps) => {
-  const [username, setUsername] = useState('');
+  const [username, setUsername] = useState(''); // Lo trataremos como el correo
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [isRegistering, setIsRegistering] = useState(false);
@@ -18,7 +18,13 @@ export const useLoginForm = ({ onLoginSuccess }: UseLoginFormProps) => {
 
     try {
       const endpoint = isRegistering ? '/api/auth/register' : '/api/auth/login';
-      const response = await axios.post(endpoint, { username, password });
+      
+      // En el backend ahora esperamos "correo" en lugar de "username"
+      const payload = isRegistering 
+        ? { correo: username, password } // *Ver nota abajo sobre el registro
+        : { correo: username, password };
+
+      const response = await axios.post(endpoint, payload);
 
       if (isRegistering) {
         setError('');
@@ -27,7 +33,8 @@ export const useLoginForm = ({ onLoginSuccess }: UseLoginFormProps) => {
         setIsRegistering(false);
         alert('¡Registro exitoso! Por favor inicia sesión.');
       } else {
-        onLoginSuccess(response.data.userId, response.data.username);
+        // El backend ahora devuelve response.data.correo
+        onLoginSuccess(response.data.userId, response.data.correo);
       }
     } catch (err: any) {
       setError(

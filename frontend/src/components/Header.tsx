@@ -33,7 +33,7 @@ export default function Header({ currentView, setCurrentView, userId, onLogout }
         onClick={() => setCurrentView(userId ? "menu" : "login")}
       >
         <span className="material-symbols-outlined text-primary text-[40px]" style={{ fontVariationSettings: "'FILL' 1" }}>recycling</span>
-        <span className="font-headline-lg text-primary font-bold">EcoCircular</span>
+        <span className="font-headline-lg text-primary font-bold">EcoRetiro</span>
       </div>
 
       <nav className="hidden md:flex gap-base">

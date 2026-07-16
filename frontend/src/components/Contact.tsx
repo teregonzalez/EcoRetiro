@@ -108,8 +108,8 @@ export default function Contact() {
             <div className="bg-surface-container-lowest p-xl rounded-xl text-center border border-outline-variant/30 hover:shadow-md transition-all">
               <span className="material-symbols-outlined text-[48px] text-secondary mb-md block" style={{ fontVariationSettings: "'FILL' 1" }}>mail</span>
               <h3 className="font-headline-lg text-primary mb-xs">Correo Electrónico</h3>
-              <p className="font-body-md text-on-surface-variant mb-md">contacto@ecocircular.com</p>
-              <a href="mailto:contacto@ecocircular.com" className="text-secondary font-bold hover:underline">Enviar Email</a>
+              <p className="font-body-md text-on-surface-variant mb-md">contacto@EcoRetiro.com</p>
+              <a href="mailto:contacto@ecoretiro.com" className="text-secondary font-bold hover:underline">Enviar Email</a>
             </div>
 
             {/* Phone */}
@@ -124,7 +124,7 @@ export default function Contact() {
             <div className="bg-surface-container-lowest p-xl rounded-xl text-center border border-outline-variant/30 hover:shadow-md transition-all">
               <span className="material-symbols-outlined text-[48px] text-primary-fixed-dim mb-md block" style={{ fontVariationSettings: "'FILL' 1" }}>location_on</span>
               <h3 className="font-headline-lg text-primary mb-xs">Ubicación</h3>
-              <p className="font-body-md text-on-surface-variant mb-md">Madrid, España</p>
+              <p className="font-body-md text-on-surface-variant mb-md">Santiago, Chile</p>
               <a href="#" className="text-secondary font-bold hover:underline">Ver Ubicación</a>
             </div>
           </div>

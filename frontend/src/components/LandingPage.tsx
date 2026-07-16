@@ -16,7 +16,7 @@ export default function LandingPage({ onLoginSuccess }: { onLoginSuccess: (id: n
               Transformando el residuo de hoy en el <span className="text-primary-fixed-dim">recurso del mañana</span>.
             </h1>
             <p className="font-body-md text-body-md text-white/90 mb-xl max-w-lg">
-              EcoCircular lidera la transición hacia una economía regenerativa, conectando industrias para optimizar recursos y minimizar el impacto ambiental a través de tecnología de precisión.
+              EcoRetiro lidera la transición hacia una economía regenerativa, conectando industrias para optimizar recursos y minimizar el impacto ambiental a través de tecnología de precisión.
             </p>
             <div className="flex gap-md">
               <button className="bg-secondary-container text-on-secondary-container px-xl py-4 rounded-lg font-bold hover:scale-105 active:scale-95 transition-all flex items-center gap-2">

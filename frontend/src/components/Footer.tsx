@@ -3,7 +3,7 @@ export default function Footer() {
       <footer className="bg-surface-container-high border-t border-outline-variant w-full mt-auto">
         <div className="flex flex-col md:flex-row justify-between items-center px-margin py-md max-w-7xl mx-auto w-full">
           <div className="mb-md md:mb-0">
-            <span className="font-body-md text-on-surface-variant font-bold">© 2024 EcoCircular Platform.</span>
+            <span className="font-body-md text-on-surface-variant font-bold">© 2026 EcoRetiro Platform.</span>
             <p className="font-label-sm text-label-sm text-on-surface-variant">Impulsando la simbiosis industrial global.</p>
           </div>
           <div className="flex flex-wrap justify-center gap-xl">

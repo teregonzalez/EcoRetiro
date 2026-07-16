@@ -8,7 +8,7 @@ export default {
   darkMode: "class",
   theme: {
     extend: {
-      // 2. Aquí están los colores de tu plantilla EcoCircular
+      // 2. Aquí están los colores de tu plantilla EcoRetiro
       colors: {
         "on-tertiary": "#ffffff",
         "secondary-fixed-dim": "#b0c6ff",

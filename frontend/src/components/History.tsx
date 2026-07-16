@@ -50,7 +50,7 @@ export const History: React.FC<HistoryProps> = ({ userId }) => {
       content += '.summary p { margin: 8px 0; font-weight: bold; }';
       content += '.footer { margin-top: 20px; font-size: 12px; color: #41493e; }';
       content += '</style></head><body>';
-      content += '<h1>🌱 Reporte de Historial de Residuos - EcoCircular</h1>';
+      content += '<h1>🌱 Reporte de Historial de Residuos - EcoRetiro</h1>';
       content += '<p><strong>Fecha del Reporte:</strong> ' + new Date().toLocaleDateString() + '</p>';
       content += '<table>';
       content += '<tr><th>Tipo de Residuo</th><th>Peso (kg)</th><th>Fecha y Hora</th></tr>';
@@ -67,7 +67,7 @@ export const History: React.FC<HistoryProps> = ({ userId }) => {
       const co2Saved = (entries.reduce((sum, e) => sum + e.weight, 0) * 0.18).toFixed(2);
       content += `<p>CO₂ Ahorrado (estimado): ${co2Saved} kg</p>`;
       content += '</div>';
-      content += '<div class="footer"><p>Generado por EcoCircular - Impulsando la Economía Circular | www.ecocircular.com</p></div>';
+      content += '<div class="footer"><p>Generado por EcoRetiro - Impulsando la Economía Circular | www.EcoRetiro.com</p></div>';
       content += '</body></html>';
       printWindow.document.write(content);
       printWindow.print();

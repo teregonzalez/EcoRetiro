@@ -5,10 +5,9 @@ import Footer from "./components/Footer";
 import LandingPage from "./components/LandingPage";
 import About from "./components/About";
 import Contact from "./components/Contact";
-import Menu from "./components/Menu";
-import WasteForm from "./components/WasteForm";
-import WasteInventory from "./components/WasteInventory";
-import History from "./components/History";
+import AdminDashboard from "./components/dashboards/AdminDashboard";
+import PymeDashboard from "./components/dashboards/PymeDashboard";
+import RecyclerDashboard from "./components/dashboards/RecyclerDashboard";
 
 export type MenuItem = "add-waste" | "view-inventory" | "view-history";
 
@@ -21,30 +20,29 @@ export type CurrentView =
   | "about"
   | "contact";
 
+export type UserRole = "Administrador" | "PYME" | "Reciclador";
+
+interface AuthSession {
+  userId: number;
+  username: string;
+  role: UserRole;
+}
+
 // Separamos el contenido en un sub-componente para poder usar los hooks de react-router-dom (useNavigate, useLocation)
 function AppContent() {
-  const [userId, setUserId] = useState<number | null>(null);
-  const [username, setUsername] = useState("");
-  const [refreshKey, setRefreshKey] = useState(0);
+  const [session, setSession] = useState<AuthSession | null>(null);
 
   const navigate = useNavigate();
   const location = useLocation();
 
-  const handleLoginSuccess = (id: number, user: string) => {
-    setUserId(id);
-    setUsername(user);
+  const handleLoginSuccess = (id: number, user: string, role: UserRole) => {
+    setSession({ userId: id, username: user, role });
     navigate("/dashboard"); // Redirige al panel protegido tras el login
   };
 
   const handleLogout = () => {
-    setUserId(null);
-    setUsername("");
+    setSession(null);
     navigate("/"); // Devuelve al usuario a la página de inicio
-  };
-
-  const handleWasteAdded = () => {
-    setRefreshKey((prev) => prev + 1);
-    navigate("/dashboard"); // Vuelve a la raíz del dashboard tras agregar
   };
 
   // ------------------------------------------------------------------
@@ -55,6 +53,7 @@ function AppContent() {
   
   // Extraemos la vista actual desde la URL para el Header
   const currentPath = location.pathname === "/" ? "login" : location.pathname.split("/")[1];
+  const isDashboardRoute = location.pathname.startsWith("/dashboard");
   
   const handleSetCurrentView = (view: CurrentView) => {
     if (view === "login") navigate("/");
@@ -64,56 +63,41 @@ function AppContent() {
 
   return (
     <div className="bg-background font-body-md text-on-background min-h-screen flex flex-col m-0 p-0">
-      <Header 
-        currentView={currentPath as CurrentView} 
-        setCurrentView={handleSetCurrentView} 
-        userId={userId} 
-        onLogout={handleLogout} 
-      />
+      {!isDashboardRoute && (
+        <Header 
+          currentView={currentPath as CurrentView} 
+          setCurrentView={handleSetCurrentView} 
+          userId={session?.userId ?? null} 
+          onLogout={handleLogout} 
+        />
+      )}
 
       <main className="w-full flex-grow flex flex-col">
         <Routes>
           {/* --- RUTAS PÚBLICAS --- */}
           <Route 
             path="/" 
-            element={!userId ? <LandingPage onLoginSuccess={handleLoginSuccess} /> : <Navigate to="/dashboard" replace />} 
+            element={!session ? <LandingPage onLoginSuccess={handleLoginSuccess} /> : <Navigate to="/dashboard" replace />} 
           />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
 
-          {/* --- RUTAS PROTEGIDAS (DASHBOARD) --- */}
-          <Route 
-            path="/dashboard/*" 
+          {/* --- RUTA PROTEGIDA POR ROL --- */}
+          <Route
+            path="/dashboard"
             element={
-              userId ? (
-                <div className="max-w-7xl mx-auto w-full px-margin py-xl flex-grow">
-                  <Menu
-                    // Convertimos la selección del menú antiguo en navegación por ruta
-                    onSelectMenu={(item) => navigate(`/dashboard/${item}`)}
-                    onLogout={handleLogout}
-                    username={username}
-                  />
-                  
-                  <div className="mt-md bg-surface-container-lowest p-xl rounded-xl shadow-sm border border-outline-variant/30">
-                    <Routes>
-                      {/* Vista por defecto al entrar a /dashboard */}
-                      <Route path="/" element={<div className="text-center text-outline">Selecciona una opción del menú para comenzar</div>} />
-                      
-                      {/* Subrutas del panel */}
-                      <Route path="add-waste" element={<WasteForm userId={userId} onWasteAdded={handleWasteAdded} />} />
-                      <Route path="view-inventory" element={<WasteInventory key={`inv-${refreshKey}`} />} />
-                      <Route path="view-history" element={<History userId={userId} key={`hist-${refreshKey}`} />} />
-                      
-                      {/* Redirección de seguridad si escriben mal la subruta */}
-                      <Route path="*" element={<Navigate to="/dashboard" replace />} />
-                    </Routes>
-                  </div>
-                </div>
+              session ? (
+                session.role === "Administrador" ? (
+                  <AdminDashboard userId={session.userId} username={session.username} onLogout={handleLogout} />
+                ) : session.role === "Reciclador" ? (
+                  <RecyclerDashboard userId={session.userId} username={session.username} onLogout={handleLogout} />
+                ) : (
+                  <PymeDashboard userId={session.userId} username={session.username} onLogout={handleLogout} />
+                )
               ) : (
-                // Si no hay userId, bloquea el acceso y lo expulsa al login
                 <Navigate to="/" replace />
               )
-            } 
+            }
           />
 
           {/* --- RUTA CATCH-ALL (404) --- */}

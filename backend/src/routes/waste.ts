@@ -3,29 +3,76 @@ import { dbRun, dbGet, dbAll } from '../models/database.js';
 
 const router = express.Router();
 
+const CATEGORY_ALIASES: Record<string, string> = {
+  plastic: 'Plástico PET',
+  paper: 'Cartón corrugado',
+  cardboard: 'Cartón corrugado',
+  glass: 'Borra de café',
+  aluminum: 'Aceite vegetal usado',
+  metal: 'Aceite vegetal usado',
+  wood: 'Borra de café',
+};
+
 // ==========================================
 // 1. INGRESAR RESIDUOS (Módulo PYME)
 // ==========================================
 router.post('/add', async (req, res) => {
   try {
-    // Nota: El frontend ahora debe enviar 'categoryId' (el ID numérico del residuo) 
-    // en lugar del texto libre 'type'
-    const { userId, categoryId, weight } = req.body;
+    const { userId, categoryId, type, weight } = req.body;
 
-    if (!userId || !categoryId || !weight) {
-      return res.status(400).json({ error: 'Faltan campos requeridos (userId, categoryId, weight)' });
+    if (!userId || !weight || (!categoryId && !type)) {
+      return res.status(400).json({ error: 'Faltan campos requeridos (userId, categoryId|type, weight)' });
     }
 
-    // Insertamos la nueva solicitud. La fecha se asigna automáticamente vía SQLite DEFAULT(datetime('now'))
+    let resolvedCategoryId = Number(categoryId);
+
+    if (!resolvedCategoryId && type) {
+      const normalizedType = String(type).trim();
+      const lookupType = CATEGORY_ALIASES[normalizedType.toLowerCase()] || normalizedType;
+
+      const category = await dbGet(
+        `SELECT ID_Categoria
+         FROM Catalogo_Residuos
+         WHERE lower(Nombre_Residuo) = lower(?)`,
+        [lookupType]
+      );
+
+      if (!category) {
+        return res.status(400).json({ error: 'Categoria de residuo no encontrada' });
+      }
+
+      resolvedCategoryId = category.ID_Categoria;
+    }
+
+    if (!resolvedCategoryId) {
+      return res.status(400).json({ error: 'categoryId invalido' });
+    }
+
     await dbRun(
       `INSERT INTO Solicitudes_Retiro (ID_PYME, ID_Categoria, Volumen_Cantidad) 
        VALUES (?, ?, ?)`,
-      [userId, categoryId, weight]
+      [userId, resolvedCategoryId, weight]
     );
 
     res.json({ success: true, message: 'Residuo ingresado y disponible para retiro' });
   } catch (error) {
     console.error('Error en /add:', error);
+    res.status(500).json({ error: 'Error interno del servidor' });
+  }
+});
+
+router.get('/categories', async (_req, res) => {
+  try {
+    const categories = await dbAll(
+      `SELECT ID_Categoria as id, Nombre_Residuo as name, Unidad_Medida as unit
+       FROM Catalogo_Residuos
+       WHERE Estado_Categoria = 'Activa'
+       ORDER BY Nombre_Residuo ASC`
+    );
+
+    res.json(categories || []);
+  } catch (error) {
+    console.error('Error en /categories:', error);
     res.status(500).json({ error: 'Error interno del servidor' });
   }
 });

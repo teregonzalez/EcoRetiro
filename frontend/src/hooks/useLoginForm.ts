@@ -1,10 +1,24 @@
 // src/hooks/useLoginForm.ts
 import { useState } from 'react';
 import axios from 'axios';
+import { UserRole } from '../App';
 
 interface UseLoginFormProps {
-  onLoginSuccess: (userId: number, username: string) => void;
+  onLoginSuccess: (userId: number, username: string, role: UserRole) => void;
 }
+
+interface LoginResponse {
+  userId: number;
+  correo: string;
+  rol: string;
+}
+
+const normalizeRole = (rawRole: string): UserRole => {
+  if (rawRole === 'Administrador' || rawRole === 'Reciclador' || rawRole === 'PYME') {
+    return rawRole;
+  }
+  return 'PYME';
+};
 
 export const useLoginForm = ({ onLoginSuccess }: UseLoginFormProps) => {
   const [username, setUsername] = useState(''); // Lo trataremos como el correo
@@ -24,7 +38,7 @@ export const useLoginForm = ({ onLoginSuccess }: UseLoginFormProps) => {
         ? { correo: username, password } // *Ver nota abajo sobre el registro
         : { correo: username, password };
 
-      const response = await axios.post(endpoint, payload);
+      const response = await axios.post<LoginResponse>(endpoint, payload);
 
       if (isRegistering) {
         setError('');
@@ -34,7 +48,11 @@ export const useLoginForm = ({ onLoginSuccess }: UseLoginFormProps) => {
         alert('¡Registro exitoso! Por favor inicia sesión.');
       } else {
         // El backend ahora devuelve response.data.correo
-        onLoginSuccess(response.data.userId, response.data.correo);
+        onLoginSuccess(
+          response.data.userId,
+          response.data.correo,
+          normalizeRole(response.data.rol)
+        );
       }
     } catch (err: any) {
       setError(

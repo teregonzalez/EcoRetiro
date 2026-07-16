@@ -3,6 +3,7 @@ import cors from 'cors';
 import { initializeDatabase } from './models/database.js';
 import authRoutes from './routes/auth.js';
 import wasteRoutes from './routes/waste.js';
+import dashboardRoutes from './routes/dashboard.js';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -12,6 +13,7 @@ app.use(express.json());
 
 app.use('/auth', authRoutes);
 app.use('/waste', wasteRoutes);
+app.use('/dashboard', dashboardRoutes);
 
 app.get('/health', (req, res) => {
   res.json({ status: 'ok' });

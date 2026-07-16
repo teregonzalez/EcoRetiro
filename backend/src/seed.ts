@@ -28,6 +28,15 @@ const getQuery = (query: string, params: any[] = []): Promise<any> => {
   });
 };
 
+const allQuery = (query: string, params: any[] = []): Promise<any[]> => {
+  return new Promise((resolve, reject) => {
+    db.all(query, params, (err, rows) => {
+      if (err) reject(err);
+      else resolve(rows || []);
+    });
+  });
+};
+
 const seedData = async () => {
   try {
     console.log('🌱 Iniciando carga de datos de prueba (Seed)...');
@@ -91,26 +100,122 @@ const seedData = async () => {
     // 4. Agregar Solicitudes de Retiro de prueba para la PYME
     // Obtenemos el ID de la PYME recién creada
     const pyme = await getQuery('SELECT ID_Usuario FROM Usuarios_Empresas WHERE Correo = ?', ['pyme@elbosque.cl']);
+    const reciclador = await getQuery('SELECT ID_Usuario FROM Usuarios_Empresas WHERE Correo = ?', ['reciclador@elbosque.cl']);
     
-    if (pyme) {
+    if (pyme && reciclador) {
       // Verificamos si ya tiene solicitudes para no duplicar en cada ejecución
       const conteoSolicitudes = await getQuery('SELECT COUNT(*) as count FROM Solicitudes_Retiro WHERE ID_PYME = ?', [pyme.ID_Usuario]);
       
-      if (conteoSolicitudes.count === 0) {
-        const testWasteEntries = [
-          [pyme.ID_Usuario, 1, 25.5], // 1 = Cartón corrugado, 25.5 kg
-          [pyme.ID_Usuario, 2, 10.0], // 2 = Plástico PET, 10.0 kg
-          [pyme.ID_Usuario, 3, 5.0],  // 3 = Aceite vegetal, 5.0 litros
+      if (conteoSolicitudes.count < 6) {
+        await runQuery('DELETE FROM Solicitudes_Retiro WHERE ID_PYME = ?', [pyme.ID_Usuario]);
+
+        const today = new Date();
+        const toISO = (daysAgo: number) => {
+          const date = new Date(today);
+          date.setDate(today.getDate() - daysAgo);
+          return date.toISOString();
+        };
+
+        const seededRequests = [
+          {
+            idCategoria: 1,
+            volumen: 25.5,
+            estado: 'Disponible',
+            fechaPublicacion: toISO(0),
+            idReciclador: null,
+            fechaRecoleccion: null,
+            fechaProcesamiento: null,
+            certificado: null,
+          },
+          {
+            idCategoria: 2,
+            volumen: 10.0,
+            estado: 'Disponible',
+            fechaPublicacion: toISO(1),
+            idReciclador: null,
+            fechaRecoleccion: null,
+            fechaProcesamiento: null,
+            certificado: null,
+          },
+          {
+            idCategoria: 3,
+            volumen: 5.0,
+            estado: 'En camino',
+            fechaPublicacion: toISO(2),
+            idReciclador: reciclador.ID_Usuario,
+            fechaRecoleccion: toISO(1),
+            fechaProcesamiento: null,
+            certificado: null,
+          },
+          {
+            idCategoria: 4,
+            volumen: 3.2,
+            estado: 'Gestionado',
+            fechaPublicacion: toISO(4),
+            idReciclador: reciclador.ID_Usuario,
+            fechaRecoleccion: toISO(3),
+            fechaProcesamiento: toISO(0),
+            certificado: 'https://ecocircular.local/certificados/sol-1.pdf',
+          },
+          {
+            idCategoria: 2,
+            volumen: 12.7,
+            estado: 'Gestionado',
+            fechaPublicacion: toISO(6),
+            idReciclador: reciclador.ID_Usuario,
+            fechaRecoleccion: toISO(5),
+            fechaProcesamiento: toISO(1),
+            certificado: 'https://ecocircular.local/certificados/sol-2.pdf',
+          },
+          {
+            idCategoria: 1,
+            volumen: 8.1,
+            estado: 'En camino',
+            fechaPublicacion: toISO(3),
+            idReciclador: reciclador.ID_Usuario,
+            fechaRecoleccion: toISO(2),
+            fechaProcesamiento: null,
+            certificado: null,
+          },
         ];
 
-        for (const entry of testWasteEntries) {
+        for (const request of seededRequests) {
           await runQuery(
-            `INSERT INTO Solicitudes_Retiro (ID_PYME, ID_Categoria, Volumen_Cantidad, Estado_Tracking) 
-             VALUES (?, ?, ?, 'Disponible')`,
-            entry
+            `INSERT INTO Solicitudes_Retiro (
+              ID_PYME,
+              ID_Reciclador,
+              ID_Categoria,
+              Volumen_Cantidad,
+              Estado_Tracking,
+              Fecha_Publicacion,
+              Fecha_Recoleccion,
+              Fecha_Procesamiento,
+              URL_Certificado
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+            [
+              pyme.ID_Usuario,
+              request.idReciclador,
+              request.idCategoria,
+              request.volumen,
+              request.estado,
+              request.fechaPublicacion,
+              request.fechaRecoleccion,
+              request.fechaProcesamiento,
+              request.certificado,
+            ]
           );
         }
-        console.log('✅ Solicitudes de retiro de prueba generadas exitosamente para la PYME.');
+
+        const resumenEstado = await allQuery(
+          `SELECT Estado_Tracking as estado, COUNT(*) as total
+           FROM Solicitudes_Retiro
+           WHERE ID_PYME = ?
+           GROUP BY Estado_Tracking`,
+          [pyme.ID_Usuario]
+        );
+
+        console.log('✅ Solicitudes de retiro de prueba regeneradas exitosamente para la PYME.');
+        console.log('📊 Resumen por estado:', resumenEstado);
       } else {
         console.log('⚠️ La PYME ya tiene solicitudes de retiro. Omitiendo generación de residuos.');
       }

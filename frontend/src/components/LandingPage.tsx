@@ -1,6 +1,7 @@
 import LoginForm from "./LoginForm";
+import { UserRole } from "../App";
 
-export default function LandingPage({ onLoginSuccess }: { onLoginSuccess: (id: number, user: string) => void }) {
+export default function LandingPage({ onLoginSuccess }: { onLoginSuccess: (id: number, user: string, role: UserRole) => void }) {
   return (
     <>
       <section className="grid grid-cols-1 lg:grid-cols-12 min-h-[calc(100vh-80px)]">

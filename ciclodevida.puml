@@ -1,0 +1,48 @@
+@startuml Esquema del ciclo de vida del software 
+!theme plain
+skinparam ActivityBackgroundColor #F9F9FC
+skinparam ActivityBorderColor #333333
+skinparam ArrowColor #333333
+skinparam ActivityFontName Arial
+skinparam NoteBackgroundColor #FFF9C4
+skinparam NoteBorderColor #FBC02D
+
+title Esquema del Ciclo de Vida Ágil (SCRUM) - ECORETIRO
+
+start
+
+:Definición del Product Backlog\n(Requerimientos del MVP);
+
+repeat :**Sprint Planning**\nSelección de tareas a desarrollar;
+  :Sprint Backlog\n(Tareas de la iteración);
+  
+  partition "Ejecución del Sprint (2 semanas)" {
+    fork
+      :Desarrollo de Software\n(UI/UX, Backend, BDD);
+    fork again
+      :Pruebas Continuas (QA)\n(Testing Unitario);
+    fork again
+      :Daily Scrum\n;
+    end fork
+  }
+
+  :**Sprint Review**\nDemostración de funcionalidades;
+  
+  :**Incremento del Producto**\n(Módulo Funcional MVP Desplegado);
+  
+  note right
+    **Feedback Iterativo**
+    Validación temprana con
+    PYMES y Recicladores para
+    ajustar el Product Backlog.
+  end note
+  
+  :**Sprint Retrospective**\nMejora continua del proceso;
+
+repeat while (¿Faltan requerimientos del MVP?) is (Sí)
+-> No;
+
+:Entrega Final del Producto Mínimo Viable;
+
+stop
+@enduml

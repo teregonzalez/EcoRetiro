@@ -1,159 +1,122 @@
-# Recycling Management System
+# EcoCircular - Recycling Management System
 
-A full-stack application for managing recyclable waste with TypeScript, React, and Node.js.
+Aplicacion full-stack para gestion de residuos reciclables con autenticacion por roles.
 
-## Features
+## Estado actual
 
-- **User Authentication**: Secure login and registration
-- **Add Waste Entries**: Log recyclable waste with type and weight
-- **View Available Waste**: See inventory of all waste materials
-- **Track History**: View personal waste submission history
-- **Print Reports**: Generate and print waste history reports
+- Login con roles: Administrador, PYME y Reciclador.
+- Frontend en React con vistas de dashboard separadas por rol.
+- Backend en Express con SQLite para autenticacion, solicitudes y residuos.
+- Seed disponible para crear usuarios de prueba y datos base.
 
-## Tech Stack
+## Funcionalidades
 
-- **Frontend**: React 18 + TypeScript + Vite + Axios
-- **Backend**: Node.js + Express + TypeScript + SQLite3
-- **Database**: SQLite
-- **Styling**: CSS3
+- Inicio de sesion y registro.
+- Creacion de solicitudes de retiro desde PYME.
+- Inventario de residuos disponibles para retiro.
+- Historial de solicitudes por usuario.
+- Catalogo de categorias de residuos activas.
 
-## Project Structure
+## Stack tecnologico
 
-```
-├── frontend/                    # React TypeScript application
-│   ├── src/
-│   │   ├── components/         # React components
-│   │   ├── styles/             # CSS files
-│   │   ├── App.tsx             # Main app component
-│   │   ├── main.tsx            # Entry point
-│   │   └── index.html
-│   ├── vite.config.ts
-│   ├── tsconfig.json
-│   └── package.json
-│
-├── backend/                     # Node.js Express API
-│   ├── src/
-│   │   ├── models/             # Database models
-│   │   ├── routes/             # API routes
-│   │   └── server.ts           # Server entry point
-│   ├── tsconfig.json
-│   └── package.json
-│
-├── .github/copilot-instructions.md
-├── .gitignore
-└── README.md
-```
+- Frontend: React 18, TypeScript, Vite, Axios, React Router.
+- Backend: Node.js, Express, TypeScript, SQLite3, bcrypt.
+- Base de datos: SQLite.
 
-## Installation & Setup
+## Estructura del proyecto
 
-### Prerequisites
+- frontend/: aplicacion React.
+- backend/: API Express y acceso a base de datos.
+- README.md: documentacion principal.
 
-- Node.js (v16+)
-- npm or yarn
+## Requisitos
 
-### Backend Setup
+- Node.js 16 o superior.
+- npm.
 
-1. Navigate to the backend directory:
-   ```bash
+## Instalacion y ejecucion
+
+1. Instalar dependencias del backend:
+
    cd backend
-   ```
-
-2. Install dependencies:
-   ```bash
    npm install
-   ```
 
-3. Start the development server:
-   ```bash
-   npm run dev
-   ```
-   The backend will run on `http://localhost:3000`
+2. Instalar dependencias del frontend:
 
-### Frontend Setup
-
-1. Open a new terminal and navigate to the frontend directory:
-   ```bash
-   cd frontend
-   ```
-
-2. Install dependencies:
-   ```bash
+   cd ../frontend
    npm install
-   ```
 
-3. Start the development server:
-   ```bash
+3. Poblar base de datos con datos de prueba:
+
+   cd ../backend
+   npm run seed
+
+4. Levantar backend:
+
    npm run dev
-   ```
-   The frontend will run on `http://localhost:5173`
 
-## Usage
+5. Levantar frontend en otra terminal:
 
-1. **Register/Login**: Create an account or log in with existing credentials
-2. **Add Waste**: Select the waste type and enter the weight in kilograms
-3. **View Inventory**: See the total weight and count of each waste type
-4. **View History**: Check your personal waste submission history
-5. **Print Report**: Generate a printable report of your waste submissions
+   cd ../frontend
+   npm run dev
 
-## API Endpoints
+## Scripts principales
 
-### Authentication
-- `POST /auth/login` - User login
-- `POST /auth/register` - User registration
+Backend:
 
-### Waste Management
-- `POST /waste/add` - Add a new waste entry
-- `GET /waste/inventory` - Get total waste inventory
-- `GET /waste/history/:userId` - Get user's waste history
+- npm run dev
+- npm run build
+- npm start
+- npm run seed
 
-## Development
+Frontend:
 
-### Building for Production
+- npm run dev
+- npm run build
+- npm run preview
 
-**Backend:**
-```bash
-cd backend
-npm run build
-npm start
-```
+## Credenciales de prueba
 
-**Frontend:**
-```bash
-cd frontend
-npm run build
-```
+Contrasena para las cuentas de prueba: password123
 
-### Test Data & Credentials
+- Administrador: test@example.com
+- PYME: pyme@elbosque.cl
+- Reciclador: reciclador@elbosque.cl
 
-To easily test the application without registering new users, you can seed the SQLite database with predefined test accounts. Run the following command inside the backend directory:
+## Endpoints API
 
-```bash
-npm run seed
-Once the database is seeded, you can log in using the following roles:
-```
-### 🔑 Credenciales de Prueba (MVP)
+Base URL backend local: http://localhost:3000
 
-Para probar los distintos módulos y flujos de la plataforma (acceso basado en roles), utiliza las siguientes cuentas generadas por defecto:
+Salud:
 
-**1. Administrador (Gestor ECORETIRO)**
-*   **Rol:** Gestión de cuentas, catálogo de residuos y supervisión global.
-*   **Correo:** `test@example.com`
-*   **Contraseña:** `password123`
+- GET /health
 
-**2. Empresa Generadora (PYME)**
-*   **Rol:** Ingreso de residuos disponibles y seguimiento (tracking).
-*   **Correo:** `pyme@elbosque.cl`
-*   **Contraseña:** `password123`
+Autenticacion:
 
-**3. Empresa Receptora (Reciclador)**
-*   **Rol:** Exploración del catálogo, adjudicación de retiros y carga de certificados.
-*   **Correo:** `reciclador@elbosque.cl`
-*   **Contraseña:** `password123`
+- POST /auth/login
+- POST /auth/register
 
-## License
+Residuos y solicitudes:
+
+- POST /waste/add
+  - acepta categoryId o type + userId + weight
+- GET /waste/categories
+- GET /waste/inventory
+- GET /waste/history/:userId
+
+Dashboard:
+
+- Prefijo montado en /dashboard
+- Nota: actualmente la ruta existe en el servidor, pero su archivo de handlers esta vacio y requiere implementacion para exponer endpoints de metricas.
+
+## Frontend y proxy
+
+El frontend usa proxy de Vite para enviar peticiones /api al backend local.
+
+Ejemplo:
+
+- /api/auth/login -> http://localhost:3000/auth/login
+
+## Licencia
 
 MIT
-
-## Support
-
-For issues or questions, please open an issue on the project repository.

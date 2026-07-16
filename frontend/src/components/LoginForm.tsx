@@ -1,9 +1,9 @@
 // src/components/LoginForm.tsx
-import React from 'react';
 import { useLoginForm } from '../hooks/useLoginForm';
+import { UserRole } from '../App';
 
 interface LoginFormProps {
-  onLoginSuccess: (userId: number, username: string) => void;
+  onLoginSuccess: (userId: number, username: string, role: UserRole) => void;
 }
 
 export default function LoginForm({ onLoginSuccess }: LoginFormProps) {

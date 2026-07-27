@@ -4,24 +4,44 @@ import { dbRun, dbGet } from '../models/database.js';
 
 const router = express.Router();
 
+const FRONTEND_ROLE_MAP: Record<string, string> = {
+  Administrador: 'Administrador',
+  Empresa_Generadora: 'PYME',
+  Empresa_Recicladora: 'Reciclador',
+};
+
+const normalizeRoleInput = (idRol?: number, roleName?: string): number => {
+  if (typeof idRol === 'number' && Number.isInteger(idRol)) {
+    return idRol;
+  }
+
+  const normalized = String(roleName || '')
+    .trim()
+    .toLowerCase();
+
+  if (normalized === 'administrador') return 1;
+  if (normalized === 'pyme' || normalized === 'empresa_generadora') return 2;
+  if (normalized === 'reciclador' || normalized === 'empresa_recicladora') return 3;
+
+  return 2;
+};
+
 // ==========================================
 // ENDPOINT: LOGIN
 // ==========================================
 router.post('/login', async (req, res) => {
   try {
-    // Cambiamos 'username' por 'correo' para alinear con el nuevo esquema
     const { correo, password } = req.body;
 
     if (!correo || !password) {
       return res.status(400).json({ error: 'El correo y la contraseña son requeridos' });
     }
 
-    // Buscamos al usuario por correo, haciendo JOIN para obtener el nombre del Rol
     const user = await dbGet(
-      `SELECT ue.ID_Usuario, ue.Correo, ue.Contrasena, ue.Estado_Cuenta, r.Nombre_Rol
-       FROM Usuarios_Empresas ue
-       JOIN Roles r ON r.ID_Rol = ue.ID_Rol
-       WHERE ue.Correo = ?`,
+      `SELECT u.ID_Usuario, u.Correo, u.Contrasena, u.Estado_Cuenta, r.Nombre_Rol
+       FROM Usuarios u
+       JOIN Roles r ON r.ID_Rol = u.ID_Rol
+       WHERE u.Correo = ?`,
       [correo]
     );
 
@@ -29,24 +49,19 @@ router.post('/login', async (req, res) => {
       return res.status(401).json({ error: 'Credenciales inválidas' });
     }
 
-    // Comparamos la contraseña en texto plano con el hash guardado en SQLite
     const isMatch = await bcrypt.compare(password, user.Contrasena);
 
     if (!isMatch) {
       return res.status(401).json({ error: 'Credenciales inválidas' });
     }
 
-    // Opcional: Puedes bloquear el acceso si la cuenta aún no es aprobada por el Admin
-    // if (user.Estado_Cuenta === 'Pendiente' || user.Estado_Cuenta === 'Suspendida') {
-    //   return res.status(403).json({ error: `Acceso denegado. Estado de cuenta: ${user.Estado_Cuenta}` });
-    // }
-
-    res.json({ 
-      success: true, 
-      userId: user.ID_Usuario, 
+    res.json({
+      success: true,
+      userId: user.ID_Usuario,
       correo: user.Correo,
-      rol: user.Nombre_Rol,
-      estadoCuenta: user.Estado_Cuenta
+      rol: FRONTEND_ROLE_MAP[user.Nombre_Rol] || 'PYME',
+      rolInterno: user.Nombre_Rol,
+      estadoCuenta: user.Estado_Cuenta,
     });
   } catch (error) {
     console.error('Login error:', error);
@@ -59,47 +74,86 @@ router.post('/login', async (req, res) => {
 // ==========================================
 router.post('/register', async (req, res) => {
   try {
-    // Recibimos todos los campos requeridos por el esquema Usuarios_Empresas
-    const { 
-      rutEmpresa, 
-      razonSocial, 
-      correo, 
-      password, 
-      nombreContacto, 
-      telefono, 
-      idRol, 
-      direccionGeolocalizacion 
+    const {
+      rutEmpresa,
+      razonSocial,
+      correo,
+      password,
+      nombreContacto,
+      telefono,
+      idRol,
+      rol,
+      direccionGeolocalizacion,
     } = req.body;
 
-    // Validación de campos obligatorios (NOT NULL en SQLite)
-    if (!rutEmpresa || !razonSocial || !correo || !password || !nombreContacto || !idRol) {
+    if (!correo || !password || !nombreContacto) {
       return res.status(400).json({ error: 'Faltan campos obligatorios para el registro' });
     }
 
-    // Hasheamos la contraseña (10 rondas de sal es el estándar recomendado)
+    const normalizedRoleId = normalizeRoleInput(Number(idRol), rol);
+    if (![1, 2, 3].includes(normalizedRoleId)) {
+      return res.status(400).json({ error: 'Rol invalido' });
+    }
+
+    if (normalizedRoleId !== 1 && (!rutEmpresa || !razonSocial)) {
+      return res.status(400).json({ error: 'Las empresas deben informar RUT y razon social' });
+    }
+
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(password, saltRounds);
 
-    // Insertamos los datos en la base de datos
+    await dbRun('BEGIN TRANSACTION');
+
     await dbRun(
-      `INSERT INTO Usuarios_Empresas 
-      (RUT_Empresa, Razon_Social, Correo, Contrasena, Nombre_Contacto, Telefono, ID_Rol, Direccion_Geolocalizacion) 
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+      `INSERT INTO Usuarios (
+        ID_Rol,
+        Correo,
+        Contrasena,
+        Nombre_Contacto,
+        Telefono,
+        Estado_Cuenta
+      ) VALUES (?, ?, ?, ?, ?, 'Pendiente')`,
       [
-        rutEmpresa,
-        razonSocial,
+        normalizedRoleId,
         correo,
-        hashedPassword, // Guardamos el hash, no la contraseña original
+        hashedPassword,
         nombreContacto,
         telefono || null,
-        idRol,
-        direccionGeolocalizacion || null
       ]
     );
 
+    const createdUser = await dbGet('SELECT ID_Usuario FROM Usuarios WHERE Correo = ?', [correo]);
+    if (!createdUser?.ID_Usuario) {
+      throw new Error('No se pudo recuperar el usuario registrado');
+    }
+
+    if (normalizedRoleId !== 1) {
+      await dbRun(
+        `INSERT INTO Empresas (
+          ID_Usuario,
+          RUT_Empresa,
+          Razon_Social,
+          Direccion_Geolocalizacion
+        ) VALUES (?, ?, ?, ?)`,
+        [
+          createdUser.ID_Usuario,
+          rutEmpresa,
+          razonSocial,
+          direccionGeolocalizacion || null,
+        ]
+      );
+    }
+
+    await dbRun('COMMIT');
+
     res.json({ success: true, message: 'Cuenta registrada exitosamente' });
   } catch (error: any) {
-    // Manejo de errores de restricción UNIQUE (RUT o Correo ya existen)
+    try {
+      await dbRun('ROLLBACK');
+    } catch {
+      // Ignoramos rollback si la transacción no alcanzó a abrirse.
+    }
+
     if (error.message.includes('UNIQUE constraint failed')) {
       return res.status(400).json({ error: 'El correo o RUT ingresado ya se encuentra registrado' });
     }

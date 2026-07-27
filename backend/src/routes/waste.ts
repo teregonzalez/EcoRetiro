@@ -13,6 +13,17 @@ const CATEGORY_ALIASES: Record<string, string> = {
   wood: 'Borra de café',
 };
 
+const resolveEmpresaIdByUser = async (userId: number): Promise<number | null> => {
+  const empresa = await dbGet(
+    `SELECT ID_Empresa
+     FROM Empresas
+     WHERE ID_Usuario = ?`,
+    [userId]
+  );
+
+  return empresa?.ID_Empresa ?? null;
+};
+
 // ==========================================
 // 1. INGRESAR RESIDUOS (Módulo PYME)
 // ==========================================
@@ -48,10 +59,15 @@ router.post('/add', async (req, res) => {
       return res.status(400).json({ error: 'categoryId invalido' });
     }
 
+    const empresaGeneradoraId = await resolveEmpresaIdByUser(Number(userId));
+    if (!empresaGeneradoraId) {
+      return res.status(400).json({ error: 'No existe empresa asociada al usuario' });
+    }
+
     await dbRun(
-      `INSERT INTO Solicitudes_Retiro (ID_PYME, ID_Categoria, Volumen_Cantidad) 
+      `INSERT INTO Solicitudes_Retiro (ID_Empresa_Generadora, ID_Categoria, Volumen_Cantidad) 
        VALUES (?, ?, ?)`,
-      [userId, resolvedCategoryId, weight]
+      [empresaGeneradoraId, resolvedCategoryId, weight]
     );
 
     res.json({ success: true, message: 'Residuo ingresado y disponible para retiro' });
@@ -111,6 +127,11 @@ router.get('/history/:userId', async (req, res) => {
   try {
     const { userId } = req.params;
 
+    const empresaGeneradoraId = await resolveEmpresaIdByUser(Number(userId));
+    if (!empresaGeneradoraId) {
+      return res.json([]);
+    }
+
     // Recuperamos el historial cruzando datos con el catálogo para devolver nombres legibles,
     // y sumamos el estado de tracking para que la PYME sepa dónde está su residuo.
     const entries = await dbAll(
@@ -124,9 +145,9 @@ router.get('/history/:userId', async (req, res) => {
          s.URL_Certificado as certificate
        FROM Solicitudes_Retiro s
        JOIN Catalogo_Residuos c ON c.ID_Categoria = s.ID_Categoria
-       WHERE s.ID_PYME = ? 
+       WHERE s.ID_Empresa_Generadora = ? 
        ORDER BY s.Fecha_Publicacion DESC`,
-      [userId]
+      [empresaGeneradoraId]
     );
 
     res.json(entries || []);

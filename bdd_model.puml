@@ -1,45 +1,78 @@
 @startuml Modelo de datos de MPV
 !theme plain
 hide circle
+top to bottom direction
 skinparam linetype ortho
+skinparam nodesep 110
+skinparam ranksep 130
 skinparam EntityBackgroundColor #F9F9FC
 skinparam EntityBorderColor #333333
 skinparam EntityAttributeFontName Arial
+skinparam shadowing false
 
+' =========================================================
+' ENTIDADES
+' =========================================================
+
+' Roles esperados (valores de Nombre_Rol):
+'   - Administrador        -> edita catálogo y solicitudes, sin perfil de Empresa
+'   - Empresa_Generadora   -> publica solicitudes de retiro
+'   - Empresa_Recicladora  -> se adjudica y procesa solicitudes
 entity "Roles" as roles {
   * ID_Rol : INT <<PK>>
   --
   Nombre_Rol : VARCHAR
 }
 
-entity "Usuarios_Empresas" as usuarios {
+entity "Usuarios" as usuarios {
   * ID_Usuario : INT <<PK>>
   --
-  RUT_Empresa : VARCHAR
-  Razon_Social : VARCHAR
+  ID_Rol : INT <<FK>>
   Correo : VARCHAR
   Contrasena : VARCHAR
   Nombre_Contacto : VARCHAR
   Telefono : VARCHAR
-  ID_Rol : INT <<FK>>
-  Direccion_Geolocalizacion : VARCHAR
   Estado_Cuenta : VARCHAR
   Fecha_Registro : DATETIME
+  Fecha_Actualizacion : DATETIME
+}
+
+entity "Empresas" as empresas {
+  * ID_Empresa : INT <<PK>>
+  --
+  ID_Usuario : INT <<FK>>
+  RUT_Empresa : VARCHAR
+  Razon_Social : VARCHAR
+  Direccion_Geolocalizacion : VARCHAR
+  Fecha_Actualizacion : DATETIME
 }
 
 entity "Catalogo_Residuos" as catalogo {
   * ID_Categoria : INT <<PK>>
   --
+  ID_Usuario_Administrador : INT <<FK>>
   Nombre_Residuo : VARCHAR
   Unidad_Medida : VARCHAR
   Estado_Categoria : VARCHAR
+  Fecha_Creacion : DATETIME
+  Fecha_Actualizacion : DATETIME
+}
+
+entity "Vehiculos" as vehiculos {
+  * ID_Vehiculo : INT <<PK>>
+  --
+  ID_Empresa_Propietaria : INT <<FK>>
+  Patente : VARCHAR
+  Nombre_Chofer : VARCHAR
+  Estado_Vehiculo : VARCHAR
 }
 
 entity "Solicitudes_Retiro" as solicitudes {
   * ID_Solicitud : INT <<PK>>
   --
-  ID_PYME : INT <<FK>>
-  ID_Reciclador : INT <<FK>> (Null)
+  ID_Empresa_Generadora : INT <<FK>>
+  ID_Empresa_Recicladora : INT <<FK>> <<Nullable>>
+  ID_Vehiculo : INT <<FK>> <<Nullable>>
   ID_Categoria : INT <<FK>>
   Volumen_Cantidad : DECIMAL
   Estado_Tracking : VARCHAR
@@ -49,10 +82,36 @@ entity "Solicitudes_Retiro" as solicitudes {
   URL_Certificado : VARCHAR
 }
 
-' Relaciones
-roles ||--o{ usuarios : "Define (ID_Rol)"
-usuarios ||--o{ solicitudes : "Genera (ID_PYME)"
-usuarios |o--o{ solicitudes : "Retira (ID_Reciclador)"
-catalogo ||--o{ solicitudes : "Clasifica (ID_Categoria)"
+' =========================================================
+' HINTS DE POSICION (invisibles, solo para ordenar el layout)
+' Fuerzan a que catalogo quede en la misma "fila" que empresas,
+' y que solicitudes quede como nodo final (hub) recibiendo todo.
+' =========================================================
+usuarios -[hidden]-> catalogo
+empresas -[hidden]-> vehiculos
+
+' =========================================================
+' RELACIONES REALES
+' =========================================================
+
+' --- Autenticación y perfil ---
+roles ||--o{ usuarios : "Define (1:N)"
+usuarios ||--o| empresas : "Extiende a perfil\ncomercial (1:1)"
+
+' --- Flota ---
+empresas ||--o{ vehiculos : "Posee flota (1:N)"
+
+' --- Administración del catálogo ---
+' Nota: solo usuarios con Nombre_Rol = 'Administrador' deberían
+' poder crear/editar categorías (regla de negocio, no forzable por FK).
+usuarios ||--o{ catalogo : "Administra (1:N)"
+
+' --- Catálogo ---
+catalogo ||--o{ solicitudes : "Clasifica material (1:N)"
+
+' --- Ciclo de la solicitud (todas convergen en Solicitudes) ---
+empresas ||--o{ solicitudes : "Genera el residuo (1:N)"
+empresas |o--o{ solicitudes : "Adjudica la solicitud (0:N)"
+vehiculos |o--o{ solicitudes : "Realiza el transporte (0:N)"
 
 @enduml

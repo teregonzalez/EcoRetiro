@@ -48,15 +48,13 @@ const seedData = async () => {
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash('password123', saltRounds);
 
-    // 3. Crear Usuarios de Prueba (Si no existen, gracias al UNIQUE en Correo)
+    // 3. Crear usuarios y empresas de prueba
     const usuariosPrueba = [
       {
-        rut: '11111111-1',
-        razon: 'Administración ECORETIRO',
         correo: 'test@example.com',
         contacto: 'Admin Principal',
         rol: 1, // Administrador
-        estado: 'Aprobada'
+        estado: 'Aprobada',
       },
       {
         rut: '77777777-7',
@@ -64,7 +62,8 @@ const seedData = async () => {
         correo: 'pyme@elbosque.cl',
         contacto: 'Juan Pérez',
         rol: 2, // PYME
-        estado: 'Aprobada'
+        estado: 'Aprobada',
+        direccion: 'El Bosque, Santiago',
       },
       {
         rut: '99999999-9',
@@ -72,17 +71,18 @@ const seedData = async () => {
         correo: 'reciclador@elbosque.cl',
         contacto: 'María González',
         rol: 3, // Reciclador
-        estado: 'Aprobada'
+        estado: 'Aprobada',
+        direccion: 'El Bosque, Santiago',
       }
     ];
 
     for (const u of usuariosPrueba) {
       try {
         await runQuery(
-          `INSERT INTO Usuarios_Empresas 
-          (RUT_Empresa, Razon_Social, Correo, Contrasena, Nombre_Contacto, ID_Rol, Estado_Cuenta) 
-          VALUES (?, ?, ?, ?, ?, ?, ?)`,
-          [u.rut, u.razon, u.correo, hashedPassword, u.contacto, u.rol, u.estado]
+          `INSERT INTO Usuarios
+          (ID_Rol, Correo, Contrasena, Nombre_Contacto, Estado_Cuenta)
+          VALUES (?, ?, ?, ?, ?)`,
+          [u.rol, u.correo, hashedPassword, u.contacto, u.estado]
         );
         console.log(`✅ Usuario creado: ${u.correo} (Rol ID: ${u.rol})`);
       } catch (err: any) {
@@ -92,22 +92,92 @@ const seedData = async () => {
           throw err;
         }
       }
+
+      const usuario = await getQuery('SELECT ID_Usuario FROM Usuarios WHERE Correo = ?', [u.correo]);
+      if (usuario?.ID_Usuario && u.rol !== 1 && u.rut && u.razon) {
+        try {
+          await runQuery(
+            `INSERT INTO Empresas
+            (ID_Usuario, RUT_Empresa, Razon_Social, Direccion_Geolocalizacion)
+            VALUES (?, ?, ?, ?)` ,
+            [usuario.ID_Usuario, u.rut, u.razon, u.direccion || null]
+          );
+          console.log(`✅ Empresa creada: ${u.razon}`);
+        } catch (err: any) {
+          if (err.message.includes('UNIQUE constraint failed')) {
+            console.log(`⚠️ La empresa de ${u.correo} ya existe. Omitiendo creación.`);
+          } else {
+            throw err;
+          }
+        }
+      }
     }
 
     console.log('\nCredenciales de acceso para pruebas:');
     console.log('🔒 Contraseña general: password123\n');
 
-    // 4. Agregar Solicitudes de Retiro de prueba para la PYME
-    // Obtenemos el ID de la PYME recién creada
-    const pyme = await getQuery('SELECT ID_Usuario FROM Usuarios_Empresas WHERE Correo = ?', ['pyme@elbosque.cl']);
-    const reciclador = await getQuery('SELECT ID_Usuario FROM Usuarios_Empresas WHERE Correo = ?', ['reciclador@elbosque.cl']);
+    // 4. Cargar catálogo base de residuos (asignado al administrador)
+    const admin = await getQuery('SELECT ID_Usuario FROM Usuarios WHERE Correo = ?', ['test@example.com']);
+    if (admin?.ID_Usuario) {
+      await runQuery(
+        `INSERT INTO Catalogo_Residuos
+          (ID_Categoria, ID_Usuario_Administrador, Nombre_Residuo, Unidad_Medida, Estado_Categoria)
+         VALUES
+          (1, ?, 'Cartón corrugado', 'kg', 'Activa'),
+          (2, ?, 'Plástico PET', 'kg', 'Activa'),
+          (3, ?, 'Aceite vegetal usado', 'litros', 'Activa'),
+          (4, ?, 'Borra de café', 'kg', 'Activa')
+         ON CONFLICT(ID_Categoria) DO UPDATE SET
+          ID_Usuario_Administrador = excluded.ID_Usuario_Administrador,
+          Nombre_Residuo = excluded.Nombre_Residuo,
+          Unidad_Medida = excluded.Unidad_Medida,
+          Estado_Categoria = excluded.Estado_Categoria,
+          Fecha_Actualizacion = datetime('now')`,
+        [admin.ID_Usuario, admin.ID_Usuario, admin.ID_Usuario, admin.ID_Usuario]
+      );
+    }
+
+    // 5. Agregar Solicitudes de Retiro de prueba para la empresa generadora
+    const pyme = await getQuery(
+      `SELECT e.ID_Empresa
+       FROM Empresas e
+       JOIN Usuarios u ON u.ID_Usuario = e.ID_Usuario
+       WHERE u.Correo = ?`,
+      ['pyme@elbosque.cl']
+    );
+
+    const reciclador = await getQuery(
+      `SELECT e.ID_Empresa
+       FROM Empresas e
+       JOIN Usuarios u ON u.ID_Usuario = e.ID_Usuario
+       WHERE u.Correo = ?`,
+      ['reciclador@elbosque.cl']
+    );
     
     if (pyme && reciclador) {
+      try {
+        await runQuery(
+          `INSERT INTO Vehiculos
+          (ID_Empresa_Propietaria, Patente, Nombre_Chofer, Estado_Vehiculo)
+          VALUES (?, 'KJPL-78', 'Diego Mena', 'Activo')`,
+          [reciclador.ID_Empresa]
+        );
+      } catch (err: any) {
+        if (!err.message.includes('UNIQUE constraint failed')) {
+          throw err;
+        }
+      }
+
+      const vehiculo = await getQuery('SELECT ID_Vehiculo FROM Vehiculos WHERE Patente = ?', ['KJPL-78']);
+
       // Verificamos si ya tiene solicitudes para no duplicar en cada ejecución
-      const conteoSolicitudes = await getQuery('SELECT COUNT(*) as count FROM Solicitudes_Retiro WHERE ID_PYME = ?', [pyme.ID_Usuario]);
+      const conteoSolicitudes = await getQuery(
+        'SELECT COUNT(*) as count FROM Solicitudes_Retiro WHERE ID_Empresa_Generadora = ?',
+        [pyme.ID_Empresa]
+      );
       
       if (conteoSolicitudes.count < 6) {
-        await runQuery('DELETE FROM Solicitudes_Retiro WHERE ID_PYME = ?', [pyme.ID_Usuario]);
+        await runQuery('DELETE FROM Solicitudes_Retiro WHERE ID_Empresa_Generadora = ?', [pyme.ID_Empresa]);
 
         const today = new Date();
         const toISO = (daysAgo: number) => {
@@ -142,7 +212,8 @@ const seedData = async () => {
             volumen: 5.0,
             estado: 'En camino',
             fechaPublicacion: toISO(2),
-            idReciclador: reciclador.ID_Usuario,
+            idReciclador: reciclador.ID_Empresa,
+            idVehiculo: vehiculo?.ID_Vehiculo || null,
             fechaRecoleccion: toISO(1),
             fechaProcesamiento: null,
             certificado: null,
@@ -152,7 +223,8 @@ const seedData = async () => {
             volumen: 3.2,
             estado: 'Gestionado',
             fechaPublicacion: toISO(4),
-            idReciclador: reciclador.ID_Usuario,
+            idReciclador: reciclador.ID_Empresa,
+            idVehiculo: vehiculo?.ID_Vehiculo || null,
             fechaRecoleccion: toISO(3),
             fechaProcesamiento: toISO(0),
             certificado: 'https://ecocircular.local/certificados/sol-1.pdf',
@@ -162,7 +234,8 @@ const seedData = async () => {
             volumen: 12.7,
             estado: 'Gestionado',
             fechaPublicacion: toISO(6),
-            idReciclador: reciclador.ID_Usuario,
+            idReciclador: reciclador.ID_Empresa,
+            idVehiculo: vehiculo?.ID_Vehiculo || null,
             fechaRecoleccion: toISO(5),
             fechaProcesamiento: toISO(1),
             certificado: 'https://ecocircular.local/certificados/sol-2.pdf',
@@ -172,7 +245,8 @@ const seedData = async () => {
             volumen: 8.1,
             estado: 'En camino',
             fechaPublicacion: toISO(3),
-            idReciclador: reciclador.ID_Usuario,
+            idReciclador: reciclador.ID_Empresa,
+            idVehiculo: vehiculo?.ID_Vehiculo || null,
             fechaRecoleccion: toISO(2),
             fechaProcesamiento: null,
             certificado: null,
@@ -182,8 +256,9 @@ const seedData = async () => {
         for (const request of seededRequests) {
           await runQuery(
             `INSERT INTO Solicitudes_Retiro (
-              ID_PYME,
-              ID_Reciclador,
+              ID_Empresa_Generadora,
+              ID_Empresa_Recicladora,
+              ID_Vehiculo,
               ID_Categoria,
               Volumen_Cantidad,
               Estado_Tracking,
@@ -191,10 +266,11 @@ const seedData = async () => {
               Fecha_Recoleccion,
               Fecha_Procesamiento,
               URL_Certificado
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)` ,
             [
-              pyme.ID_Usuario,
+              pyme.ID_Empresa,
               request.idReciclador,
+              request.idVehiculo || null,
               request.idCategoria,
               request.volumen,
               request.estado,
@@ -209,9 +285,9 @@ const seedData = async () => {
         const resumenEstado = await allQuery(
           `SELECT Estado_Tracking as estado, COUNT(*) as total
            FROM Solicitudes_Retiro
-           WHERE ID_PYME = ?
+           WHERE ID_Empresa_Generadora = ?
            GROUP BY Estado_Tracking`,
-          [pyme.ID_Usuario]
+          [pyme.ID_Empresa]
         );
 
         console.log('✅ Solicitudes de retiro de prueba regeneradas exitosamente para la PYME.');

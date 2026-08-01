@@ -6,6 +6,7 @@ interface PymeDashboardProps {
   userId: number;
   username: string;
   onLogout: () => void;
+  onCreateWaste: () => void;
 }
 
 const navItems = [
@@ -21,7 +22,7 @@ const formatDate = (rawDate: string) => {
   return Number.isNaN(date.getTime()) ? rawDate : date.toLocaleDateString("es-CL");
 };
 
-export default function PymeDashboard({ userId, username, onLogout }: PymeDashboardProps) {
+export default function PymeDashboard({ userId, username, onLogout, onCreateWaste }: PymeDashboardProps) {
   const [data, setData] = useState<PymeDashboardData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -77,6 +78,7 @@ export default function PymeDashboard({ userId, username, onLogout }: PymeDashbo
             </p>
             <button
               type="button"
+              onClick={onCreateWaste}
               className="mt-md inline-flex items-center gap-2 rounded-full bg-secondary-container px-md py-sm font-bold text-on-secondary-container transition-all hover:bg-secondary hover:text-on-secondary"
             >
               <span className="material-symbols-outlined">add_circle</span>

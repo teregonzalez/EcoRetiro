@@ -8,6 +8,11 @@ import Contact from "./components/Contact";
 import AdminDashboard from "./components/dashboards/AdminDashboard";
 import PymeDashboard from "./components/dashboards/PymeDashboard";
 import RecyclerDashboard from "./components/dashboards/RecyclerDashboard";
+import PymeWasteEntryForm from "./components/dashboards/PymeWasteEntryForm";
+import PymeWasteEntrySuccess from "./components/dashboards/PymeWasteEntrySuccess";
+import PymeWasteEntryError from "./components/dashboards/PymeWasteEntryError";
+import RecyclerNearbyWasteView from "./components/dashboards/RecyclerNearbyWasteView";
+import RecyclerEditProfileView from "./components/dashboards/RecyclerEditProfileView";
 
 export type MenuItem = "add-waste" | "view-inventory" | "view-history";
 
@@ -61,6 +66,9 @@ function AppContent() {
     else navigate(`/${view}`);
   };
 
+  const isPymeSession = session?.role === "PYME";
+  const isRecyclerSession = session?.role === "Reciclador";
+
   return (
     <div className="bg-background font-body-md text-on-background min-h-screen flex flex-col m-0 p-0">
       {!isDashboardRoute && (
@@ -90,12 +98,84 @@ function AppContent() {
                 session.role === "Administrador" ? (
                   <AdminDashboard userId={session.userId} username={session.username} onLogout={handleLogout} />
                 ) : session.role === "Reciclador" ? (
-                  <RecyclerDashboard userId={session.userId} username={session.username} onLogout={handleLogout} />
+                  <RecyclerDashboard
+                    userId={session.userId}
+                    username={session.username}
+                    onLogout={handleLogout}
+                    onSelectNearbyWaste={(item) =>
+                      navigate("/dashboard/reciclador/residuos/seleccion", { state: item })
+                    }
+                    onEditProfile={() => navigate("/dashboard/reciclador/perfil/editar")}
+                  />
                 ) : (
-                  <PymeDashboard userId={session.userId} username={session.username} onLogout={handleLogout} />
+                  <PymeDashboard
+                    userId={session.userId}
+                    username={session.username}
+                    onLogout={handleLogout}
+                    onCreateWaste={() => navigate("/dashboard/pyme/residuos/nuevo")}
+                  />
                 )
               ) : (
                 <Navigate to="/" replace />
+              )
+            }
+          />
+
+          <Route
+            path="/dashboard/pyme/residuos/nuevo"
+            element={
+              session && isPymeSession ? (
+                <PymeWasteEntryForm
+                  userId={session.userId}
+                  username={session.username}
+                  onLogout={handleLogout}
+                />
+              ) : (
+                <Navigate to={session ? "/dashboard" : "/"} replace />
+              )
+            }
+          />
+
+          <Route
+            path="/dashboard/pyme/residuos/exito"
+            element={
+              session && isPymeSession ? (
+                <PymeWasteEntrySuccess username={session.username} onLogout={handleLogout} />
+              ) : (
+                <Navigate to={session ? "/dashboard" : "/"} replace />
+              )
+            }
+          />
+
+          <Route
+            path="/dashboard/pyme/residuos/error"
+            element={
+              session && isPymeSession ? (
+                <PymeWasteEntryError username={session.username} onLogout={handleLogout} />
+              ) : (
+                <Navigate to={session ? "/dashboard" : "/"} replace />
+              )
+            }
+          />
+
+          <Route
+            path="/dashboard/reciclador/residuos/seleccion"
+            element={
+              session && isRecyclerSession ? (
+                <RecyclerNearbyWasteView username={session.username} onLogout={handleLogout} />
+              ) : (
+                <Navigate to={session ? "/dashboard" : "/"} replace />
+              )
+            }
+          />
+
+          <Route
+            path="/dashboard/reciclador/perfil/editar"
+            element={
+              session && isRecyclerSession ? (
+                <RecyclerEditProfileView username={session.username} onLogout={handleLogout} />
+              ) : (
+                <Navigate to={session ? "/dashboard" : "/"} replace />
               )
             }
           />

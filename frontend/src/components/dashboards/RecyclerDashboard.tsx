@@ -1,11 +1,13 @@
 import { useEffect, useMemo, useState } from "react";
 import DashboardShell from "./DashboardShell";
-import { fetchRecyclerDashboard, type RecyclerDashboardData } from "../../api/dashboard";
+import { fetchRecyclerDashboard, type RecyclerDashboardData, type RecyclerNearbyWaste } from "../../api/dashboard";
 
 interface RecyclerDashboardProps {
   userId: number;
   username: string;
   onLogout: () => void;
+  onSelectNearbyWaste: (item: RecyclerNearbyWaste) => void;
+  onEditProfile: () => void;
 }
 
 const navItems = [
@@ -21,7 +23,13 @@ const formatDate = (rawDate: string) => {
   return Number.isNaN(date.getTime()) ? rawDate : date.toLocaleDateString("es-CL");
 };
 
-export default function RecyclerDashboard({ userId, username, onLogout }: RecyclerDashboardProps) {
+export default function RecyclerDashboard({
+  userId,
+  username,
+  onLogout,
+  onSelectNearbyWaste,
+  onEditProfile,
+}: RecyclerDashboardProps) {
   const [data, setData] = useState<RecyclerDashboardData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -118,15 +126,30 @@ export default function RecyclerDashboard({ userId, username, onLogout }: Recycl
             className="h-full w-full object-cover opacity-50"
           />
           <div className="absolute left-4 top-4 max-w-xs rounded-lg border border-white/40 bg-white/80 p-4 backdrop-blur">
-            <h3 className="font-headline-lg-mobile text-on-surface">Residuos Cercanos</h3>
-            <p className="mb-3 text-label-sm text-on-surface-variant">Materiales disponibles para retiro inmediato.</p>
+            <div className="mb-3 flex items-center justify-between gap-sm">
+              <h3 className="font-headline-lg-mobile text-on-surface">Residuos Cercanos</h3>
+              <button
+                type="button"
+                onClick={onEditProfile}
+                className="rounded-full bg-surface px-sm py-xs text-[11px] font-bold text-secondary transition-colors hover:bg-surface-container"
+              >
+                Editar perfil
+              </button>
+            </div>
+            <p className="mb-3 text-label-sm text-on-surface-variant">Selecciona un residuo para gestionar su retiro.</p>
             <ul className="space-y-2 text-[12px]">
-              {(data?.nearbyWaste ?? []).slice(0, 2).map((item, idx) => (
-                <li
-                  key={item.material}
-                  className={`rounded-lg bg-surface-container p-2 ${idx === 0 ? "border-l-4 border-primary" : "border-l-4 border-secondary"}`}
-                >
-                  {item.material}: {item.total} {item.unit}
+              {(data?.nearbyWaste ?? []).slice(0, 4).map((item, idx) => (
+                <li key={item.material}>
+                  <button
+                    type="button"
+                    onClick={() => onSelectNearbyWaste(item)}
+                    className={`w-full rounded-lg bg-surface-container p-2 text-left transition-colors hover:bg-surface-container-high ${idx === 0 ? "border-l-4 border-primary" : "border-l-4 border-secondary"}`}
+                  >
+                    <span className="flex w-full items-center justify-between gap-sm">
+                      <span>{item.material}</span>
+                      <span className="font-bold">{item.total} {item.unit}</span>
+                    </span>
+                  </button>
                 </li>
               ))}
             </ul>

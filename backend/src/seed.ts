@@ -126,14 +126,15 @@ const seedData = async () => {
           (1, ?, 'Cartón corrugado', 'kg', 'Activa'),
           (2, ?, 'Plástico PET', 'kg', 'Activa'),
           (3, ?, 'Aceite vegetal usado', 'litros', 'Activa'),
-          (4, ?, 'Borra de café', 'kg', 'Activa')
+          (4, ?, 'Borra de café', 'kg', 'Activa'),
+          (5, ?, 'Metal', 'kg', 'Activa')
          ON CONFLICT(ID_Categoria) DO UPDATE SET
           ID_Usuario_Administrador = excluded.ID_Usuario_Administrador,
           Nombre_Residuo = excluded.Nombre_Residuo,
           Unidad_Medida = excluded.Unidad_Medida,
           Estado_Categoria = excluded.Estado_Categoria,
           Fecha_Actualizacion = datetime('now')`,
-        [admin.ID_Usuario, admin.ID_Usuario, admin.ID_Usuario, admin.ID_Usuario]
+        [admin.ID_Usuario, admin.ID_Usuario, admin.ID_Usuario, admin.ID_Usuario, admin.ID_Usuario]
       );
     }
 

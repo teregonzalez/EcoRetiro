@@ -8,8 +8,8 @@ const CATEGORY_ALIASES: Record<string, string> = {
   paper: 'Cartón corrugado',
   cardboard: 'Cartón corrugado',
   glass: 'Borra de café',
-  aluminum: 'Aceite vegetal usado',
-  metal: 'Aceite vegetal usado',
+  aluminum: 'Metal',
+  metal: 'Metal',
   wood: 'Borra de café',
 };
 

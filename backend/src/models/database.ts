@@ -252,6 +252,27 @@ const migrateCatalogoResiduos = async () => {
   }
 };
 
+const ensureDefaultCategories = async () => {
+  const admin = await getSql(
+    `SELECT ID_Usuario
+     FROM Usuarios
+     WHERE ID_Rol = 1
+     ORDER BY ID_Usuario ASC
+     LIMIT 1`
+  );
+
+  await runSql(
+    `INSERT INTO Catalogo_Residuos (ID_Usuario_Administrador, Nombre_Residuo, Unidad_Medida, Estado_Categoria)
+     SELECT ?, 'Metal', 'kg', 'Activa'
+     WHERE NOT EXISTS (
+       SELECT 1
+       FROM Catalogo_Residuos
+       WHERE lower(Nombre_Residuo) = lower('Metal')
+     )`,
+    [admin?.ID_Usuario ?? null]
+  );
+};
+
 const migrateSolicitudesRetiro = async () => {
   const solicitudesExists = await tableExists('Solicitudes_Retiro');
   if (!solicitudesExists) {
@@ -415,6 +436,7 @@ export const initializeDatabase = async (): Promise<void> => {
 
   await migrateLegacyUsersEmpresas();
   await migrateCatalogoResiduos();
+  await ensureDefaultCategories();
   await migrateSolicitudesRetiro();
 };
 

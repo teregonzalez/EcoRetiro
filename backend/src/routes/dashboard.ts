@@ -103,7 +103,7 @@ router.get('/pyme/:userId', async (req, res) => {
 		const history = await dbAll(
 			`SELECT
 				s.ID_Solicitud AS id,
-				s.Fecha_Publicacion AS fecha,
+				strftime('%Y-%m-%dT%H:%M:%S', s.Fecha_Publicacion) AS fecha,
 				c.Nombre_Residuo AS tipo,
 				s.Volumen_Cantidad AS cantidad,
 				c.Unidad_Medida AS unidad,
@@ -190,7 +190,7 @@ router.get('/reciclador/:userId', async (req, res) => {
 		const collectionHistory = await dbAll(
 			`SELECT
 				s.ID_Solicitud AS id,
-				s.Fecha_Publicacion AS fecha,
+				strftime('%Y-%m-%dT%H:%M:%S', s.Fecha_Publicacion) AS fecha,
 				eg.Razon_Social AS origen,
 				c.Nombre_Residuo AS material,
 				s.Volumen_Cantidad AS cantidad,

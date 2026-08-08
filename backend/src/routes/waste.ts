@@ -5,13 +5,31 @@ const router = express.Router();
 
 const CATEGORY_ALIASES: Record<string, string> = {
   plastic: 'Plástico PET',
+  plastico: 'Plástico PET',
+  plastica: 'Plástico PET',
+  plastico_pet: 'Plástico PET',
   paper: 'Cartón corrugado',
+  papel: 'Cartón corrugado',
+  carton: 'Cartón corrugado',
+  cartón: 'Cartón corrugado',
   cardboard: 'Cartón corrugado',
   glass: 'Borra de café',
+  vidrio: 'Borra de café',
   aluminum: 'Metal',
+  aluminio: 'Metal',
   metal: 'Metal',
   wood: 'Borra de café',
+  organic: 'Borra de café',
+  organico: 'Borra de café',
+  organica: 'Borra de café',
 };
+
+const normalizeType = (value: string): string =>
+  value
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .trim();
 
 const resolveEmpresaIdByUser = async (userId: number): Promise<number | null> => {
   const empresa = await dbGet(
@@ -38,8 +56,8 @@ router.post('/add', async (req, res) => {
     let resolvedCategoryId = Number(categoryId);
 
     if (!resolvedCategoryId && type) {
-      const normalizedType = String(type).trim();
-      const lookupType = CATEGORY_ALIASES[normalizedType.toLowerCase()] || normalizedType;
+      const normalizedType = normalizeType(String(type));
+      const lookupType = CATEGORY_ALIASES[normalizedType] || normalizedType;
 
       const category = await dbGet(
         `SELECT ID_Categoria
@@ -141,7 +159,7 @@ router.get('/history/:userId', async (req, res) => {
          s.Volumen_Cantidad as weight, 
          c.Unidad_Medida as unit,
          s.Estado_Tracking as status,
-         s.Fecha_Publicacion as date,
+         strftime('%Y-%m-%dT%H:%M:%S', s.Fecha_Publicacion) as date,
          s.URL_Certificado as certificate
        FROM Solicitudes_Retiro s
        JOIN Catalogo_Residuos c ON c.ID_Categoria = s.ID_Categoria

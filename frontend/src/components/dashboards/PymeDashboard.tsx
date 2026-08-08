@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import DashboardShell from "./DashboardShell";
+import ReportsView from "./ReportsView";
+import RoutesView from "./RoutesView";
 import { fetchPymeDashboard, type PymeDashboardData } from "../../api/dashboard";
 
 interface PymeDashboardProps {
@@ -9,23 +11,32 @@ interface PymeDashboardProps {
   onCreateWaste: () => void;
 }
 
-const navItems = [
-  { label: "Dashboard", icon: "dashboard", active: true },
-  { label: "Residuos", icon: "recycling" },
-  { label: "Cumplimiento", icon: "verified_user" },
-  { label: "Rutas", icon: "local_shipping" },
-  { label: "Analiticas", icon: "analytics" },
-];
-
 const formatDate = (rawDate: string) => {
   const date = new Date(rawDate);
-  return Number.isNaN(date.getTime()) ? rawDate : date.toLocaleDateString("es-CL");
+  if (Number.isNaN(date.getTime())) return rawDate;
+
+  return date.toLocaleString("es-CL", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
 };
 
 export default function PymeDashboard({ userId, username, onLogout, onCreateWaste }: PymeDashboardProps) {
   const [data, setData] = useState<PymeDashboardData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [activeTab, setActiveTab] = useState("Inventario");
+
+  const navItems = [
+    { label: "Dashboard", icon: "dashboard", active: activeTab === "Inventario" },
+    { label: "Residuos", icon: "recycling", active: false },
+    { label: "Cumplimiento", icon: "verified_user", active: false },
+    { label: "Rutas", icon: "local_shipping", active: activeTab === "Rutas", onClick: () => setActiveTab("Rutas") },
+    { label: "Analiticas", icon: "analytics", active: false },
+  ];
 
   useEffect(() => {
     const loadData = async () => {
@@ -53,11 +64,22 @@ export default function PymeDashboard({ userId, username, onLogout, onCreateWast
       roleLabel="Generador PYME"
       navItems={navItems}
       topTabs={["Inventario", "Logistica", "Reportes"]}
-      activeTopTab="Inventario"
+      activeTopTab={activeTab}
       ctaLabel="Nueva Solicitud"
+      onTopTabChange={setActiveTab}
       onLogout={onLogout}
     >
-      {loading && (
+      {activeTab === "Rutas" ? (
+        <RoutesView />
+      ) : activeTab === "Reportes" ? (
+        <ReportsView
+          title="Reportes de generación"
+          subtitle="Consulta indicadores de impacto, solicitudes y desempeño ambiental de tu empresa."
+          roleLabel="Generador PYME"
+        />
+      ) : (
+        <>
+          {loading && (
         <div className="mb-md rounded-lg border border-outline-variant bg-surface-container-low p-md text-on-surface-variant">
           Cargando datos del panel...
         </div>
@@ -180,6 +202,8 @@ export default function PymeDashboard({ userId, username, onLogout, onCreateWast
           </button>
         </article>
       </section>
+        </>
+      )}
     </DashboardShell>
   );
 }

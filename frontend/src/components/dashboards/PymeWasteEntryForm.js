@@ -11,11 +11,11 @@ const navItems = [
     { label: "Analiticas", icon: "analytics" },
 ];
 const wasteOptions = [
-    { id: "plastic", label: "PLASTICO", icon: "water_full", apiType: "plastic" },
-    { id: "paper", label: "PAPEL", icon: "description", apiType: "paper" },
-    { id: "glass", label: "VIDRIO", icon: "wine_bar", apiType: "glass" },
-    { id: "metal", label: "METAL", icon: "precision_manufacturing", apiType: "metal" },
-    { id: "organic", label: "ORGANICO", icon: "compost", apiType: "wood" },
+    { id: "plastic", label: "PLASTICO", icon: "water_full", apiType: "plastic", categoryId: 2 },
+    { id: "paper", label: "PAPEL", icon: "description", apiType: "paper", categoryId: 1 },
+    { id: "glass", label: "VIDRIO", icon: "wine_bar", apiType: "glass", categoryId: 4 },
+    { id: "metal", label: "METAL", icon: "precision_manufacturing", apiType: "metal", categoryId: 5 },
+    { id: "organic", label: "ORGANICO", icon: "compost", apiType: "wood", categoryId: 4 },
 ];
 export default function PymeWasteEntryForm({ userId, username, onLogout }) {
     const navigate = useNavigate();
@@ -41,6 +41,7 @@ export default function PymeWasteEntryForm({ userId, username, onLogout }) {
             setSubmitting(true);
             await axios.post("/api/waste/add", {
                 userId,
+                categoryId: selectedOption.categoryId,
                 type: selectedOption.apiType,
                 weight: parsedQuantity,
             });

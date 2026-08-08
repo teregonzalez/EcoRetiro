@@ -4,6 +4,7 @@ interface NavItem {
   label: string;
   icon: string;
   active?: boolean;
+  onClick?: () => void;
 }
 
 interface DashboardShellProps {
@@ -16,6 +17,7 @@ interface DashboardShellProps {
   topTabs: string[];
   activeTopTab: string;
   ctaLabel?: string;
+  onTopTabChange?: (tab: string) => void;
   onLogout: () => void;
   children: React.ReactNode;
 }
@@ -30,6 +32,7 @@ export default function DashboardShell({
   topTabs,
   activeTopTab,
   ctaLabel,
+  onTopTabChange,
   onLogout,
   children,
 }: DashboardShellProps) {
@@ -46,6 +49,7 @@ export default function DashboardShell({
             <button
               key={item.label}
               type="button"
+              onClick={item.onClick}
               className={`mb-1 flex items-center gap-3 rounded-lg px-4 py-3 text-left transition-all ${
                 item.active
                   ? "bg-secondary-container text-on-secondary-container"
@@ -91,6 +95,7 @@ export default function DashboardShell({
               <button
                 key={tab}
                 type="button"
+                onClick={() => onTopTabChange?.(tab)}
                 className={`pb-1 text-body-md transition-colors ${
                   tab === activeTopTab
                     ? "border-b-2 border-secondary font-bold text-secondary"

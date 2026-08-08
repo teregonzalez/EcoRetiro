@@ -12,6 +12,50 @@ interface HistoryProps {
   userId: number;
 }
 
+const parseHistoryDate = (value: string | null | undefined) => {
+  if (!value) return null;
+
+  const normalized = String(value).trim();
+  if (!normalized) return null;
+
+  const sqliteDateMatch = normalized.match(/^(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})$/);
+  if (sqliteDateMatch) {
+    const [, year, month, day, hour, minute, second] = sqliteDateMatch;
+    return new Date(
+      Number(year),
+      Number(month) - 1,
+      Number(day),
+      Number(hour),
+      Number(minute),
+      Number(second)
+    );
+  }
+
+  const parsed = new Date(normalized);
+  return Number.isNaN(parsed.getTime()) ? null : parsed;
+};
+
+const formatHistoryDate = (value: string | null | undefined) => {
+  const date = parseHistoryDate(value);
+  if (!date) return 'Fecha no disponible';
+
+  return date.toLocaleDateString('es-CL', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+  });
+};
+
+const formatHistoryTime = (value: string | null | undefined) => {
+  const date = parseHistoryDate(value);
+  if (!date) return 'Hora no disponible';
+
+  return date.toLocaleTimeString('es-CL', {
+    hour: '2-digit',
+    minute: '2-digit',
+  });
+};
+
 export const History: React.FC<HistoryProps> = ({ userId }) => {
   const [entries, setEntries] = useState<HistoryEntry[]>([]);
   const [loading, setLoading] = useState(true);
@@ -56,8 +100,9 @@ export const History: React.FC<HistoryProps> = ({ userId }) => {
       content += '<tr><th>Tipo de Residuo</th><th>Peso (kg)</th><th>Fecha y Hora</th></tr>';
 
       entries.forEach((entry) => {
-        const date = new Date(entry.date);
-        content += `<tr><td>${entry.type}</td><td>${entry.weight.toFixed(2)}</td><td>${date.toLocaleDateString()} ${date.toLocaleTimeString()}</td></tr>`;
+        const date = parseHistoryDate(entry.date);
+        const displayDate = date ? `${date.toLocaleDateString('es-CL')} ${date.toLocaleTimeString('es-CL')}` : 'Fecha no disponible';
+        content += `<tr><td>${entry.type}</td><td>${entry.weight.toFixed(2)}</td><td>${displayDate}</td></tr>`;
       });
 
       content += '</table>';
@@ -171,7 +216,7 @@ export const History: React.FC<HistoryProps> = ({ userId }) => {
               </thead>
               <tbody>
                 {entries.map((entry) => {
-                  const date = new Date(entry.date);
+                  const date = parseHistoryDate(entry.date);
                   return (
                     <tr 
                       key={entry.id} 
@@ -194,10 +239,10 @@ export const History: React.FC<HistoryProps> = ({ userId }) => {
                       </td>
                       <td className="text-right px-md py-md">
                         <p className="font-body-md text-on-surface-variant text-sm">
-                          {date.toLocaleDateString()}
+                          {date ? formatHistoryDate(entry.date) : 'Fecha no disponible'}
                         </p>
                         <p className="font-label-sm text-on-surface-variant">
-                          {date.toLocaleTimeString()}
+                          {date ? formatHistoryTime(entry.date) : 'Hora no disponible'}
                         </p>
                       </td>
                     </tr>

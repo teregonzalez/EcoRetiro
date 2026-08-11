@@ -1,10 +1,10 @@
 import { jsx as _jsx, jsxs as _jsxs, Fragment as _Fragment } from "react/jsx-runtime";
 import { useEffect, useState } from "react";
-import DashboardShell from "../DashboardShell/DashboardShell";
-import ReportsView from "../ReportsView";
-import RoutesView from "../RoutesView";
-import PymeWasteSpotlightView from "../PymeWasteSpotlightView";
-import { fetchPymeDashboard, } from "../../../api/dashboard";
+import DashboardShell from "./DashboardShell/DashboardShell";
+import ReportsView from "./ReportsView";
+import RoutesView from "./RoutesView";
+import PymeWasteSpotlightView from "./PymeWasteSpotlightView";
+import { fetchPymeDashboard, } from "../../api/dashboard";
 const CHILE_TIMEZONE = "America/Santiago";
 const formatDate = (rawDate) => {
     if (!rawDate)

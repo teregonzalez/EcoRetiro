@@ -18,7 +18,10 @@ const navItems = [
   { label: "Analiticas", icon: "analytics" },
 ];
 
-export default function PymeWasteEntryError({ username, onLogout }: PymeWasteEntryErrorProps) {
+export default function PymeWasteEntryError({
+  username,
+  onLogout,
+}: PymeWasteEntryErrorProps) {
   const navigate = useNavigate();
   const location = useLocation();
   const state = (location.state ?? {}) as ErrorLocationState;
@@ -41,28 +44,41 @@ export default function PymeWasteEntryError({ username, onLogout }: PymeWasteEnt
           <div className="group relative mb-lg">
             <div className="absolute inset-0 scale-150 rounded-full bg-error/20 blur-xl transition-transform duration-700 group-hover:scale-110" />
             <div className="relative flex h-28 w-28 items-center justify-center rounded-full bg-surface-container-highest shadow-xl">
-              <span className="material-symbols-outlined animate-bounce text-[58px] text-error">warning</span>
+              <span className="material-symbols-outlined animate-bounce text-[58px] text-error">
+                warning
+              </span>
             </div>
             <div className="absolute -right-1 -top-1 h-4 w-4 animate-ping rounded-full bg-error" />
           </div>
 
           <div className="mb-lg space-y-sm">
-            <span className="font-label-sm uppercase tracking-[0.2em] text-error">Error de Registro</span>
-            <h1 className="font-display-lg text-on-surface">No pudimos procesar la solicitud</h1>
+            <span className="font-label-sm uppercase tracking-[0.2em] text-error">
+              Error de Registro
+            </span>
+            <h1 className="font-display-lg text-on-surface">
+              No pudimos procesar la solicitud
+            </h1>
             <p className="mx-auto max-w-lg text-on-surface-variant">
-              Hubo una interrupcion durante la validacion del ingreso. Revisa los datos e intenta nuevamente.
+              Hubo una interrupcion durante la validacion del ingreso. Revisa
+              los datos e intenta nuevamente.
             </p>
           </div>
 
           <div className="mb-xl flex w-full items-start gap-md rounded-xl border-l-4 border-error/50 bg-surface-container-low p-md text-left shadow-sm">
-            <span className="material-symbols-outlined mt-1 text-error">dns</span>
+            <span className="material-symbols-outlined mt-1 text-error">
+              dns
+            </span>
             <div className="min-w-0">
-              <span className="mb-1 block font-label-sm text-on-surface-variant">Motivo del sistema:</span>
+              <span className="mb-1 block font-label-sm text-on-surface-variant">
+                Motivo del sistema:
+              </span>
               <code className="block truncate rounded bg-error/5 px-2 py-1 font-label-sm text-error">
-                {state.errorMessage ?? "ERR_LOGISTICS_SERVER_CONNECTION_TIMEOUT:503"}
+                {state.errorMessage ??
+                  "ERR_LOGISTICS_SERVER_CONNECTION_TIMEOUT:503"}
               </code>
               <p className="mt-2 text-sm italic text-on-surface-variant">
-                Si el error persiste, intenta nuevamente en unos minutos o contacta soporte tecnico.
+                Si el error persiste, intenta nuevamente en unos minutos o
+                contacta soporte tecnico.
               </p>
             </div>
           </div>
@@ -87,7 +103,9 @@ export default function PymeWasteEntryError({ username, onLogout }: PymeWasteEnt
               onClick={() => navigate("/dashboard")}
               className="flex w-full items-center justify-center gap-sm rounded-full bg-surface-container-high px-xl py-sm font-label-sm text-on-surface-variant transition-colors hover:bg-surface-variant sm:w-auto"
             >
-              <span className="material-symbols-outlined text-[18px]">home</span>
+              <span className="material-symbols-outlined text-[18px]">
+                home
+              </span>
               Volver al Inicio
             </button>
           </div>
@@ -97,27 +115,39 @@ export default function PymeWasteEntryError({ username, onLogout }: PymeWasteEnt
           <div className="grid grid-cols-1 gap-lg md:grid-cols-3">
             <article className="flex flex-col gap-sm">
               <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-surface-container-highest">
-                <span className="material-symbols-outlined text-secondary">support_agent</span>
+                <span className="material-symbols-outlined text-secondary">
+                  support_agent
+                </span>
               </div>
-              <h3 className="font-label-sm text-on-surface">Asistencia Tecnica</h3>
+              <h3 className="font-label-sm text-on-surface">
+                Asistencia Tecnica
+              </h3>
               <p className="text-sm text-on-surface-variant">
-                Si el error persiste, contacta al equipo de soporte de EcoRetiro.
+                Si el error persiste, contacta al equipo de soporte de
+                EcoRetiro.
               </p>
             </article>
 
             <article className="flex flex-col gap-sm">
               <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-surface-container-highest">
-                <span className="material-symbols-outlined text-secondary">database</span>
+                <span className="material-symbols-outlined text-secondary">
+                  database
+                </span>
               </div>
-              <h3 className="font-label-sm text-on-surface">Datos Protegidos</h3>
+              <h3 className="font-label-sm text-on-surface">
+                Datos Protegidos
+              </h3>
               <p className="text-sm text-on-surface-variant">
-                Los datos del formulario se mantienen en pantalla para reintentar rapidamente.
+                Los datos del formulario se mantienen en pantalla para
+                reintentar rapidamente.
               </p>
             </article>
 
             <article className="flex flex-col gap-sm">
               <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-surface-container-highest">
-                <span className="material-symbols-outlined text-secondary">network_check</span>
+                <span className="material-symbols-outlined text-secondary">
+                  network_check
+                </span>
               </div>
               <h3 className="font-label-sm text-on-surface">Estado de Red</h3>
               <p className="flex items-center gap-xs text-sm text-on-surface-variant">

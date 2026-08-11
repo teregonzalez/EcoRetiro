@@ -40,8 +40,12 @@ export default function DashboardShell({
     <div className="flex min-h-screen bg-background text-on-surface">
       <aside className="fixed left-0 top-0 hidden h-screen w-[280px] flex-col border-r border-outline-variant bg-surface-container-low py-md md:flex">
         <div className="mb-lg px-md">
-          <h1 className="font-headline-lg-mobile font-black text-primary">{appName}</h1>
-          <p className="mt-1 text-label-sm uppercase tracking-widest text-on-surface-variant">{panelTitle}</p>
+          <h1 className="font-headline-lg-mobile font-black text-primary">
+            {appName}
+          </h1>
+          <p className="mt-1 text-label-sm uppercase tracking-widest text-on-surface-variant">
+            {panelTitle}
+          </p>
         </div>
 
         <nav className="flex flex-1 flex-col px-2">
@@ -86,38 +90,51 @@ export default function DashboardShell({
       <main className="flex min-h-screen flex-1 flex-col md:ml-[280px]">
         <header className="sticky top-0 z-30 flex h-20 items-center justify-between border-b border-outline-variant bg-surface-container-lowest px-margin shadow-sm">
           <div>
-            <h2 className="font-headline-lg-mobile text-on-surface">{panelTitle}</h2>
+            <h2 className="font-headline-lg-mobile text-on-surface">
+              {panelTitle}
+            </h2>
             <p className="text-body-md text-on-surface-variant">{subtitle}</p>
           </div>
 
           <div className="hidden items-center gap-6 md:flex">
-            {topTabs && topTabs.map((tab) => (
-              <button
-                key={tab}
-                type="button"
-                onClick={() => onTopTabChange?.(tab)}
-                className={`pb-1 text-body-md transition-colors ${
-                  tab === activeTopTab
-                    ? "border-b-2 border-secondary font-bold text-secondary"
-                    : "text-on-surface-variant hover:text-secondary"
-                }`}
-              >
-                {tab}
-              </button>
-            ))}
+            {topTabs &&
+              topTabs.map((tab) => (
+                <button
+                  key={tab}
+                  type="button"
+                  onClick={() => onTopTabChange?.(tab)}
+                  className={`pb-1 text-body-md transition-colors ${
+                    tab === activeTopTab
+                      ? "border-b-2 border-secondary font-bold text-secondary"
+                      : "text-on-surface-variant hover:text-secondary"
+                  }`}
+                >
+                  {tab}
+                </button>
+              ))}
           </div>
 
           <div className="flex items-center gap-md">
-            <button type="button" className="rounded-full p-2 text-on-surface-variant transition-colors hover:bg-surface-container">
+            <button
+              type="button"
+              className="rounded-full p-2 text-on-surface-variant transition-colors hover:bg-surface-container"
+            >
               <span className="material-symbols-outlined">notifications</span>
             </button>
-            <button type="button" className="hidden rounded-full p-2 text-on-surface-variant transition-colors hover:bg-surface-container sm:block">
+            <button
+              type="button"
+              className="hidden rounded-full p-2 text-on-surface-variant transition-colors hover:bg-surface-container sm:block"
+            >
               <span className="material-symbols-outlined">help</span>
             </button>
             <div className="flex items-center gap-sm border-l border-outline-variant pl-md">
               <div className="hidden text-right sm:block">
-                <p className="font-label-sm font-bold text-on-surface">{username}</p>
-                <p className="text-[10px] text-on-surface-variant">{roleLabel}</p>
+                <p className="font-label-sm font-bold text-on-surface">
+                  {username}
+                </p>
+                <p className="text-[10px] text-on-surface-variant">
+                  {roleLabel}
+                </p>
               </div>
               <div className="flex h-10 w-10 items-center justify-center rounded-full bg-surface-container text-primary">
                 <span className="material-symbols-outlined">person</span>

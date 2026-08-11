@@ -1,6 +1,6 @@
-import axios from 'axios';
+import axios from "axios";
 export const fetchAdminDashboard = async () => {
-    const response = await axios.get('/api/dashboard/admin');
+    const response = await axios.get("/api/dashboard/admin");
     return response.data;
 };
 export const fetchPymeDashboard = async (userId) => {

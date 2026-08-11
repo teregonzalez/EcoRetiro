@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import axios from 'axios';
+import React, { useState } from "react";
+import axios from "axios";
 
 interface WasteFormProps {
   userId: number;
@@ -10,42 +10,43 @@ export const WasteForm: React.FC<WasteFormProps> = ({
   userId,
   onWasteAdded,
 }) => {
-  const [type, setType] = useState('');
-  const [weight, setWeight] = useState('');
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
+  const [type, setType] = useState("");
+  const [weight, setWeight] = useState("");
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
   const wasteTypes = [
-    { value: 'Plastic', label: '♻️ Plástico', icon: 'recyclable' },
-    { value: 'Paper', label: '📄 Papel', icon: 'description' },
-    { value: 'Glass', label: '🔷 Vidrio', icon: 'diamond' },
-    { value: 'Aluminum', label: '⚙️ Aluminio', icon: 'settings' },
-    { value: 'Cardboard', label: '📦 Cartón', icon: 'inventory_2' },
-    { value: 'Wood', label: '🪵 Madera', icon: 'natural' },
-    { value: 'Metal', label: '⚡ Metal', icon: 'bolt' },
+    { value: "Plastic", label: "♻️ Plástico", icon: "recyclable" },
+    { value: "Paper", label: "📄 Papel", icon: "description" },
+    { value: "Glass", label: "🔷 Vidrio", icon: "diamond" },
+    { value: "Aluminum", label: "⚙️ Aluminio", icon: "settings" },
+    { value: "Cardboard", label: "📦 Cartón", icon: "inventory_2" },
+    { value: "Wood", label: "🪵 Madera", icon: "natural" },
+    { value: "Metal", label: "⚡ Metal", icon: "bolt" },
   ];
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
-    setSuccess('');
+    setError("");
+    setSuccess("");
 
     try {
-      await axios.post('/api/waste/add', {
+      await axios.post("/api/waste/add", {
         userId,
         type,
         weight: parseFloat(weight),
       });
 
-      setSuccess('¡Entrada de residuos registrada exitosamente!');
-      setType('');
-      setWeight('');
+      setSuccess("¡Entrada de residuos registrada exitosamente!");
+      setType("");
+      setWeight("");
       onWasteAdded();
 
-      setTimeout(() => setSuccess(''), 3000);
+      setTimeout(() => setSuccess(""), 3000);
     } catch (err: any) {
       setError(
-        err.response?.data?.error || 'Ocurrió un error. Por favor intenta de nuevo.'
+        err.response?.data?.error ||
+          "Ocurrió un error. Por favor intenta de nuevo.",
       );
     }
   };
@@ -54,7 +55,9 @@ export const WasteForm: React.FC<WasteFormProps> = ({
     <div className="w-full">
       <div className="mb-xl">
         <h2 className="font-headline-lg text-primary mb-xs flex items-center gap-2">
-          <span className="material-symbols-outlined text-tertiary-fixed-dim">add_circle</span>
+          <span className="material-symbols-outlined text-tertiary-fixed-dim">
+            add_circle
+          </span>
           Registrar Nuevo Residuo
         </h2>
         <p className="font-body-md text-on-surface-variant">
@@ -129,7 +132,7 @@ export const WasteForm: React.FC<WasteFormProps> = ({
 
         {/* Submit Button */}
         <div className="flex gap-md pt-md">
-          <button 
+          <button
             type="submit"
             className="btn-primary flex items-center justify-center gap-2 flex-1"
           >
@@ -141,10 +144,14 @@ export const WasteForm: React.FC<WasteFormProps> = ({
         {/* Info Box */}
         <div className="bg-surface-container-low p-md rounded-lg border border-outline-variant/30 mt-md">
           <div className="flex gap-2 items-start">
-            <span className="material-symbols-outlined text-secondary text-[20px] mt-xs flex-shrink-0">info</span>
+            <span className="material-symbols-outlined text-secondary text-[20px] mt-xs flex-shrink-0">
+              info
+            </span>
             <div>
               <p className="font-label-sm text-on-surface-variant">
-                <strong>Consejo:</strong> Asegúrate de registrar el peso correcto del residuo. Esto ayuda a optimizar nuestras rutas de logística y calcular el impacto ambiental.
+                <strong>Consejo:</strong> Asegúrate de registrar el peso
+                correcto del residuo. Esto ayuda a optimizar nuestras rutas de
+                logística y calcular el impacto ambiental.
               </p>
             </div>
           </div>

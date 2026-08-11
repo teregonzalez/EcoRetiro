@@ -1,6 +1,6 @@
 import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import { useLocation, useNavigate } from "react-router-dom";
-import DashboardShell from "./DashboardShell";
+import DashboardShell from "../DashboardShell/DashboardShell";
 const navItems = [
     { label: "Dashboard", icon: "dashboard" },
     { label: "Residuos", icon: "recycling", active: true },
@@ -8,7 +8,7 @@ const navItems = [
     { label: "Rutas", icon: "local_shipping" },
     { label: "Analiticas", icon: "analytics" },
 ];
-export default function PymeWasteEntrySuccess({ username, onLogout }) {
+export default function PymeWasteEntrySuccess({ username, onLogout, }) {
     const navigate = useNavigate();
     const location = useLocation();
     const state = (location.state ?? {});

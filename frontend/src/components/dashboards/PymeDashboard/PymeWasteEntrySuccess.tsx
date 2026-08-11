@@ -22,7 +22,10 @@ const navItems = [
   { label: "Analiticas", icon: "analytics" },
 ];
 
-export default function PymeWasteEntrySuccess({ username, onLogout }: PymeWasteEntrySuccessProps) {
+export default function PymeWasteEntrySuccess({
+  username,
+  onLogout,
+}: PymeWasteEntrySuccessProps) {
   const navigate = useNavigate();
   const location = useLocation();
   const state = (location.state ?? {}) as SuccessLocationState;
@@ -56,14 +59,18 @@ export default function PymeWasteEntrySuccess({ username, onLogout }: PymeWasteE
             <div className="absolute inset-0 scale-150 rounded-full bg-primary/10 opacity-20 animate-ping" />
             <div className="absolute inset-0 scale-125 rounded-full bg-primary/10 opacity-40 animate-pulse" />
             <div className="relative flex h-28 w-28 items-center justify-center rounded-full bg-primary shadow-lg">
-              <span className="material-symbols-outlined text-[58px] text-on-primary">check_circle</span>
+              <span className="material-symbols-outlined text-[58px] text-on-primary">
+                check_circle
+              </span>
             </div>
           </div>
 
           <div className="mb-lg space-y-sm">
             <div className="mb-base inline-flex items-center gap-xs rounded-full bg-tertiary-container px-md py-1 text-on-tertiary-container">
               <span className="material-symbols-outlined text-[16px]">eco</span>
-              <span className="font-label-sm uppercase tracking-widest">Impacto Positivo Confirmado</span>
+              <span className="font-label-sm uppercase tracking-widest">
+                Impacto Positivo Confirmado
+              </span>
             </div>
             <h1 className="font-display-lg leading-tight text-on-surface">
               Residuos registrados
@@ -71,25 +78,37 @@ export default function PymeWasteEntrySuccess({ username, onLogout }: PymeWasteE
               <span className="text-primary">con exito</span>
             </h1>
             <p className="mx-auto max-w-md text-on-surface-variant">
-              La solicitud fue procesada correctamente y el equipo logistico ya fue notificado.
+              La solicitud fue procesada correctamente y el equipo logistico ya
+              fue notificado.
             </p>
           </div>
 
           <div className="mb-lg flex w-full flex-col gap-md rounded-xl border-l-4 border-primary bg-surface-container-low p-md transition-colors hover:bg-surface-container md:flex-row md:items-center md:justify-between">
             <div className="text-left">
-              <span className="font-label-sm uppercase text-on-surface-variant/80">Numero de Seguimiento</span>
-              <p className="font-headline-lg-mobile text-primary">{state.trackingId ?? "RET-2026-000"}</p>
+              <span className="font-label-sm uppercase text-on-surface-variant/80">
+                Numero de Seguimiento
+              </span>
+              <p className="font-headline-lg-mobile text-primary">
+                {state.trackingId ?? "RET-2026-000"}
+              </p>
             </div>
             <div className="text-left md:text-right">
-              <span className="font-label-sm uppercase text-on-surface-variant/80">Fecha de Registro</span>
-              <p className="font-body-md font-bold text-on-surface">{formattedDate}</p>
+              <span className="font-label-sm uppercase text-on-surface-variant/80">
+                Fecha de Registro
+              </span>
+              <p className="font-body-md font-bold text-on-surface">
+                {formattedDate}
+              </p>
             </div>
           </div>
 
           <div className="mb-lg w-full rounded-xl bg-surface-container-low p-md text-left">
-            <p className="font-label-sm uppercase tracking-wide text-on-surface-variant">Resumen del Ingreso</p>
+            <p className="font-label-sm uppercase tracking-wide text-on-surface-variant">
+              Resumen del Ingreso
+            </p>
             <p className="mt-sm font-body-md text-on-surface">
-              {state.wasteTypeLabel ?? "RESIDUO"} · {state.quantity ?? 0} {state.unit ?? "kg"}
+              {state.wasteTypeLabel ?? "RESIDUO"} · {state.quantity ?? 0}{" "}
+              {state.unit ?? "kg"}
             </p>
           </div>
 

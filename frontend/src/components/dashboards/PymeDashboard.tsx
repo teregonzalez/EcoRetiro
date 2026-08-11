@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
-import DashboardShell from "../DashboardShell/DashboardShell";
-import ReportsView from "../ReportsView";
-import RoutesView from "../RoutesView";
-import PymeWasteSpotlightView from "../PymeWasteSpotlightView";
+import DashboardShell from "./DashboardShell/DashboardShell";
+import ReportsView from "./ReportsView";
+import RoutesView from "./RoutesView";
+import PymeWasteSpotlightView from "./PymeWasteSpotlightView";
 import {
   fetchPymeDashboard,
   type PymeDashboardData,
-} from "../../../api/dashboard";
+} from "../../api/dashboard";
 
 interface PymeDashboardProps {
   userId: number;

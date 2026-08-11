@@ -1,7 +1,7 @@
 // src/hooks/useLoginForm.ts
-import { useState } from 'react';
-import axios from 'axios';
-import { UserRole } from '../App';
+import { useState } from "react";
+import axios from "axios";
+import { UserRole } from "../App";
 
 interface UseLoginFormProps {
   onLoginSuccess: (userId: number, username: string, role: UserRole) => void;
@@ -14,56 +14,61 @@ interface LoginResponse {
 }
 
 const normalizeRole = (rawRole: string): UserRole => {
-  if (rawRole === 'Administrador' || rawRole === 'Reciclador' || rawRole === 'PYME') {
+  if (
+    rawRole === "Administrador" ||
+    rawRole === "Reciclador" ||
+    rawRole === "PYME"
+  ) {
     return rawRole;
   }
-  return 'PYME';
+  return "PYME";
 };
 
 export const useLoginForm = ({ onLoginSuccess }: UseLoginFormProps) => {
-  const [username, setUsername] = useState(''); // Lo trataremos como el correo
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [username, setUsername] = useState(""); // Lo trataremos como el correo
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const [isRegistering, setIsRegistering] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
+    setError("");
 
     try {
-      const endpoint = isRegistering ? '/api/auth/register' : '/api/auth/login';
-      
+      const endpoint = isRegistering ? "/api/auth/register" : "/api/auth/login";
+
       // En el backend ahora esperamos "correo" en lugar de "username"
-      const payload = isRegistering 
+      const payload = isRegistering
         ? { correo: username, password } // *Ver nota abajo sobre el registro
         : { correo: username, password };
 
       const response = await axios.post<LoginResponse>(endpoint, payload);
 
       if (isRegistering) {
-        setError('');
-        setUsername('');
-        setPassword('');
+        setError("");
+        setUsername("");
+        setPassword("");
         setIsRegistering(false);
-        alert('¡Registro exitoso! Por favor inicia sesión.');
+        alert("¡Registro exitoso! Por favor inicia sesión.");
       } else {
         // El backend ahora devuelve response.data.correo
         onLoginSuccess(
           response.data.userId,
           response.data.correo,
-          normalizeRole(response.data.rol)
+          normalizeRole(response.data.rol),
         );
       }
     } catch (err: any) {
       setError(
-        err.response?.data?.error || 'Ocurrió un error. Por favor intenta de nuevo.'
+        err.response?.data?.error ||
+          "Ocurrió un error. Por favor intenta de nuevo.",
       );
     }
   };
 
   const toggleRegister = () => {
     setIsRegistering(!isRegistering);
-    setError('');
+    setError("");
   };
 
   return {
@@ -74,6 +79,6 @@ export const useLoginForm = ({ onLoginSuccess }: UseLoginFormProps) => {
     error,
     isRegistering,
     handleSubmit,
-    toggleRegister
+    toggleRegister,
   };
 };

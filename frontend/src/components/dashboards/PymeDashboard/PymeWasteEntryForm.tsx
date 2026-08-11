@@ -18,14 +18,48 @@ const navItems = [
 ];
 
 const wasteOptions = [
-  { id: "plastic", label: "PLASTICO", icon: "water_full", apiType: "plastic", categoryId: 2 },
-  { id: "paper", label: "PAPEL", icon: "description", apiType: "paper", categoryId: 1 },
-  { id: "glass", label: "VIDRIO", icon: "wine_bar", apiType: "glass", categoryId: 4 },
-  { id: "metal", label: "METAL", icon: "precision_manufacturing", apiType: "metal", categoryId: 5 },
-  { id: "organic", label: "ORGANICO", icon: "compost", apiType: "wood", categoryId: 4 },
+  {
+    id: "plastic",
+    label: "PLASTICO",
+    icon: "water_full",
+    apiType: "plastic",
+    categoryId: 2,
+  },
+  {
+    id: "paper",
+    label: "PAPEL",
+    icon: "description",
+    apiType: "paper",
+    categoryId: 1,
+  },
+  {
+    id: "glass",
+    label: "VIDRIO",
+    icon: "wine_bar",
+    apiType: "glass",
+    categoryId: 4,
+  },
+  {
+    id: "metal",
+    label: "METAL",
+    icon: "precision_manufacturing",
+    apiType: "metal",
+    categoryId: 5,
+  },
+  {
+    id: "organic",
+    label: "ORGANICO",
+    icon: "compost",
+    apiType: "wood",
+    categoryId: 4,
+  },
 ];
 
-export default function PymeWasteEntryForm({ userId, username, onLogout }: PymeWasteEntryFormProps) {
+export default function PymeWasteEntryForm({
+  userId,
+  username,
+  onLogout,
+}: PymeWasteEntryFormProps) {
   const navigate = useNavigate();
   const [wasteType, setWasteType] = useState(wasteOptions[0].id);
   const [quantity, setQuantity] = useState("");
@@ -37,13 +71,20 @@ export default function PymeWasteEntryForm({ userId, username, onLogout }: PymeW
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const selectedOption = wasteOptions.find((option) => option.id === wasteType);
+    const selectedOption = wasteOptions.find(
+      (option) => option.id === wasteType,
+    );
     const parsedQuantity = Number(quantity);
 
-    if (!selectedOption || Number.isNaN(parsedQuantity) || parsedQuantity <= 0) {
+    if (
+      !selectedOption ||
+      Number.isNaN(parsedQuantity) ||
+      parsedQuantity <= 0
+    ) {
       navigate("/dashboard/pyme/residuos/error", {
         state: {
-          errorMessage: "Debes ingresar un tipo de residuo y una cantidad valida para continuar.",
+          errorMessage:
+            "Debes ingresar un tipo de residuo y una cantidad valida para continuar.",
         },
       });
       return;
@@ -101,8 +142,12 @@ export default function PymeWasteEntryForm({ userId, username, onLogout }: PymeW
 
         <div className="relative mx-auto flex w-full max-w-5xl flex-col gap-md rounded-2xl bg-surface-container-lowest shadow-lg md:flex-row">
           <aside className="hidden w-full md:flex md:w-1/3 flex-col justify-end rounded-l-2xl bg-primary p-lg text-on-primary">
-            <span className="font-label-sm uppercase tracking-[0.2em] text-primary-fixed">EcoRetiro</span>
-            <h2 className="mt-sm font-headline-lg-mobile leading-tight">Gestion de Impacto</h2>
+            <span className="font-label-sm uppercase tracking-[0.2em] text-primary-fixed">
+              EcoRetiro
+            </span>
+            <h2 className="mt-sm font-headline-lg-mobile leading-tight">
+              Gestion de Impacto
+            </h2>
             <p className="mt-sm text-on-primary/85">
               Cada residuo ingresado es un paso hacia un futuro circular.
             </p>
@@ -111,8 +156,12 @@ export default function PymeWasteEntryForm({ userId, username, onLogout }: PymeW
           <div className="flex-1 p-md md:p-lg">
             <div className="mb-md flex items-start justify-between gap-sm">
               <div>
-                <span className="font-label-sm uppercase tracking-wider text-outline">Logistica de Generacion</span>
-                <h1 className="font-headline-lg-mobile text-on-surface">Nuevo Ingreso</h1>
+                <span className="font-label-sm uppercase tracking-wider text-outline">
+                  Logistica de Generacion
+                </span>
+                <h1 className="font-headline-lg-mobile text-on-surface">
+                  Nuevo Ingreso
+                </h1>
               </div>
               <button
                 type="button"
@@ -127,7 +176,9 @@ export default function PymeWasteEntryForm({ userId, username, onLogout }: PymeW
             <form className="space-y-md" onSubmit={handleSubmit}>
               <div className="space-y-sm">
                 <label className="flex items-center gap-xs font-label-sm text-on-surface-variant">
-                  <span className="material-symbols-outlined text-[16px]">category</span>
+                  <span className="material-symbols-outlined text-[16px]">
+                    category
+                  </span>
                   TIPO DE RESIDUO
                 </label>
 
@@ -146,7 +197,9 @@ export default function PymeWasteEntryForm({ userId, username, onLogout }: PymeW
                         <span className="material-symbols-outlined text-primary transition-transform group-hover:scale-110">
                           {option.icon}
                         </span>
-                        <span className="mt-xs text-[10px] font-label-sm">{option.label}</span>
+                        <span className="mt-xs text-[10px] font-label-sm">
+                          {option.label}
+                        </span>
                       </span>
                     </label>
                   ))}
@@ -155,7 +208,9 @@ export default function PymeWasteEntryForm({ userId, username, onLogout }: PymeW
 
               <div className="grid grid-cols-1 gap-md md:grid-cols-2">
                 <div className="space-y-sm">
-                  <label className="font-label-sm text-on-surface-variant">CANTIDAD ESTIMADA</label>
+                  <label className="font-label-sm text-on-surface-variant">
+                    CANTIDAD ESTIMADA
+                  </label>
                   <div className="relative">
                     <input
                       type="number"
@@ -182,7 +237,9 @@ export default function PymeWasteEntryForm({ userId, username, onLogout }: PymeW
                 </div>
 
                 <div className="space-y-sm">
-                  <label className="font-label-sm text-on-surface-variant">DISPONIBILIDAD</label>
+                  <label className="font-label-sm text-on-surface-variant">
+                    DISPONIBILIDAD
+                  </label>
                   <div className="relative">
                     <input
                       type="date"
@@ -199,7 +256,9 @@ export default function PymeWasteEntryForm({ userId, username, onLogout }: PymeW
               </div>
 
               <div className="space-y-sm">
-                <label className="font-label-sm text-on-surface-variant">NOTAS ADICIONALES</label>
+                <label className="font-label-sm text-on-surface-variant">
+                  NOTAS ADICIONALES
+                </label>
                 <textarea
                   value={notes}
                   onChange={(event) => setNotes(event.target.value)}
@@ -223,7 +282,9 @@ export default function PymeWasteEntryForm({ userId, username, onLogout }: PymeW
                 >
                   {submitting ? (
                     <>
-                      <span className="material-symbols-outlined animate-spin text-[20px]">sync</span>
+                      <span className="material-symbols-outlined animate-spin text-[20px]">
+                        sync
+                      </span>
                       Procesando...
                     </>
                   ) : (

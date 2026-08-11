@@ -1,10 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 export default {
   // 1. Indica dónde están tus archivos de React para que Tailwind sepa qué clases compilar
-  content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
-  ],
+  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   darkMode: "class",
   theme: {
     extend: {
@@ -21,7 +18,7 @@ export default {
         "error-container": "#ffdad6",
         "on-error": "#ffffff",
         "on-secondary-container": "#00337c",
-        "background": "#f8fafb",
+        background: "#f8fafb",
         "surface-container-lowest": "#ffffff",
         "surface-dim": "#d8dadb",
         "surface-container-low": "#f2f4f5",
@@ -33,36 +30,36 @@ export default {
         "inverse-on-surface": "#eff1f2",
         "inverse-surface": "#2e3132",
         "surface-container-highest": "#e1e3e4",
-        "error": "#ba1a1a",
+        error: "#ba1a1a",
         "on-error-container": "#93000a",
         "on-surface": "#191c1d",
         "on-tertiary-fixed-variant": "#07521d",
         "surface-bright": "#f8fafb",
-        "tertiary": "#004516",
+        tertiary: "#004516",
         "primary-container": "#1b5e20",
-        "primary": "#00450d",
+        primary: "#00450d",
         "inverse-primary": "#91d78a",
         "secondary-fixed": "#d9e2ff",
-        "outline": "#717a6d",
+        outline: "#717a6d",
         "tertiary-container": "#185e27",
         "surface-tint": "#2a6b2c",
-        "secondary": "#2b5bb5",
+        secondary: "#2b5bb5",
         "surface-container-high": "#e6e8e9",
         "on-primary-container": "#90d689",
         "on-secondary": "#ffffff",
         "surface-container": "#eceeef",
         "surface-variant": "#e1e3e4",
         "on-primary-fixed": "#002203",
-        "surface": "#f8fafb",
+        surface: "#f8fafb",
         "on-tertiary-fixed": "#002107",
         "secondary-container": "#759efd",
-        "on-primary-fixed-variant": "#0c5216"
+        "on-primary-fixed-variant": "#0c5216",
       },
       borderRadius: {
         DEFAULT: "0.25rem",
         lg: "0.5rem",
         xl: "0.75rem",
-        full: "9999px"
+        full: "9999px",
       },
       spacing: {
         xl: "64px",
@@ -72,27 +69,39 @@ export default {
         margin: "32px",
         sm: "12px",
         base: "8px",
-        md: "24px"
+        md: "24px",
       },
       fontFamily: {
         "body-md": ["Inter", "sans-serif"],
         "headline-lg": ["Inter", "sans-serif"],
         "display-lg": ["Inter", "sans-serif"],
         "label-sm": ["Inter", "sans-serif"],
-        "headline-lg-mobile": ["Inter", "sans-serif"]
+        "headline-lg-mobile": ["Inter", "sans-serif"],
       },
       fontSize: {
         "body-md": ["16px", { lineHeight: "24px", fontWeight: "400" }],
-        "headline-lg": ["32px", { lineHeight: "40px", letterSpacing: "-0.01em", fontWeight: "600" }],
-        "display-lg": ["48px", { lineHeight: "56px", letterSpacing: "-0.02em", fontWeight: "700" }],
-        "label-sm": ["12px", { lineHeight: "16px", letterSpacing: "0.05em", fontWeight: "600" }],
-        "headline-lg-mobile": ["24px", { lineHeight: "32px", fontWeight: "600" }]
-      }
+        "headline-lg": [
+          "32px",
+          { lineHeight: "40px", letterSpacing: "-0.01em", fontWeight: "600" },
+        ],
+        "display-lg": [
+          "48px",
+          { lineHeight: "56px", letterSpacing: "-0.02em", fontWeight: "700" },
+        ],
+        "label-sm": [
+          "12px",
+          { lineHeight: "16px", letterSpacing: "0.05em", fontWeight: "600" },
+        ],
+        "headline-lg-mobile": [
+          "24px",
+          { lineHeight: "32px", fontWeight: "600" },
+        ],
+      },
     },
   },
   // 3. Agregamos los plugins que usabas en tu etiqueta <script>
   plugins: [
-    require('@tailwindcss/forms'),
-    require('@tailwindcss/container-queries')
+    require("@tailwindcss/forms"),
+    require("@tailwindcss/container-queries"),
   ],
-}
+};

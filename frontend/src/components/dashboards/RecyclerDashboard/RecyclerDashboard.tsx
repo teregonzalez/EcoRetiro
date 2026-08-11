@@ -1,12 +1,15 @@
 import { useEffect, useMemo, useState } from "react";
+import { useLocation } from "react-router-dom";
 import DashboardShell from "../DashboardShell/DashboardShell";
 import ReportsView from "../ReportsView";
 import RoutesView from "../RoutesView";
 import {
   fetchRecyclerDashboard,
   type RecyclerDashboardData,
+  type RecyclerCollectionRow,
   type RecyclerNearbyWaste,
 } from "../../../api/dashboard";
+import RecyclerWasteSpotlightView from "./RecyclerWasteSpotlightView";
 
 interface RecyclerDashboardProps {
   userId: number;
@@ -36,18 +39,38 @@ export default function RecyclerDashboard({
   onSelectNearbyWaste,
   onEditProfile,
 }: RecyclerDashboardProps) {
+  const location = useLocation();
   const [data, setData] = useState<RecyclerDashboardData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [activeTab, setActiveTab] = useState("Inventario");
+  const [selectedWasteMaterial, setSelectedWasteMaterial] = useState<
+    string | null
+  >(null);
+
+  const selectedWaste =
+    data?.nearbyWaste.find((item) => item.material === selectedWasteMaterial) ??
+    data?.nearbyWaste[0] ??
+    null;
+  const selectedHistoryEntry: RecyclerCollectionRow | null = selectedWaste
+    ? (data?.collectionHistory.find(
+        (item) => item.material === selectedWaste.material,
+      ) ?? null)
+    : null;
 
   const navItems = [
     {
       label: "Dashboard",
       icon: "dashboard",
       active: activeTab === "Inventario",
+      onClick: () => setActiveTab("Inventario"),
     },
-    { label: "Residuos", icon: "recycling", active: false },
+    {
+      label: "Residuos",
+      icon: "recycling",
+      active: activeTab === "Residuos",
+      onClick: () => setActiveTab("Residuos"),
+    },
     { label: "Cumplimiento", icon: "verified_user", active: false },
     {
       label: "Rutas",
@@ -66,11 +89,36 @@ export default function RecyclerDashboard({
   ];
 
   useEffect(() => {
+    const tabFromState = (location.state as { recyclerTab?: string } | null)
+      ?.recyclerTab;
+    if (
+      tabFromState === "Inventario" ||
+      tabFromState === "Residuos" ||
+      tabFromState === "Rutas" ||
+      tabFromState === "Reportes"
+    ) {
+      setActiveTab(tabFromState);
+    }
+  }, [location.state]);
+
+  useEffect(() => {
     const loadData = async () => {
       try {
         setLoading(true);
         const dashboardData = await fetchRecyclerDashboard(userId);
         setData(dashboardData);
+        setSelectedWasteMaterial((currentSelectedWasteMaterial) => {
+          if (
+            currentSelectedWasteMaterial &&
+            dashboardData.nearbyWaste.some(
+              (item) => item.material === currentSelectedWasteMaterial,
+            )
+          ) {
+            return currentSelectedWasteMaterial;
+          }
+
+          return dashboardData.nearbyWaste[0]?.material ?? null;
+        });
         setError("");
       } catch {
         setError("No fue posible cargar el dashboard de reciclador");
@@ -125,7 +173,13 @@ export default function RecyclerDashboard({
       onTopTabChange={setActiveTab}
       onLogout={onLogout}
     >
-      {activeTab === "Rutas" ? (
+      {activeTab === "Residuos" ? (
+        <RecyclerWasteSpotlightView
+          waste={selectedWaste}
+          historyEntry={selectedHistoryEntry}
+          onOpenCollection={onSelectNearbyWaste}
+        />
+      ) : activeTab === "Rutas" ? (
         <RoutesView />
       ) : activeTab === "Reportes" ? (
         <ReportsView
@@ -198,7 +252,10 @@ export default function RecyclerDashboard({
                     <li key={item.material}>
                       <button
                         type="button"
-                        onClick={() => onSelectNearbyWaste(item)}
+                        onClick={() => {
+                          setSelectedWasteMaterial(item.material);
+                          onSelectNearbyWaste(item);
+                        }}
                         className={`w-full rounded-lg bg-surface-container p-2 text-left transition-colors hover:bg-surface-container-high ${idx === 0 ? "border-l-4 border-primary" : "border-l-4 border-secondary"}`}
                       >
                         <span className="flex w-full items-center justify-between gap-sm">

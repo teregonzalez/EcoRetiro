@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from "axios";
 
 export interface AdminMetrics {
   totalUsers: number;
@@ -89,16 +89,20 @@ export interface RecyclerDashboardData {
 }
 
 export const fetchAdminDashboard = async (): Promise<AdminDashboardData> => {
-  const response = await axios.get('/api/dashboard/admin');
+  const response = await axios.get("/api/dashboard/admin");
   return response.data;
 };
 
-export const fetchPymeDashboard = async (userId: number): Promise<PymeDashboardData> => {
+export const fetchPymeDashboard = async (
+  userId: number,
+): Promise<PymeDashboardData> => {
   const response = await axios.get(`/api/dashboard/pyme/${userId}`);
   return response.data;
 };
 
-export const fetchRecyclerDashboard = async (userId: number): Promise<RecyclerDashboardData> => {
+export const fetchRecyclerDashboard = async (
+  userId: number,
+): Promise<RecyclerDashboardData> => {
   const response = await axios.get(`/api/dashboard/reciclador/${userId}`);
   return response.data;
 };

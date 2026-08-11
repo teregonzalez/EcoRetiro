@@ -13,15 +13,10 @@ interface WasteLocationState {
   unit?: string;
 }
 
-const navItems = [
-  { label: "Dashboard", icon: "dashboard" },
-  { label: "Residuos", icon: "recycling", active: true },
-  { label: "Cumplimiento", icon: "verified_user" },
-  { label: "Rutas", icon: "local_shipping" },
-  { label: "Analiticas", icon: "analytics" },
-];
-
-export default function RecyclerNearbyWasteView({ username, onLogout }: RecyclerNearbyWasteViewProps) {
+export default function RecyclerNearbyWasteView({
+  username,
+  onLogout,
+}: RecyclerNearbyWasteViewProps) {
   const navigate = useNavigate();
   const location = useLocation();
   const state = (location.state ?? {}) as WasteLocationState;
@@ -37,6 +32,35 @@ export default function RecyclerNearbyWasteView({ username, onLogout }: Recycler
   const [submitting, setSubmitting] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
 
+  const navItems = [
+    {
+      label: "Dashboard",
+      icon: "dashboard",
+      onClick: () =>
+        navigate("/dashboard", { state: { recyclerTab: "Inventario" } }),
+    },
+    {
+      label: "Residuos",
+      icon: "recycling",
+      active: true,
+      onClick: () =>
+        navigate("/dashboard", { state: { recyclerTab: "Residuos" } }),
+    },
+    { label: "Cumplimiento", icon: "verified_user", active: false },
+    {
+      label: "Rutas",
+      icon: "local_shipping",
+      onClick: () => navigate("/dashboard", { state: { recyclerTab: "Rutas" } }),
+    },
+    {
+      label: "Reportes",
+      icon: "book",
+      onClick: () =>
+        navigate("/dashboard", { state: { recyclerTab: "Reportes" } }),
+    },
+    { label: "Analiticas", icon: "analytics", active: false },
+  ];
+
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setSubmitting(true);
@@ -44,7 +68,9 @@ export default function RecyclerNearbyWasteView({ username, onLogout }: Recycler
 
     setTimeout(() => {
       setSubmitting(false);
-      setSuccessMessage("Solicitud de retiro enviada al generador y al modulo logistico.");
+      setSuccessMessage(
+        "Solicitud de retiro enviada al generador y al modulo logistico.",
+      );
     }, 1200);
   };
 
@@ -60,7 +86,7 @@ export default function RecyclerNearbyWasteView({ username, onLogout }: Recycler
       onLogout={onLogout}
     >
       <div className="relative min-h-[calc(100vh-220px)] overflow-hidden rounded-2xl border border-outline-variant bg-surface">
-        <div className="pointer-events-none absolute inset-0 opacity-40 blur-[2px]">
+        <div className="pointer-events-none absolute inset-0 hidden opacity-40 blur-[2px] md:block">
           <div className="grid h-full grid-cols-12 gap-gutter p-margin">
             <div className="col-span-8 space-y-gutter">
               <div className="h-40 rounded-xl bg-surface-container" />
@@ -75,12 +101,17 @@ export default function RecyclerNearbyWasteView({ username, onLogout }: Recycler
           </div>
         </div>
 
-        <div className="absolute inset-0 flex items-center justify-center bg-on-surface/20 p-gutter backdrop-blur-sm">
-          <div className="w-full max-w-3xl overflow-hidden rounded-xl bg-surface-container-lowest shadow-xl">
+        <div className="relative z-10 flex min-h-[calc(100vh-220px)] items-start justify-center overflow-y-auto bg-on-surface/10 p-sm md:items-center md:bg-on-surface/20 md:p-gutter md:backdrop-blur-sm">
+          <div className="my-sm w-full max-w-3xl overflow-hidden rounded-xl bg-surface-container-lowest shadow-xl md:my-gutter md:max-h-[calc(100vh-260px)] md:overflow-y-auto">
             <div className="flex flex-col md:flex-row">
               <aside className="relative hidden w-1/3 bg-secondary p-lg text-on-secondary md:flex md:flex-col md:justify-end">
                 <div className="pointer-events-none absolute inset-0 opacity-20">
-                  <svg className="h-full w-full" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <svg
+                    className="h-full w-full"
+                    viewBox="0 0 100 100"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
                     <circle cx="18" cy="14" r="30" fill="currentColor" />
                     <circle cx="84" cy="84" r="26" fill="currentColor" />
                   </svg>
@@ -89,16 +120,24 @@ export default function RecyclerNearbyWasteView({ username, onLogout }: Recycler
                   <span className="mb-sm block font-label-sm uppercase tracking-[0.18em] text-secondary-fixed">
                     Seleccion de Residuo
                   </span>
-                  <h2 className="font-headline-lg-mobile leading-tight">Retiro Disponible</h2>
-                  <p className="mt-sm text-on-secondary/85">Coordina el retiro y asegura trazabilidad completa.</p>
+                  <h2 className="font-headline-lg-mobile leading-tight">
+                    Retiro Disponible
+                  </h2>
+                  <p className="mt-sm text-on-secondary/85">
+                    Coordina el retiro y asegura trazabilidad completa.
+                  </p>
                 </div>
               </aside>
 
-              <div className="flex-1 p-lg">
+              <div className="flex-1 p-md md:p-lg">
                 <div className="mb-md flex items-start justify-between gap-sm">
                   <div>
-                    <span className="font-label-sm uppercase tracking-wider text-outline">Residuos Cercanos</span>
-                    <h1 className="font-headline-lg-mobile text-on-surface">Detalle de Residuo</h1>
+                    <span className="font-label-sm uppercase tracking-wider text-outline">
+                      Residuos Cercanos
+                    </span>
+                    <h1 className="font-headline-lg-mobile text-on-surface">
+                      Detalle de Residuo
+                    </h1>
                   </div>
                   <button
                     type="button"
@@ -111,22 +150,32 @@ export default function RecyclerNearbyWasteView({ username, onLogout }: Recycler
                 </div>
 
                 <div className="mb-md rounded-xl border-l-4 border-secondary bg-surface-container-low p-md">
-                  <p className="font-label-sm uppercase tracking-wider text-on-surface-variant">Material Seleccionado</p>
-                  <p className="mt-xs font-headline-lg-mobile text-on-surface">{material}</p>
-                  <p className="mt-xs font-body-md text-on-surface-variant">Disponible: {total} {unit}</p>
+                  <p className="font-label-sm uppercase tracking-wider text-on-surface-variant">
+                    Material Seleccionado
+                  </p>
+                  <p className="mt-xs font-headline-lg-mobile text-on-surface">
+                    {material}
+                  </p>
+                  <p className="mt-xs font-body-md text-on-surface-variant">
+                    Disponible: {total} {unit}
+                  </p>
                 </div>
 
                 <form className="space-y-md" onSubmit={handleSubmit}>
                   <div className="grid grid-cols-1 gap-md md:grid-cols-2">
                     <div className="space-y-sm">
-                      <label className="font-label-sm text-on-surface-variant">CANTIDAD A RETIRAR</label>
+                      <label className="font-label-sm text-on-surface-variant">
+                        CANTIDAD A RETIRAR
+                      </label>
                       <div className="relative">
                         <input
                           type="number"
                           min="0"
                           step="0.1"
                           value={estimatedLoad}
-                          onChange={(event) => setEstimatedLoad(event.target.value)}
+                          onChange={(event) =>
+                            setEstimatedLoad(event.target.value)
+                          }
                           className="w-full rounded-xl bg-surface-container px-md py-sm text-on-surface outline-none transition-all focus:ring-2 focus:ring-secondary/20"
                           required
                         />
@@ -137,12 +186,16 @@ export default function RecyclerNearbyWasteView({ username, onLogout }: Recycler
                     </div>
 
                     <div className="space-y-sm">
-                      <label className="font-label-sm text-on-surface-variant">FECHA ESTIMADA DE RETIRO</label>
+                      <label className="font-label-sm text-on-surface-variant">
+                        FECHA ESTIMADA DE RETIRO
+                      </label>
                       <div className="relative">
                         <input
                           type="date"
                           value={pickupDate}
-                          onChange={(event) => setPickupDate(event.target.value)}
+                          onChange={(event) =>
+                            setPickupDate(event.target.value)
+                          }
                           className="w-full rounded-xl bg-surface-container px-md py-sm text-on-surface outline-none transition-all focus:ring-2 focus:ring-secondary/20"
                           required
                         />
@@ -154,8 +207,10 @@ export default function RecyclerNearbyWasteView({ username, onLogout }: Recycler
                   </div>
 
                   <div className="space-y-sm">
-                    <label className="font-label-sm text-on-surface-variant">PRIORIDAD LOGISTICA</label>
-                    <div className="grid grid-cols-3 gap-base">
+                    <label className="font-label-sm text-on-surface-variant">
+                      PRIORIDAD LOGISTICA
+                    </label>
+                    <div className="grid grid-cols-1 gap-base sm:grid-cols-3">
                       {(["Alta", "Media", "Baja"] as const).map((value) => (
                         <button
                           key={value}
@@ -174,7 +229,9 @@ export default function RecyclerNearbyWasteView({ username, onLogout }: Recycler
                   </div>
 
                   <div className="space-y-sm">
-                    <label className="font-label-sm text-on-surface-variant">NOTAS OPERATIVAS</label>
+                    <label className="font-label-sm text-on-surface-variant">
+                      NOTAS OPERATIVAS
+                    </label>
                     <textarea
                       value={notes}
                       onChange={(event) => setNotes(event.target.value)}
@@ -187,19 +244,21 @@ export default function RecyclerNearbyWasteView({ username, onLogout }: Recycler
                     <button
                       type="button"
                       onClick={() => navigate("/dashboard")}
-                      className="flex-1 rounded-xl bg-surface-container-high px-lg py-sm font-label-sm text-on-surface-variant transition-colors hover:bg-surface-container-highest"
+                      className="min-h-[48px] flex-1 rounded-xl bg-surface-container-high px-lg py-sm font-label-sm text-on-surface-variant transition-colors hover:bg-surface-container-highest"
                     >
                       Volver al Dashboard
                     </button>
                     <button
                       type="submit"
                       disabled={submitting}
-                      className="group flex-[2] rounded-xl bg-secondary px-lg py-sm font-label-sm text-on-secondary shadow-md transition-all hover:bg-secondary/90 disabled:cursor-not-allowed disabled:opacity-70"
+                      className="group min-h-[48px] flex-[2] rounded-xl bg-secondary px-lg py-sm font-label-sm text-on-secondary shadow-md transition-all hover:bg-secondary/90 disabled:cursor-not-allowed disabled:opacity-70"
                     >
                       <span className="inline-flex items-center gap-sm">
                         {submitting ? (
                           <>
-                            <span className="material-symbols-outlined animate-spin text-[18px]">sync</span>
+                            <span className="material-symbols-outlined animate-spin text-[18px]">
+                              sync
+                            </span>
                             Enviando...
                           </>
                         ) : (

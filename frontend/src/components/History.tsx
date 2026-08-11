@@ -5,18 +5,26 @@ interface HistoryEntry {
   id: number;
   type: string;
   weight: number;
-  date: string;
+  date: string | null;
 }
 
 interface HistoryProps {
   userId: number;
 }
 
+const CHILE_TIMEZONE = 'America/Santiago';
+
 const parseHistoryDate = (value: string | null | undefined) => {
   if (!value) return null;
 
   const normalized = String(value).trim();
   if (!normalized) return null;
+
+  const dateOnlyMatch = normalized.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if (dateOnlyMatch) {
+    const [, year, month, day] = dateOnlyMatch;
+    return new Date(Date.UTC(Number(year), Number(month) - 1, Number(day), 12, 0, 0));
+  }
 
   const sqliteDateMatch = normalized.match(/^(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})$/);
   if (sqliteDateMatch) {
@@ -43,6 +51,7 @@ const formatHistoryDate = (value: string | null | undefined) => {
     day: '2-digit',
     month: '2-digit',
     year: 'numeric',
+    timeZone: CHILE_TIMEZONE,
   });
 };
 
@@ -53,6 +62,7 @@ const formatHistoryTime = (value: string | null | undefined) => {
   return date.toLocaleTimeString('es-CL', {
     hour: '2-digit',
     minute: '2-digit',
+    timeZone: CHILE_TIMEZONE,
   });
 };
 
@@ -95,13 +105,15 @@ export const History: React.FC<HistoryProps> = ({ userId }) => {
       content += '.footer { margin-top: 20px; font-size: 12px; color: #41493e; }';
       content += '</style></head><body>';
       content += '<h1>🌱 Reporte de Historial de Residuos - EcoRetiro</h1>';
-      content += '<p><strong>Fecha del Reporte:</strong> ' + new Date().toLocaleDateString() + '</p>';
+      content += '<p><strong>Fecha del Reporte:</strong> ' + new Date().toLocaleDateString('es-CL', { timeZone: CHILE_TIMEZONE }) + '</p>';
       content += '<table>';
       content += '<tr><th>Tipo de Residuo</th><th>Peso (kg)</th><th>Fecha y Hora</th></tr>';
 
       entries.forEach((entry) => {
         const date = parseHistoryDate(entry.date);
-        const displayDate = date ? `${date.toLocaleDateString('es-CL')} ${date.toLocaleTimeString('es-CL')}` : 'Fecha no disponible';
+        const displayDate = date
+          ? `${date.toLocaleDateString('es-CL', { timeZone: CHILE_TIMEZONE })} ${date.toLocaleTimeString('es-CL', { timeZone: CHILE_TIMEZONE })}`
+          : 'Fecha no disponible';
         content += `<tr><td>${entry.type}</td><td>${entry.weight.toFixed(2)}</td><td>${displayDate}</td></tr>`;
       });
 

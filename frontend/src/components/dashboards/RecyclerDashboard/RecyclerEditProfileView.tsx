@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import DashboardShell from "./DashboardShell";
+import DashboardShell from "../DashboardShell/DashboardShell";
 
 interface RecyclerEditProfileViewProps {
   username: string;
@@ -37,7 +37,6 @@ export default function RecyclerEditProfileView({ username, onLogout }: Recycler
       username={username}
       roleLabel="Empresa Recicladora"
       navItems={navItems}
-      topTabs={["Inventario", "Logistica", "Reportes"]}
       activeTopTab="Reportes"
       onLogout={onLogout}
     >

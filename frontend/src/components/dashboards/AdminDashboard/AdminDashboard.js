@@ -1,7 +1,7 @@
 import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import { useEffect, useState } from "react";
-import DashboardShell from "./DashboardShell";
-import { fetchAdminDashboard } from "../../api/dashboard";
+import DashboardShell from "../DashboardShell/DashboardShell";
+import { fetchAdminDashboard } from "../../../api/dashboard";
 const navItems = [
     { label: "Dashboard", icon: "dashboard", active: true },
     { label: "Usuarios", icon: "groups" },

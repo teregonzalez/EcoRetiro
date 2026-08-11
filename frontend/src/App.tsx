@@ -5,14 +5,14 @@ import Footer from "./components/Footer";
 import LandingPage from "./components/LandingPage";
 import About from "./components/About";
 import Contact from "./components/Contact";
-import AdminDashboard from "./components/dashboards/AdminDashboard";
-import PymeDashboard from "./components/dashboards/PymeDashboard";
-import RecyclerDashboard from "./components/dashboards/RecyclerDashboard";
-import PymeWasteEntryForm from "./components/dashboards/PymeWasteEntryForm";
-import PymeWasteEntrySuccess from "./components/dashboards/PymeWasteEntrySuccess";
-import PymeWasteEntryError from "./components/dashboards/PymeWasteEntryError";
-import RecyclerNearbyWasteView from "./components/dashboards/RecyclerNearbyWasteView";
-import RecyclerEditProfileView from "./components/dashboards/RecyclerEditProfileView";
+import AdminDashboard from "./components/dashboards/AdminDashboard/AdminDashboard";
+import PymeDashboard from "./components/dashboards/PymeDashboard/PymeDashboard";
+import RecyclerDashboard from "./components/dashboards/RecyclerDashboard/RecyclerDashboard";
+import PymeWasteEntryForm from "./components/dashboards/PymeDashboard/PymeWasteEntryForm";
+import PymeWasteEntrySuccess from "./components/dashboards/PymeDashboard/PymeWasteEntrySuccess";
+import PymeWasteEntryError from "./components/dashboards/PymeDashboard/PymeWasteEntryError";
+import RecyclerNearbyWasteView from "./components/dashboards/RecyclerDashboard/RecyclerNearbyWasteView";
+import RecyclerEditProfileView from "./components/dashboards/RecyclerDashboard/RecyclerEditProfileView";
 
 export type MenuItem = "add-waste" | "view-inventory" | "view-history";
 

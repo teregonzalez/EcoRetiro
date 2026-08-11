@@ -1,7 +1,7 @@
 import { FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import DashboardShell from "./DashboardShell";
+import DashboardShell from "../DashboardShell/DashboardShell";
 
 interface PymeWasteEntryFormProps {
   userId: number;
@@ -57,6 +57,7 @@ export default function PymeWasteEntryForm({ userId, username, onLogout }: PymeW
         categoryId: selectedOption.categoryId,
         type: selectedOption.apiType,
         weight: parsedQuantity,
+        pickupDate: availableDate || null,
       });
 
       navigate("/dashboard/pyme/residuos/exito", {
@@ -91,7 +92,6 @@ export default function PymeWasteEntryForm({ userId, username, onLogout }: PymeW
       username={username}
       roleLabel="Generador PYME"
       navItems={navItems}
-      topTabs={["Inventario", "Logistica", "Reportes"]}
       activeTopTab="Logistica"
       onLogout={onLogout}
     >
@@ -189,6 +189,7 @@ export default function PymeWasteEntryForm({ userId, username, onLogout }: PymeW
                       value={availableDate}
                       onChange={(event) => setAvailableDate(event.target.value)}
                       className="w-full appearance-none rounded-xl bg-surface-container px-md py-sm text-on-surface outline-none transition-all focus:ring-2 focus:ring-secondary/20"
+                      required
                     />
                     <span className="material-symbols-outlined pointer-events-none absolute right-md top-1/2 -translate-y-1/2 text-on-surface-variant">
                       calendar_today

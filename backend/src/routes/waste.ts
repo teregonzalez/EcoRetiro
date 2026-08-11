@@ -47,7 +47,7 @@ const resolveEmpresaIdByUser = async (userId: number): Promise<number | null> =>
 // ==========================================
 router.post('/add', async (req, res) => {
   try {
-    const { userId, categoryId, type, weight } = req.body;
+    const { userId, categoryId, type, weight, pickupDate, availableDate } = req.body;
 
     if (!userId || !weight || (!categoryId && !type)) {
       return res.status(400).json({ error: 'Faltan campos requeridos (userId, categoryId|type, weight)' });
@@ -82,10 +82,25 @@ router.post('/add', async (req, res) => {
       return res.status(400).json({ error: 'No existe empresa asociada al usuario' });
     }
 
+    const rawPickupDate = typeof pickupDate === 'string' ? pickupDate : availableDate;
+    if (typeof rawPickupDate !== 'string' || !rawPickupDate.trim()) {
+      return res.status(400).json({ error: 'Debes indicar la fecha de disponibilidad para retiro' });
+    }
+
+    const normalizedPickupDate = rawPickupDate.trim();
+    const parsedPickupDate = new Date(normalizedPickupDate);
+    if (Number.isNaN(parsedPickupDate.getTime())) {
+      return res.status(400).json({ error: 'pickupDate invalida' });
+    }
+
     await dbRun(
-      `INSERT INTO Solicitudes_Retiro (ID_Empresa_Generadora, ID_Categoria, Volumen_Cantidad) 
-       VALUES (?, ?, ?)`,
-      [empresaGeneradoraId, resolvedCategoryId, weight]
+      `INSERT INTO Solicitudes_Retiro (
+         ID_Empresa_Generadora,
+         ID_Categoria,
+         Volumen_Cantidad,
+         Fecha_Recoleccion
+       ) VALUES (?, ?, ?, ?)`,
+      [empresaGeneradoraId, resolvedCategoryId, weight, normalizedPickupDate]
     );
 
     res.json({ success: true, message: 'Residuo ingresado y disponible para retiro' });
@@ -159,12 +174,12 @@ router.get('/history/:userId', async (req, res) => {
          s.Volumen_Cantidad as weight, 
          c.Unidad_Medida as unit,
          s.Estado_Tracking as status,
-         strftime('%Y-%m-%dT%H:%M:%S', s.Fecha_Publicacion) as date,
+         s.Fecha_Recoleccion as date,
          s.URL_Certificado as certificate
        FROM Solicitudes_Retiro s
        JOIN Catalogo_Residuos c ON c.ID_Categoria = s.ID_Categoria
        WHERE s.ID_Empresa_Generadora = ? 
-       ORDER BY s.Fecha_Publicacion DESC`,
+       ORDER BY s.Fecha_Recoleccion DESC`,
       [empresaGeneradoraId]
     );
 

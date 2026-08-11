@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import DashboardShell from "./DashboardShell";
-import { fetchAdminDashboard, type AdminDashboardData } from "../../api/dashboard";
+import DashboardShell from "../DashboardShell/DashboardShell";
+import { fetchAdminDashboard, type AdminDashboardData } from "../../../api/dashboard";
 
 interface AdminDashboardProps {
   userId: number;
@@ -53,7 +53,6 @@ export default function AdminDashboard({ userId, username, onLogout }: AdminDash
       navItems={navItems}
       topTabs={["Resumen", "Usuarios", "Analitica"]}
       activeTopTab="Resumen"
-      ctaLabel="Nueva Solicitud"
       onLogout={onLogout}
     >
       {loading && (

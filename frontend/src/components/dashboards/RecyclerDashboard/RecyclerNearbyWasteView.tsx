@@ -1,6 +1,6 @@
 import { FormEvent, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import DashboardShell from "./DashboardShell";
+import DashboardShell from "../DashboardShell/DashboardShell";
 
 interface RecyclerNearbyWasteViewProps {
   username: string;
@@ -56,7 +56,6 @@ export default function RecyclerNearbyWasteView({ username, onLogout }: Recycler
       username={username}
       roleLabel="Empresa Recicladora"
       navItems={navItems}
-      topTabs={["Inventario", "Logistica", "Reportes"]}
       activeTopTab="Logistica"
       onLogout={onLogout}
     >

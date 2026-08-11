@@ -40,7 +40,7 @@ export interface PymeMetrics {
 
 export interface PymeHistoryRow {
   id: number;
-  fecha: string;
+  fecha: string | null;
   tipo: string;
   cantidad: number;
   unidad: string;

@@ -14,7 +14,7 @@ interface DashboardShellProps {
   username: string;
   roleLabel: string;
   navItems: NavItem[];
-  topTabs: string[];
+  topTabs?: string[];
   activeTopTab: string;
   ctaLabel?: string;
   onTopTabChange?: (tab: string) => void;
@@ -91,7 +91,7 @@ export default function DashboardShell({
           </div>
 
           <div className="hidden items-center gap-6 md:flex">
-            {topTabs.map((tab) => (
+            {topTabs && topTabs.map((tab) => (
               <button
                 key={tab}
                 type="button"

@@ -1,5 +1,5 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import DashboardShell from "./DashboardShell";
+import DashboardShell from "../DashboardShell/DashboardShell";
 
 interface PymeWasteEntryErrorProps {
   username: string;
@@ -31,7 +31,6 @@ export default function PymeWasteEntryError({ username, onLogout }: PymeWasteEnt
       username={username}
       roleLabel="Generador PYME"
       navItems={navItems}
-      topTabs={["Inventario", "Logistica", "Reportes"]}
       activeTopTab="Logistica"
       onLogout={onLogout}
     >

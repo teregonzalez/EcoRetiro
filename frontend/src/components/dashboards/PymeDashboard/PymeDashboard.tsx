@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import DashboardShell from "./DashboardShell";
-import ReportsView from "./ReportsView";
-import RoutesView from "./RoutesView";
-import { fetchPymeDashboard, type PymeDashboardData } from "../../api/dashboard";
+import DashboardShell from "../DashboardShell/DashboardShell";
+import ReportsView from "../ReportsView";
+import RoutesView from "../RoutesView";
+import { fetchPymeDashboard, type PymeDashboardData } from "../../../api/dashboard";
 
 interface PymeDashboardProps {
   userId: number;
@@ -11,8 +11,25 @@ interface PymeDashboardProps {
   onCreateWaste: () => void;
 }
 
-const formatDate = (rawDate: string) => {
-  const date = new Date(rawDate);
+const CHILE_TIMEZONE = "America/Santiago";
+
+const formatDate = (rawDate: string | null) => {
+  if (!rawDate) return "Sin fecha de retiro";
+
+  const normalized = rawDate.trim();
+  if (!normalized) return "Sin fecha de retiro";
+
+  // For date-only values (YYYY-MM-DD), force noon UTC so formatting in Chile keeps the same calendar day.
+  const dateOnlyMatch = normalized.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  let date: Date;
+
+  if (dateOnlyMatch) {
+    const [, year, month, day] = dateOnlyMatch;
+    date = new Date(Date.UTC(Number(year), Number(month) - 1, Number(day), 12, 0, 0));
+  } else {
+    date = new Date(normalized);
+  }
+
   if (Number.isNaN(date.getTime())) return rawDate;
 
   return date.toLocaleString("es-CL", {
@@ -21,6 +38,7 @@ const formatDate = (rawDate: string) => {
     year: "numeric",
     hour: "2-digit",
     minute: "2-digit",
+    timeZone: CHILE_TIMEZONE,
   });
 };
 
@@ -31,10 +49,11 @@ export default function PymeDashboard({ userId, username, onLogout, onCreateWast
   const [activeTab, setActiveTab] = useState("Inventario");
 
   const navItems = [
-    { label: "Dashboard", icon: "dashboard", active: activeTab === "Inventario" },
+    { label: "Dashboard", icon: "dashboard", active: activeTab === "Inventario", onClick: () => setActiveTab("Inventario") },
     { label: "Residuos", icon: "recycling", active: false },
     { label: "Cumplimiento", icon: "verified_user", active: false },
     { label: "Rutas", icon: "local_shipping", active: activeTab === "Rutas", onClick: () => setActiveTab("Rutas") },
+    { label: "Reportes", icon: "book", active: activeTab === "Reportes", onClick: () => setActiveTab("Reportes") },
     { label: "Analiticas", icon: "analytics", active: false },
   ];
 
@@ -63,7 +82,6 @@ export default function PymeDashboard({ userId, username, onLogout, onCreateWast
       username={username}
       roleLabel="Generador PYME"
       navItems={navItems}
-      topTabs={["Inventario", "Logistica", "Reportes"]}
       activeTopTab={activeTab}
       ctaLabel="Nueva Solicitud"
       onTopTabChange={setActiveTab}

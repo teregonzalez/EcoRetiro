@@ -103,7 +103,7 @@ router.get('/pyme/:userId', async (req, res) => {
 		const history = await dbAll(
 			`SELECT
 				s.ID_Solicitud AS id,
-				strftime('%Y-%m-%dT%H:%M:%S', s.Fecha_Publicacion) AS fecha,
+				s.Fecha_Recoleccion AS fecha,
 				c.Nombre_Residuo AS tipo,
 				s.Volumen_Cantidad AS cantidad,
 				c.Unidad_Medida AS unidad,
@@ -111,7 +111,7 @@ router.get('/pyme/:userId', async (req, res) => {
 			 FROM Solicitudes_Retiro s
 			 JOIN Catalogo_Residuos c ON c.ID_Categoria = s.ID_Categoria
 			 WHERE s.ID_Empresa_Generadora = ?
-			 ORDER BY s.Fecha_Publicacion DESC
+			 ORDER BY s.Fecha_Recoleccion DESC
 			 LIMIT 30`,
 			[profile.ID_Empresa]
 		);

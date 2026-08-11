@@ -59,7 +59,7 @@
   font-size: 14px;
 }
 
-.waste-form-container button[type='submit'] {
+.waste-form-container button[type="submit"] {
   width: 100%;
   padding: 12px;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -72,6 +72,6 @@
   transition: transform 0.2s;
 }
 
-.waste-form-container button[type='submit']:hover {
+.waste-form-container button[type="submit"]:hover {
   transform: translateY(-2px);
 }

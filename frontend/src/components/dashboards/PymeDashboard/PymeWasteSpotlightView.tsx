@@ -1,4 +1,4 @@
-import type { PymeHistoryRow, PymeProfile } from "../../api/dashboard";
+import type { PymeHistoryRow, PymeProfile } from "../../../api/dashboard";
 
 interface PymeWasteSpotlightViewProps {
   entry: PymeHistoryRow | null;

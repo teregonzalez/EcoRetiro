@@ -78,7 +78,6 @@ export default function PymeDashboard({
       active: activeTab === "Residuos",
       onClick: () => setActiveTab("Residuos"),
     },
-    { label: "Cumplimiento", icon: "verified_user", active: false },
     {
       label: "Rutas",
       icon: "local_shipping",
@@ -91,7 +90,6 @@ export default function PymeDashboard({
       active: activeTab === "Reportes",
       onClick: () => setActiveTab("Reportes"),
     },
-    { label: "Analiticas", icon: "analytics", active: false },
   ];
 
   useEffect(() => {

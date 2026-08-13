@@ -27,7 +27,6 @@ export default function RecyclerNearbyWasteView({ username, onLogout, }) {
             active: true,
             onClick: () => navigate("/dashboard", { state: { recyclerTab: "Residuos" } }),
         },
-        { label: "Cumplimiento", icon: "verified_user", active: false },
         {
             label: "Rutas",
             icon: "local_shipping",
@@ -38,7 +37,6 @@ export default function RecyclerNearbyWasteView({ username, onLogout, }) {
             icon: "book",
             onClick: () => navigate("/dashboard", { state: { recyclerTab: "Reportes" } }),
         },
-        { label: "Analiticas", icon: "analytics", active: false },
     ];
     const handleSubmit = (event) => {
         event.preventDefault();

@@ -4,9 +4,7 @@ import DashboardShell from "../DashboardShell/DashboardShell";
 const navItems = [
     { label: "Dashboard", icon: "dashboard" },
     { label: "Residuos", icon: "recycling", active: true },
-    { label: "Cumplimiento", icon: "verified_user" },
     { label: "Rutas", icon: "local_shipping" },
-    { label: "Analiticas", icon: "analytics" },
 ];
 export default function PymeWasteEntrySuccess({ username, onLogout, }) {
     const navigate = useNavigate();

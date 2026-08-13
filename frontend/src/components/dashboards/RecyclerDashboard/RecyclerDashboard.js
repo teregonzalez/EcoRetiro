@@ -44,7 +44,6 @@ export default function RecyclerDashboard({ userId, username, onLogout, onSelect
             active: activeTab === "Residuos",
             onClick: () => setActiveTab("Residuos"),
         },
-        { label: "Cumplimiento", icon: "verified_user", active: false },
         {
             label: "Rutas",
             icon: "local_shipping",
@@ -57,7 +56,6 @@ export default function RecyclerDashboard({ userId, username, onLogout, onSelect
             active: activeTab === "Reportes",
             onClick: () => setActiveTab("Reportes"),
         },
-        { label: "Analiticas", icon: "analytics", active: false },
     ];
     useEffect(() => {
         const tabFromState = location.state

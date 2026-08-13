@@ -55,7 +55,6 @@ export default function PymeDashboard({ userId, username, onLogout, onCreateWast
             active: activeTab === "Residuos",
             onClick: () => setActiveTab("Residuos"),
         },
-        { label: "Cumplimiento", icon: "verified_user", active: false },
         {
             label: "Rutas",
             icon: "local_shipping",
@@ -68,7 +67,6 @@ export default function PymeDashboard({ userId, username, onLogout, onCreateWast
             active: activeTab === "Reportes",
             onClick: () => setActiveTab("Reportes"),
         },
-        { label: "Analiticas", icon: "analytics", active: false },
     ];
     useEffect(() => {
         const loadData = async () => {

@@ -100,7 +100,7 @@ export default function PymeWasteSpotlightView({
       <div className="relative mx-auto flex max-w-7xl flex-col gap-lg">
         <div className="flex flex-col justify-between gap-md md:flex-row md:items-center">
           <div className="flex items-center gap-sm text-on-surface-variant">
-            <span className="font-label-sm hover:text-secondary">Map View</span>
+            <span className="font-label-sm hover:text-secondary">Vista del mapa</span>
             <span className="material-symbols-outlined text-[16px]">
               chevron_right
             </span>
@@ -219,7 +219,7 @@ export default function PymeWasteSpotlightView({
 
                 <div className="flex flex-col gap-xs">
                   <span className="font-label-sm uppercase text-on-surface-variant">
-                    Density
+                    Densidad
                   </span>
                   <div className="flex items-center gap-xs font-headline-lg-mobile text-on-surface">
                     <span className="text-sm font-normal">
@@ -428,7 +428,7 @@ export default function PymeWasteSpotlightView({
                   </div>
                   <div className="flex flex-col">
                     <span className="font-label-sm uppercase text-secondary">
-                      Registered
+                      Registrado
                     </span>
                     <span className="font-body-md font-medium text-on-surface">
                       {availabilityDate}
@@ -443,7 +443,7 @@ export default function PymeWasteSpotlightView({
                   <div className="mt-0.5 h-6 w-6 shrink-0 rounded-full border-2 border-outline-variant bg-surface-container-lowest" />
                   <div className="flex flex-col">
                     <span className="font-label-sm uppercase text-on-surface-variant">
-                      Proximity
+                      Cercanía
                     </span>
                     <span className="font-body-md font-medium text-on-surface">
                       {profile?.ubicacion || "Ubicacion pendiente"}
@@ -458,7 +458,7 @@ export default function PymeWasteSpotlightView({
                   <div className="mt-0.5 h-6 w-6 shrink-0 rounded-full border-2 border-outline-variant bg-surface-container-lowest" />
                   <div className="flex flex-col">
                     <span className="font-label-sm uppercase text-on-surface-variant">
-                      Pickup Window
+                      Horario de retiro
                     </span>
                     <span className="font-body-md font-medium text-on-surface">
                       Estado: {entry.estado}

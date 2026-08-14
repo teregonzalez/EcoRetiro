@@ -98,18 +98,6 @@ export default function DashboardShell({
           </div>
           
           <div className="flex items-center gap-md">
-            <button
-              type="button"
-              className="rounded-full p-2 text-on-surface-variant transition-colors hover:bg-surface-container"
-            >
-              <span className="material-symbols-outlined">notifications</span>
-            </button>
-            <button
-              type="button"
-              className="hidden rounded-full p-2 text-on-surface-variant transition-colors hover:bg-surface-container sm:block"
-            >
-              <span className="material-symbols-outlined">help</span>
-            </button>
             
             <div className="flex items-center gap-sm border-l border-outline-variant pl-md">
               <div className="hidden text-right sm:block">

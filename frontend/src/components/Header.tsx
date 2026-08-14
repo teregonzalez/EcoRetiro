@@ -78,14 +78,8 @@ export default function Header({
       </nav>
 
       <div className="flex items-center gap-md">
-        <button className="material-symbols-outlined text-on-surface-variant hover:text-secondary-fixed-dim transition-all">
-          notifications
-        </button>
-        <button className="material-symbols-outlined text-on-surface-variant hover:text-secondary-fixed-dim transition-all">
-          help
-        </button>
 
-        {userId ? (
+        {userId && (
           <div className="flex items-center gap-2">
             <div className="h-10 w-10 rounded-full bg-surface-container-high overflow-hidden border border-outline-variant cursor-pointer">
               <img
@@ -101,13 +95,6 @@ export default function Header({
               Salir
             </button>
           </div>
-        ) : (
-          <button
-            onClick={() => setCurrentView("login")}
-            className="text-primary font-bold hover:underline"
-          >
-            Ingresar
-          </button>
         )}
       </div>
     </header>

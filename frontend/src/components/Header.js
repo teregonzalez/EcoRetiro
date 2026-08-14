@@ -75,12 +75,6 @@ export default function Header({
 
       {/* Acciones y Perfil */}
       <div className="flex items-center gap-md">
-        <button className="material-symbols-outlined text-on-surface-variant hover:text-secondary-fixed-dim transition-all">
-          notifications
-        </button>
-        <button className="material-symbols-outlined text-on-surface-variant hover:text-secondary-fixed-dim transition-all">
-          help
-        </button>
 
         {userId ? (
           <div className="flex items-center gap-2">

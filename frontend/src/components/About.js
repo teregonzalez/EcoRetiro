@@ -1,4 +1,111 @@
-import { jsx as _jsx, jsxs as _jsxs, Fragment as _Fragment } from "react/jsx-runtime";
+import React from "react";
+
 export default function About() {
-    return (_jsxs(_Fragment, { children: [_jsx("section", { className: "py-xl px-margin bg-surface-container-low", children: _jsxs("div", { className: "max-w-4xl mx-auto text-center", children: [_jsx("span", { className: "inline-block px-4 py-1 rounded-full bg-tertiary-fixed text-on-primary-fixed font-label-sm text-label-sm mb-md uppercase tracking-widest", children: "Nuestra Historia" }), _jsx("h1", { className: "font-display-lg text-display-lg text-primary mb-md", children: "Sobre Nosotros" }), _jsxs("p", { className: "font-body-md text-body-md text-on-surface-variant text-lg max-w-2xl mx-auto mb-xl leading-relaxed", children: ["Somos una plataforma dedicada a promover la", " ", _jsx("strong", { children: "simbiosis industrial" }), ". Nuestra misi\u00F3n es conectar a las pymes locales con empresas de reciclaje para transformar sus residuos en recursos valiosos, optimizando procesos y reduciendo la huella de carbono."] })] }) }), _jsx("section", { className: "py-xl px-margin bg-surface", children: _jsxs("div", { className: "max-w-7xl mx-auto", children: [_jsx("h2", { className: "font-headline-lg text-headline-lg text-primary text-center mb-xl", children: "Nuestros Valores" }), _jsxs("div", { className: "grid grid-cols-1 md:grid-cols-3 gap-xl", children: [_jsxs("div", { className: "bg-surface-container-low p-xl rounded-xl border border-outline-variant/30 hover:shadow-md transition-all", children: [_jsx("span", { className: "material-symbols-outlined text-[48px] text-tertiary-fixed-dim mb-md block", style: { fontVariationSettings: "'FILL' 1" }, children: "eco" }), _jsx("h3", { className: "font-headline-lg text-headline-lg text-primary mb-md", children: "Sostenibilidad" }), _jsx("p", { className: "font-body-md text-on-surface-variant", children: "Promovemos pr\u00E1cticas que cuidan el planeta y garantizan un futuro regenerativo para las pr\u00F3ximas generaciones." })] }), _jsxs("div", { className: "bg-surface-container-low p-xl rounded-xl border border-outline-variant/30 hover:shadow-md transition-all", children: [_jsx("span", { className: "material-symbols-outlined text-[48px] text-secondary-fixed-dim mb-md block", style: { fontVariationSettings: "'FILL' 1" }, children: "visibility" }), _jsx("h3", { className: "font-headline-lg text-headline-lg text-primary mb-md", children: "Transparencia" }), _jsx("p", { className: "font-body-md text-on-surface-variant", children: "Trazabilidad completa de cada residuo y datos abiertos sobre nuestro impacto ambiental." })] }), _jsxs("div", { className: "bg-surface-container-low p-xl rounded-xl border border-outline-variant/30 hover:shadow-md transition-all", children: [_jsx("span", { className: "material-symbols-outlined text-[48px] text-tertiary mb-md block", style: { fontVariationSettings: "'FILL' 1" }, children: "lightbulb" }), _jsx("h3", { className: "font-headline-lg text-headline-lg text-primary mb-md", children: "Innovaci\u00F3n" }), _jsx("p", { className: "font-body-md text-on-surface-variant", children: "Tecnolog\u00EDa de precisi\u00F3n para optimizar la econom\u00EDa circular y conectar industrias de forma inteligente." })] })] })] }) }), _jsx("section", { className: "py-xl px-margin bg-surface-container-low", children: _jsxs("div", { className: "max-w-7xl mx-auto", children: [_jsx("h2", { className: "font-headline-lg text-headline-lg text-primary text-center mb-xl", children: "Nuestro Impacto" }), _jsxs("div", { className: "grid grid-cols-1 md:grid-cols-4 gap-md text-center", children: [_jsxs("div", { className: "p-md", children: [_jsx("div", { className: "font-display-lg text-primary font-bold mb-xs", children: "2,500+" }), _jsx("p", { className: "font-body-md text-on-surface-variant", children: "Toneladas Recicladas" })] }), _jsxs("div", { className: "p-md", children: [_jsx("div", { className: "font-display-lg text-primary font-bold mb-xs", children: "180+" }), _jsx("p", { className: "font-body-md text-on-surface-variant", children: "Empresas Conectadas" })] }), _jsxs("div", { className: "p-md", children: [_jsx("div", { className: "font-display-lg text-primary font-bold mb-xs", children: "450k" }), _jsx("p", { className: "font-body-md text-on-surface-variant", children: "CO\u2082 Ahorrado (Tons)" })] }), _jsxs("div", { className: "p-md", children: [_jsx("div", { className: "font-display-lg text-primary font-bold mb-xs", children: "5+" }), _jsx("p", { className: "font-body-md text-on-surface-variant", children: "A\u00F1os de Impacto" })] })] })] }) })] }));
+  return (
+    <>
+      {/* Sección Historia */}
+      <section className="py-xl px-margin bg-surface-container-low">
+        <div className="max-w-4xl mx-auto text-center">
+          <span className="inline-block px-4 py-1 rounded-full bg-tertiary-fixed text-on-primary-fixed font-label-sm text-label-sm mb-md uppercase tracking-widest">
+            Nuestra Historia
+          </span>
+          <h1 className="font-display-lg text-display-lg text-primary mb-md">
+            Sobre Nosotros
+          </h1>
+          <p className="font-body-md text-body-md text-on-surface-variant text-lg max-w-2xl mx-auto mb-xl leading-relaxed">
+            Somos una plataforma dedicada a promover la <strong>simbiosis industrial</strong>. Nuestra misión es conectar a las pymes locales con empresas de reciclaje para transformar sus residuos en recursos valiosos, optimizando procesos y reduciendo la huella de carbono.
+          </p>
+        </div>
+      </section>
+
+      {/* Sección Valores */}
+      <section className="py-xl px-margin bg-surface">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="font-headline-lg text-headline-lg text-primary text-center mb-xl">
+            Nuestros Valores
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-xl">
+            
+            <div className="bg-surface-container-low p-xl rounded-xl border border-outline-variant/30 hover:shadow-md transition-all">
+              <span
+                className="material-symbols-outlined text-[48px] text-tertiary-fixed-dim mb-md block"
+                style={{ fontVariationSettings: "'FILL' 1" }}
+              >
+                eco
+              </span>
+              <h3 className="font-headline-lg text-headline-lg text-primary mb-md">
+                Sostenibilidad
+              </h3>
+              <p className="font-body-md text-on-surface-variant">
+                Promovemos prácticas que cuidan el planeta y garantizan un futuro regenerativo para las próximas generaciones.
+              </p>
+            </div>
+
+            <div className="bg-surface-container-low p-xl rounded-xl border border-outline-variant/30 hover:shadow-md transition-all">
+              <span
+                className="material-symbols-outlined text-[48px] text-secondary-fixed-dim mb-md block"
+                style={{ fontVariationSettings: "'FILL' 1" }}
+              >
+                visibility
+              </span>
+              <h3 className="font-headline-lg text-headline-lg text-primary mb-md">
+                Transparencia
+              </h3>
+              <p className="font-body-md text-on-surface-variant">
+                Trazabilidad completa de cada residuo y datos abiertos sobre nuestro impacto ambiental.
+              </p>
+            </div>
+
+            <div className="bg-surface-container-low p-xl rounded-xl border border-outline-variant/30 hover:shadow-md transition-all">
+              <span
+                className="material-symbols-outlined text-[48px] text-tertiary mb-md block"
+                style={{ fontVariationSettings: "'FILL' 1" }}
+              >
+                lightbulb
+              </span>
+              <h3 className="font-headline-lg text-headline-lg text-primary mb-md">
+                Innovación
+              </h3>
+              <p className="font-body-md text-on-surface-variant">
+                Tecnología de precisión para optimizar la economía circular y conectar industrias de forma inteligente.
+              </p>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      {/* Sección Impacto */}
+      <section className="py-xl px-margin bg-surface-container-low">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="font-headline-lg text-headline-lg text-primary text-center mb-xl">
+            Nuestro Impacto
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-md text-center">
+            
+            <div className="p-md">
+              <div className="font-display-lg text-primary font-bold mb-xs">2,500+</div>
+              <p className="font-body-md text-on-surface-variant">Toneladas Recicladas</p>
+            </div>
+            
+            <div className="p-md">
+              <div className="font-display-lg text-primary font-bold mb-xs">180+</div>
+              <p className="font-body-md text-on-surface-variant">Empresas Conectadas</p>
+            </div>
+            
+            <div className="p-md">
+              <div className="font-display-lg text-primary font-bold mb-xs">450k</div>
+              <p className="font-body-md text-on-surface-variant">CO₂ Ahorrado (Tons)</p>
+            </div>
+            
+            <div className="p-md">
+              <div className="font-display-lg text-primary font-bold mb-xs">5+</div>
+              <p className="font-body-md text-on-surface-variant">Años de Impacto</p>
+            </div>
+
+          </div>
+        </div>
+      </section>
+    </>
+  );
 }

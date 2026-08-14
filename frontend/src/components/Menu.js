@@ -1,5 +1,176 @@
-import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
-export const Menu = ({ onSelectMenu, onLogout, username, }) => {
-    return (_jsxs("div", { className: "w-full", children: [_jsx("div", { className: "mb-xl pb-md border-b border-outline-variant", children: _jsxs("div", { className: "flex justify-between items-center", children: [_jsxs("div", { children: [_jsx("h1", { className: "font-display-lg text-primary mb-xs", children: "Panel de Control" }), _jsxs("p", { className: "font-body-md text-on-surface-variant", children: ["Bienvenido, ", _jsx("strong", { children: username })] })] }), _jsxs("button", { onClick: onLogout, className: "flex items-center gap-2 px-md py-3 rounded-lg border-2 border-error text-error hover:bg-error/5 transition-all font-bold", children: [_jsx("span", { className: "material-symbols-outlined text-[20px]", children: "logout" }), "Cerrar Sesi\u00F3n"] })] }) }), _jsxs("div", { className: "grid grid-cols-1 md:grid-cols-3 gap-xl", children: [_jsxs("button", { onClick: () => onSelectMenu("add-waste"), className: "group relative p-xl rounded-xl border border-outline-variant/50 hover:border-secondary hover:shadow-lg transition-all bg-surface-container-lowest overflow-hidden", children: [_jsx("div", { className: "absolute inset-0 bg-gradient-to-br from-primary-fixed/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" }), _jsxs("div", { className: "relative z-10 text-center", children: [_jsx("span", { className: "material-symbols-outlined text-[64px] text-primary-fixed-dim block mb-md group-hover:scale-110 transition-transform", style: { fontVariationSettings: "'FILL' 1" }, children: "add_circle" }), _jsx("h3", { className: "font-headline-lg text-primary mb-xs", children: "Registrar Residuos" }), _jsx("p", { className: "font-body-md text-on-surface-variant text-sm mb-md", children: "Agrega nuevas entradas de residuos a tu inventario" }), _jsxs("span", { className: "inline-flex items-center gap-1 text-secondary font-bold", children: ["Ir ahora", " ", _jsx("span", { className: "material-symbols-outlined text-[18px]", children: "arrow_forward" })] })] })] }), _jsxs("button", { onClick: () => onSelectMenu("view-inventory"), className: "group relative p-xl rounded-xl border border-outline-variant/50 hover:border-secondary hover:shadow-lg transition-all bg-surface-container-lowest overflow-hidden", children: [_jsx("div", { className: "absolute inset-0 bg-gradient-to-br from-tertiary-fixed/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" }), _jsxs("div", { className: "relative z-10 text-center", children: [_jsx("span", { className: "material-symbols-outlined text-[64px] text-tertiary-fixed-dim block mb-md group-hover:scale-110 transition-transform", style: { fontVariationSettings: "'FILL' 1" }, children: "inventory_2" }), _jsx("h3", { className: "font-headline-lg text-primary mb-xs", children: "Ver Inventario" }), _jsx("p", { className: "font-body-md text-on-surface-variant text-sm mb-md", children: "Explora el inventario disponible de residuos" }), _jsxs("span", { className: "inline-flex items-center gap-1 text-secondary font-bold", children: ["Ir ahora", " ", _jsx("span", { className: "material-symbols-outlined text-[18px]", children: "arrow_forward" })] })] })] }), _jsxs("button", { onClick: () => onSelectMenu("view-history"), className: "group relative p-xl rounded-xl border border-outline-variant/50 hover:border-secondary hover:shadow-lg transition-all bg-surface-container-lowest overflow-hidden", children: [_jsx("div", { className: "absolute inset-0 bg-gradient-to-br from-secondary-fixed/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" }), _jsxs("div", { className: "relative z-10 text-center", children: [_jsx("span", { className: "material-symbols-outlined text-[64px] text-secondary-fixed-dim block mb-md group-hover:scale-110 transition-transform", style: { fontVariationSettings: "'FILL' 1" }, children: "history" }), _jsx("h3", { className: "font-headline-lg text-primary mb-xs", children: "Historial" }), _jsx("p", { className: "font-body-md text-on-surface-variant text-sm mb-md", children: "Revisa el historial de tus registros y transacciones" }), _jsxs("span", { className: "inline-flex items-center gap-1 text-secondary font-bold", children: ["Ir ahora", " ", _jsx("span", { className: "material-symbols-outlined text-[18px]", children: "arrow_forward" })] })] })] })] }), _jsxs("div", { className: "mt-xl pt-xl border-t border-outline-variant", children: [_jsx("h3", { className: "font-headline-lg text-primary mb-md", children: "Estad\u00EDsticas R\u00E1pidas" }), _jsxs("div", { className: "grid grid-cols-1 md:grid-cols-4 gap-md", children: [_jsxs("div", { className: "bg-surface-container-low p-md rounded-lg border border-outline-variant/30", children: [_jsx("span", { className: "material-symbols-outlined text-primary text-[32px] block mb-xs", style: { fontVariationSettings: "'FILL' 1" }, children: "trending_up" }), _jsx("p", { className: "font-label-sm text-on-surface-variant", children: "Residuos Registrados" }), _jsx("p", { className: "font-headline-lg text-primary", children: "--" })] }), _jsxs("div", { className: "bg-surface-container-low p-md rounded-lg border border-outline-variant/30", children: [_jsx("span", { className: "material-symbols-outlined text-tertiary text-[32px] block mb-xs", style: { fontVariationSettings: "'FILL' 1" }, children: "scale" }), _jsx("p", { className: "font-label-sm text-on-surface-variant", children: "Total (kg)" }), _jsx("p", { className: "font-headline-lg text-primary", children: "--" })] }), _jsxs("div", { className: "bg-surface-container-low p-md rounded-lg border border-outline-variant/30", children: [_jsx("span", { className: "material-symbols-outlined text-secondary text-[32px] block mb-xs", style: { fontVariationSettings: "'FILL' 1" }, children: "calendar_month" }), _jsx("p", { className: "font-label-sm text-on-surface-variant", children: "Este Mes" }), _jsx("p", { className: "font-headline-lg text-primary", children: "--" })] }), _jsxs("div", { className: "bg-surface-container-low p-md rounded-lg border border-outline-variant/30", children: [_jsx("span", { className: "material-symbols-outlined text-primary-fixed-dim text-[32px] block mb-xs", style: { fontVariationSettings: "'FILL' 1" }, children: "eco" }), _jsx("p", { className: "font-label-sm text-on-surface-variant", children: "CO\u2082 Ahorrado" }), _jsx("p", { className: "font-headline-lg text-primary", children: "--" })] })] })] })] }));
+import React from "react";
+
+export const Menu = ({ onSelectMenu, onLogout, username }) => {
+  return (
+    <div className="w-full">
+      
+      {/* Encabezado: Título y Botón de Salida */}
+      <div className="mb-xl pb-md border-b border-outline-variant">
+        <div className="flex justify-between items-center">
+          <div>
+            <h1 className="font-display-lg text-primary mb-xs">
+              Panel de Control
+            </h1>
+            <p className="font-body-md text-on-surface-variant">
+              Bienvenido, <strong>{username}</strong>
+            </p>
+          </div>
+          <button
+            onClick={onLogout}
+            className="flex items-center gap-2 px-md py-3 rounded-lg border-2 border-error text-error hover:bg-error/5 transition-all font-bold"
+          >
+            <span className="material-symbols-outlined text-[20px]">
+              logout
+            </span>
+            Cerrar Sesión
+          </button>
+        </div>
+      </div>
+
+      {/* Grid de Accesos Directos (Menú Principal) */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-xl">
+        
+        <button
+          onClick={() => onSelectMenu("add-waste")}
+          className="group relative p-xl rounded-xl border border-outline-variant/50 hover:border-secondary hover:shadow-lg transition-all bg-surface-container-lowest overflow-hidden"
+        >
+          <div className="absolute inset-0 bg-gradient-to-br from-primary-fixed/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+          <div className="relative z-10 text-center">
+            <span
+              className="material-symbols-outlined text-[64px] text-primary-fixed-dim block mb-md group-hover:scale-110 transition-transform"
+              style={{ fontVariationSettings: "'FILL' 1" }}
+            >
+              add_circle
+            </span>
+            <h3 className="font-headline-lg text-primary mb-xs">
+              Registrar Residuos
+            </h3>
+            <p className="font-body-md text-on-surface-variant text-sm mb-md">
+              Agrega nuevas entradas de residuos a tu inventario
+            </p>
+            <span className="inline-flex items-center gap-1 text-secondary font-bold">
+              Ir ahora
+              <span className="material-symbols-outlined text-[18px]">
+                arrow_forward
+              </span>
+            </span>
+          </div>
+        </button>
+
+        <button
+          onClick={() => onSelectMenu("view-inventory")}
+          className="group relative p-xl rounded-xl border border-outline-variant/50 hover:border-secondary hover:shadow-lg transition-all bg-surface-container-lowest overflow-hidden"
+        >
+          <div className="absolute inset-0 bg-gradient-to-br from-tertiary-fixed/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+          <div className="relative z-10 text-center">
+            <span
+              className="material-symbols-outlined text-[64px] text-tertiary-fixed-dim block mb-md group-hover:scale-110 transition-transform"
+              style={{ fontVariationSettings: "'FILL' 1" }}
+            >
+              inventory_2
+            </span>
+            <h3 className="font-headline-lg text-primary mb-xs">
+              Ver Inventario
+            </h3>
+            <p className="font-body-md text-on-surface-variant text-sm mb-md">
+              Explora el inventario disponible de residuos
+            </p>
+            <span className="inline-flex items-center gap-1 text-secondary font-bold">
+              Ir ahora
+              <span className="material-symbols-outlined text-[18px]">
+                arrow_forward
+              </span>
+            </span>
+          </div>
+        </button>
+
+        <button
+          onClick={() => onSelectMenu("view-history")}
+          className="group relative p-xl rounded-xl border border-outline-variant/50 hover:border-secondary hover:shadow-lg transition-all bg-surface-container-lowest overflow-hidden"
+        >
+          <div className="absolute inset-0 bg-gradient-to-br from-secondary-fixed/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+          <div className="relative z-10 text-center">
+            <span
+              className="material-symbols-outlined text-[64px] text-secondary-fixed-dim block mb-md group-hover:scale-110 transition-transform"
+              style={{ fontVariationSettings: "'FILL' 1" }}
+            >
+              history
+            </span>
+            <h3 className="font-headline-lg text-primary mb-xs">
+              Historial
+            </h3>
+            <p className="font-body-md text-on-surface-variant text-sm mb-md">
+              Revisa el historial de tus registros y transacciones
+            </p>
+            <span className="inline-flex items-center gap-1 text-secondary font-bold">
+              Ir ahora
+              <span className="material-symbols-outlined text-[18px]">
+                arrow_forward
+              </span>
+            </span>
+          </div>
+        </button>
+      </div>
+
+      {/* Sección Inferior: Estadísticas Rápidas */}
+      <div className="mt-xl pt-xl border-t border-outline-variant">
+        <h3 className="font-headline-lg text-primary mb-md">
+          Estadísticas Rápidas
+        </h3>
+        
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-md">
+          
+          <div className="bg-surface-container-low p-md rounded-lg border border-outline-variant/30">
+            <span
+              className="material-symbols-outlined text-primary text-[32px] block mb-xs"
+              style={{ fontVariationSettings: "'FILL' 1" }}
+            >
+              trending_up
+            </span>
+            <p className="font-label-sm text-on-surface-variant">
+              Residuos Registrados
+            </p>
+            <p className="font-headline-lg text-primary">--</p>
+          </div>
+
+          <div className="bg-surface-container-low p-md rounded-lg border border-outline-variant/30">
+            <span
+              className="material-symbols-outlined text-tertiary text-[32px] block mb-xs"
+              style={{ fontVariationSettings: "'FILL' 1" }}
+            >
+              scale
+            </span>
+            <p className="font-label-sm text-on-surface-variant">Total (kg)</p>
+            <p className="font-headline-lg text-primary">--</p>
+          </div>
+
+          <div className="bg-surface-container-low p-md rounded-lg border border-outline-variant/30">
+            <span
+              className="material-symbols-outlined text-secondary text-[32px] block mb-xs"
+              style={{ fontVariationSettings: "'FILL' 1" }}
+            >
+              calendar_month
+            </span>
+            <p className="font-label-sm text-on-surface-variant">Este Mes</p>
+            <p className="font-headline-lg text-primary">--</p>
+          </div>
+
+          <div className="bg-surface-container-low p-md rounded-lg border border-outline-variant/30">
+            <span
+              className="material-symbols-outlined text-primary-fixed-dim text-[32px] block mb-xs"
+              style={{ fontVariationSettings: "'FILL' 1" }}
+            >
+              eco
+            </span>
+            <p className="font-label-sm text-on-surface-variant">CO₂ Ahorrado</p>
+            <p className="font-headline-lg text-primary">--</p>
+          </div>
+
+        </div>
+      </div>
+      
+    </div>
+  );
 };
+
 export default Menu;

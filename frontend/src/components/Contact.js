@@ -1,4 +1,195 @@
-import { jsx as _jsx, jsxs as _jsxs, Fragment as _Fragment } from "react/jsx-runtime";
+import React from "react";
+
 export default function Contact() {
-    return (_jsxs(_Fragment, { children: [_jsx("section", { className: "py-xl px-margin bg-surface-container-low", children: _jsxs("div", { className: "max-w-4xl mx-auto text-center", children: [_jsx("span", { className: "inline-block px-4 py-1 rounded-full bg-secondary-fixed text-on-secondary-fixed font-label-sm text-label-sm mb-md uppercase tracking-widest", children: "Cont\u00E1ctanos" }), _jsx("h1", { className: "font-display-lg text-display-lg text-primary mb-md", children: "\u00BFTienes Preguntas?" }), _jsx("p", { className: "font-body-md text-body-md text-on-surface-variant text-lg max-w-2xl mx-auto", children: "Nuestro equipo est\u00E1 listo para ayudarte a integrar tu negocio en la econom\u00EDa circular." })] }) }), _jsx("section", { className: "py-xl px-margin bg-surface", children: _jsx("div", { className: "max-w-3xl mx-auto", children: _jsxs("form", { className: "bg-surface-container-lowest p-xl rounded-xl shadow-sm border border-outline-variant/30 space-y-md w-full", children: [_jsxs("div", { className: "grid grid-cols-1 md:grid-cols-2 gap-md", children: [_jsxs("div", { className: "space-y-xs", children: [_jsx("label", { className: "font-label-sm text-label-sm text-on-surface-variant ml-1", children: "Nombre Completo" }), _jsxs("div", { className: "relative group transition-transform focus-within:-translate-y-[2px]", children: [_jsx("span", { className: "material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline group-focus-within:text-secondary transition-colors duration-200", children: "person" }), _jsx("input", { className: "input-field pl-10", type: "text", placeholder: "Tu nombre", required: true })] })] }), _jsxs("div", { className: "space-y-xs", children: [_jsx("label", { className: "font-label-sm text-label-sm text-on-surface-variant ml-1", children: "Empresa" }), _jsxs("div", { className: "relative group transition-transform focus-within:-translate-y-[2px]", children: [_jsx("span", { className: "material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline group-focus-within:text-secondary transition-colors duration-200", children: "business" }), _jsx("input", { className: "input-field pl-10", type: "text", placeholder: "Nombre de tu empresa", required: true })] })] })] }), _jsxs("div", { className: "space-y-xs", children: [_jsx("label", { className: "font-label-sm text-label-sm text-on-surface-variant ml-1", children: "Correo Electr\u00F3nico" }), _jsxs("div", { className: "relative group transition-transform focus-within:-translate-y-[2px]", children: [_jsx("span", { className: "material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline group-focus-within:text-secondary transition-colors duration-200", children: "mail" }), _jsx("input", { className: "input-field pl-10", type: "email", placeholder: "tu@empresa.com", required: true })] })] }), _jsxs("div", { className: "space-y-xs", children: [_jsx("label", { className: "font-label-sm text-label-sm text-on-surface-variant ml-1", children: "Asunto" }), _jsxs("div", { className: "relative group transition-transform focus-within:-translate-y-[2px]", children: [_jsx("span", { className: "material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline group-focus-within:text-secondary transition-colors duration-200", children: "subject" }), _jsx("input", { className: "input-field pl-10", type: "text", placeholder: "\u00BFCu\u00E1l es tu consulta?", required: true })] })] }), _jsxs("div", { className: "space-y-xs", children: [_jsx("label", { className: "font-label-sm text-label-sm text-on-surface-variant ml-1", children: "Mensaje" }), _jsx("textarea", { className: "input-field", placeholder: "Cu\u00E9ntanos m\u00E1s sobre tu consulta...", rows: 6, required: true })] }), _jsxs("button", { className: "btn-primary w-full flex items-center justify-center gap-2", type: "submit", children: ["Enviar Mensaje", _jsx("span", { className: "material-symbols-outlined text-[20px]", children: "send" })] })] }) }) }), _jsx("section", { className: "py-xl px-margin bg-surface-container-low", children: _jsxs("div", { className: "max-w-7xl mx-auto", children: [_jsx("h2", { className: "font-headline-lg text-headline-lg text-primary text-center mb-xl", children: "Otras Formas de Contactarnos" }), _jsxs("div", { className: "grid grid-cols-1 md:grid-cols-3 gap-xl", children: [_jsxs("div", { className: "bg-surface-container-lowest p-xl rounded-xl text-center border border-outline-variant/30 hover:shadow-md transition-all", children: [_jsx("span", { className: "material-symbols-outlined text-[48px] text-secondary mb-md block", style: { fontVariationSettings: "'FILL' 1" }, children: "mail" }), _jsx("h3", { className: "font-headline-lg text-primary mb-xs", children: "Correo Electr\u00F3nico" }), _jsx("p", { className: "font-body-md text-on-surface-variant mb-md", children: "contacto@EcoRetiro.com" }), _jsx("a", { href: "mailto:contacto@ecoretiro.com", className: "text-secondary font-bold hover:underline", children: "Enviar Email" })] }), _jsxs("div", { className: "bg-surface-container-lowest p-xl rounded-xl text-center border border-outline-variant/30 hover:shadow-md transition-all", children: [_jsx("span", { className: "material-symbols-outlined text-[48px] text-tertiary mb-md block", style: { fontVariationSettings: "'FILL' 1" }, children: "phone" }), _jsx("h3", { className: "font-headline-lg text-primary mb-xs", children: "Tel\u00E9fono" }), _jsx("p", { className: "font-body-md text-on-surface-variant mb-md", children: "+34 91 234 5678" }), _jsx("a", { href: "tel:+34912345678", className: "text-secondary font-bold hover:underline", children: "Llamar Ahora" })] }), _jsxs("div", { className: "bg-surface-container-lowest p-xl rounded-xl text-center border border-outline-variant/30 hover:shadow-md transition-all", children: [_jsx("span", { className: "material-symbols-outlined text-[48px] text-primary-fixed-dim mb-md block", style: { fontVariationSettings: "'FILL' 1" }, children: "location_on" }), _jsx("h3", { className: "font-headline-lg text-primary mb-xs", children: "Ubicaci\u00F3n" }), _jsx("p", { className: "font-body-md text-on-surface-variant mb-md", children: "Santiago, Chile" }), _jsx("a", { href: "#", className: "text-secondary font-bold hover:underline", children: "Ver Ubicaci\u00F3n" })] })] })] }) })] }));
+  return (
+    <>
+      {/* Encabezado */}
+      <section className="py-xl px-margin bg-surface-container-low">
+        <div className="max-w-4xl mx-auto text-center">
+          <span className="inline-block px-4 py-1 rounded-full bg-secondary-fixed text-on-secondary-fixed font-label-sm text-label-sm mb-md uppercase tracking-widest">
+            Contáctanos
+          </span>
+          <h1 className="font-display-lg text-display-lg text-primary mb-md">
+            ¿Tienes Preguntas?
+          </h1>
+          <p className="font-body-md text-body-md text-on-surface-variant text-lg max-w-2xl mx-auto">
+            Nuestro equipo está listo para ayudarte a integrar tu negocio en la economía circular.
+          </p>
+        </div>
+      </section>
+
+      {/* Formulario de Contacto */}
+      <section className="py-xl px-margin bg-surface">
+        <div className="max-w-3xl mx-auto">
+          <form className="bg-surface-container-lowest p-xl rounded-xl shadow-sm border border-outline-variant/30 space-y-md w-full">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-md">
+              
+              <div className="space-y-xs">
+                <label className="font-label-sm text-label-sm text-on-surface-variant ml-1">
+                  Nombre Completo
+                </label>
+                <div className="relative group transition-transform focus-within:-translate-y-[2px]">
+                  <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline group-focus-within:text-secondary transition-colors duration-200">
+                    person
+                  </span>
+                  <input
+                    className="input-field pl-10"
+                    type="text"
+                    placeholder="Tu nombre"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-xs">
+                <label className="font-label-sm text-label-sm text-on-surface-variant ml-1">
+                  Empresa
+                </label>
+                <div className="relative group transition-transform focus-within:-translate-y-[2px]">
+                  <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline group-focus-within:text-secondary transition-colors duration-200">
+                    business
+                  </span>
+                  <input
+                    className="input-field pl-10"
+                    type="text"
+                    placeholder="Nombre de tu empresa"
+                    required
+                  />
+                </div>
+              </div>
+
+            </div>
+
+            <div className="space-y-xs">
+              <label className="font-label-sm text-label-sm text-on-surface-variant ml-1">
+                Correo Electrónico
+              </label>
+              <div className="relative group transition-transform focus-within:-translate-y-[2px]">
+                <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline group-focus-within:text-secondary transition-colors duration-200">
+                  mail
+                </span>
+                <input
+                  className="input-field pl-10"
+                  type="email"
+                  placeholder="tu@empresa.com"
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="space-y-xs">
+              <label className="font-label-sm text-label-sm text-on-surface-variant ml-1">
+                Asunto
+              </label>
+              <div className="relative group transition-transform focus-within:-translate-y-[2px]">
+                <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline group-focus-within:text-secondary transition-colors duration-200">
+                  subject
+                </span>
+                <input
+                  className="input-field pl-10"
+                  type="text"
+                  placeholder="¿Cuál es tu consulta?"
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="space-y-xs">
+              <label className="font-label-sm text-label-sm text-on-surface-variant ml-1">
+                Mensaje
+              </label>
+              <textarea
+                className="input-field"
+                placeholder="Cuéntanos más sobre tu consulta..."
+                rows={6}
+                required
+              />
+            </div>
+
+            <button
+              className="btn-primary w-full flex items-center justify-center gap-2"
+              type="submit"
+            >
+              Enviar Mensaje
+              <span className="material-symbols-outlined text-[20px]">
+                send
+              </span>
+            </button>
+          </form>
+        </div>
+      </section>
+
+      {/* Otras Formas de Contacto */}
+      <section className="py-xl px-margin bg-surface-container-low">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="font-headline-lg text-headline-lg text-primary text-center mb-xl">
+            Otras Formas de Contactarnos
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-xl">
+            
+            <div className="bg-surface-container-lowest p-xl rounded-xl text-center border border-outline-variant/30 hover:shadow-md transition-all">
+              <span
+                className="material-symbols-outlined text-[48px] text-secondary mb-md block"
+                style={{ fontVariationSettings: "'FILL' 1" }}
+              >
+                mail
+              </span>
+              <h3 className="font-headline-lg text-primary mb-xs">
+                Correo Electrónico
+              </h3>
+              <p className="font-body-md text-on-surface-variant mb-md">
+                contacto@EcoRetiro.com
+              </p>
+              <a
+                href="mailto:contacto@ecoretiro.com"
+                className="text-secondary font-bold hover:underline"
+              >
+                Enviar Email
+              </a>
+            </div>
+
+            <div className="bg-surface-container-lowest p-xl rounded-xl text-center border border-outline-variant/30 hover:shadow-md transition-all">
+              <span
+                className="material-symbols-outlined text-[48px] text-tertiary mb-md block"
+                style={{ fontVariationSettings: "'FILL' 1" }}
+              >
+                phone
+              </span>
+              <h3 className="font-headline-lg text-primary mb-xs">
+                Teléfono
+              </h3>
+              <p className="font-body-md text-on-surface-variant mb-md">
+                +34 91 234 5678
+              </p>
+              <a
+                href="tel:+34912345678"
+                className="text-secondary font-bold hover:underline"
+              >
+                Llamar Ahora
+              </a>
+            </div>
+
+            <div className="bg-surface-container-lowest p-xl rounded-xl text-center border border-outline-variant/30 hover:shadow-md transition-all">
+              <span
+                className="material-symbols-outlined text-[48px] text-primary-fixed-dim mb-md block"
+                style={{ fontVariationSettings: "'FILL' 1" }}
+              >
+                location_on
+              </span>
+              <h3 className="font-headline-lg text-primary mb-xs">
+                Ubicación
+              </h3>
+              <p className="font-body-md text-on-surface-variant mb-md">
+                Santiago, Chile
+              </p>
+              <a href="#" className="text-secondary font-bold hover:underline">
+                Ver Ubicación
+              </a>
+            </div>
+
+          </div>
+        </div>
+      </section>
+    </>
+  );
 }

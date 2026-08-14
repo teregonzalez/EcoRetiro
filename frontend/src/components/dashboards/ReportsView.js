@@ -1,183 +1,108 @@
-import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
+import React from "react";
+
 export default function ReportsView({ title, subtitle, roleLabel }) {
-  return _jsxs("div", {
-    className: "space-y-lg",
-    children: [
-      _jsx("div", {
-        className:
-          "rounded-2xl border border-outline-variant bg-surface-container-lowest p-lg shadow-sm",
-        children: _jsxs("div", {
-          className:
-            "flex flex-col gap-sm md:flex-row md:items-end md:justify-between",
-          children: [
-            _jsxs("div", {
-              children: [
-                _jsx("p", {
-                  className:
-                    "font-label-sm uppercase tracking-widest text-on-surface-variant",
-                  children: roleLabel,
-                }),
-                _jsx("h2", {
-                  className: "font-headline-lg-mobile text-on-surface",
-                  children: title,
-                }),
-                _jsx("p", {
-                  className: "mt-sm text-body-md text-on-surface-variant",
-                  children: subtitle,
-                }),
-              ],
-            }),
-            _jsxs("button", {
-              type: "button",
-              className:
-                "inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-md py-sm font-label-sm text-on-primary transition-all hover:opacity-90",
-              children: [
-                _jsx("span", {
-                  className: "material-symbols-outlined",
-                  children: "download",
-                }),
-                "Exportar reporte",
-              ],
-            }),
-          ],
-        }),
-      }),
-      _jsxs("div", {
-        className: "grid grid-cols-1 gap-gutter lg:grid-cols-3",
-        children: [
-          _jsxs("article", {
-            className:
-              "rounded-xl border border-outline-variant bg-surface-container-lowest p-md shadow-sm",
-            children: [
-              _jsxs("div", {
-                className: "flex items-center gap-sm",
-                children: [
-                  _jsx("span", {
-                    className: "material-symbols-outlined text-primary",
-                    children: "co2",
-                  }),
-                  _jsx("h3", {
-                    className: "font-headline-lg-mobile text-on-surface",
-                    children: "CO\u2082 evitado",
-                  }),
-                ],
-              }),
-              _jsx("p", {
-                className: "mt-md text-display-lg text-primary",
-                children: "42.5 kg",
-              }),
-              _jsx("p", {
-                className: "mt-sm text-body-md text-on-surface-variant",
-                children: "Estimaci\u00F3n acumulada del per\u00EDodo.",
-              }),
-            ],
-          }),
-          _jsxs("article", {
-            className:
-              "rounded-xl border border-outline-variant bg-surface-container-lowest p-md shadow-sm",
-            children: [
-              _jsxs("div", {
-                className: "flex items-center gap-sm",
-                children: [
-                  _jsx("span", {
-                    className: "material-symbols-outlined text-secondary",
-                    children: "scale",
-                  }),
-                  _jsx("h3", {
-                    className: "font-headline-lg-mobile text-on-surface",
-                    children: "Volumen gestionado",
-                  }),
-                ],
-              }),
-              _jsx("p", {
-                className: "mt-md text-display-lg text-secondary",
-                children: "1.284 ton",
-              }),
-              _jsx("p", {
-                className: "mt-sm text-body-md text-on-surface-variant",
-                children: "Toneladas procesadas y registradas.",
-              }),
-            ],
-          }),
-          _jsxs("article", {
-            className:
-              "rounded-xl border border-outline-variant bg-surface-container-lowest p-md shadow-sm",
-            children: [
-              _jsxs("div", {
-                className: "flex items-center gap-sm",
-                children: [
-                  _jsx("span", {
-                    className: "material-symbols-outlined text-tertiary",
-                    children: "analytics",
-                  }),
-                  _jsx("h3", {
-                    className: "font-headline-lg-mobile text-on-surface",
-                    children: "Tasa de circularidad",
-                  }),
-                ],
-              }),
-              _jsx("p", {
-                className: "mt-md text-display-lg text-tertiary",
-                children: "87%",
-              }),
-              _jsx("p", {
-                className: "mt-sm text-body-md text-on-surface-variant",
-                children: "\u00CDndice de aprovechamiento del material.",
-              }),
-            ],
-          }),
-        ],
-      }),
-      _jsxs("div", {
-        className:
-          "rounded-xl border border-outline-variant bg-surface-container-lowest p-md shadow-sm",
-        children: [
-          _jsxs("div", {
-            className: "mb-md flex items-center justify-between",
-            children: [
-              _jsx("h3", {
-                className: "font-headline-lg-mobile text-on-surface",
-                children: "Resumen del per\u00EDodo",
-              }),
-              _jsx("span", {
-                className: "font-label-sm text-on-surface-variant",
-                children: "\u00DAltimos 30 d\u00EDas",
-              }),
-            ],
-          }),
-          _jsxs("div", {
-            className: "grid grid-cols-1 gap-md md:grid-cols-2",
-            children: [
-              _jsxs("div", {
-                className: "rounded-lg bg-surface-container-low p-md",
-                children: [
-                  _jsx("p", {
-                    className: "font-label-sm text-on-surface-variant",
-                    children: "Solicitudes activas",
-                  }),
-                  _jsx("p", {
-                    className: "mt-sm text-headline-lg-mobile text-on-surface",
-                    children: "24",
-                  }),
-                ],
-              }),
-              _jsxs("div", {
-                className: "rounded-lg bg-surface-container-low p-md",
-                children: [
-                  _jsx("p", {
-                    className: "font-label-sm text-on-surface-variant",
-                    children: "Recolecciones completadas",
-                  }),
-                  _jsx("p", {
-                    className: "mt-sm text-headline-lg-mobile text-on-surface",
-                    children: "18",
-                  }),
-                ],
-              }),
-            ],
-          }),
-        ],
-      }),
-    ],
-  });
+  return (
+    <div className="space-y-lg">
+      
+      {/* Encabezado del Reporte */}
+      <div className="rounded-2xl border border-outline-variant bg-surface-container-lowest p-lg shadow-sm">
+        <div className="flex flex-col gap-sm md:flex-row md:items-end md:justify-between">
+          <div>
+            <p className="font-label-sm uppercase tracking-widest text-on-surface-variant">
+              {roleLabel}
+            </p>
+            <h2 className="font-headline-lg-mobile text-on-surface">
+              {title}
+            </h2>
+            <p className="mt-sm text-body-md text-on-surface-variant">
+              {subtitle}
+            </p>
+          </div>
+          <button
+            type="button"
+            className="inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-md py-sm font-label-sm text-on-primary transition-all hover:opacity-90"
+          >
+            <span className="material-symbols-outlined">download</span>
+            Exportar reporte
+          </button>
+        </div>
+      </div>
+
+      {/* Grid de KPIs Principales */}
+      <div className="grid grid-cols-1 gap-gutter lg:grid-cols-3">
+        
+        <article className="rounded-xl border border-outline-variant bg-surface-container-lowest p-md shadow-sm">
+          <div className="flex items-center gap-sm">
+            <span className="material-symbols-outlined text-primary">co2</span>
+            <h3 className="font-headline-lg-mobile text-on-surface">
+              CO₂ evitado
+            </h3>
+          </div>
+          <p className="mt-md text-display-lg text-primary">42.5 kg</p>
+          <p className="mt-sm text-body-md text-on-surface-variant">
+            Estimación acumulada del período.
+          </p>
+        </article>
+
+        <article className="rounded-xl border border-outline-variant bg-surface-container-lowest p-md shadow-sm">
+          <div className="flex items-center gap-sm">
+            <span className="material-symbols-outlined text-secondary">
+              scale
+            </span>
+            <h3 className="font-headline-lg-mobile text-on-surface">
+              Volumen gestionado
+            </h3>
+          </div>
+          <p className="mt-md text-display-lg text-secondary">1.284 ton</p>
+          <p className="mt-sm text-body-md text-on-surface-variant">
+            Toneladas procesadas y registradas.
+          </p>
+        </article>
+
+        <article className="rounded-xl border border-outline-variant bg-surface-container-lowest p-md shadow-sm">
+          <div className="flex items-center gap-sm">
+            <span className="material-symbols-outlined text-tertiary">
+              analytics
+            </span>
+            <h3 className="font-headline-lg-mobile text-on-surface">
+              Tasa de circularidad
+            </h3>
+          </div>
+          <p className="mt-md text-display-lg text-tertiary">87%</p>
+          <p className="mt-sm text-body-md text-on-surface-variant">
+            Índice de aprovechamiento del material.
+          </p>
+        </article>
+      </div>
+
+      {/* Sección Resumen del Período */}
+      <div className="rounded-xl border border-outline-variant bg-surface-container-lowest p-md shadow-sm">
+        <div className="mb-md flex items-center justify-between">
+          <h3 className="font-headline-lg-mobile text-on-surface">
+            Resumen del período
+          </h3>
+          <span className="font-label-sm text-on-surface-variant">
+            Últimos 30 días
+          </span>
+        </div>
+        
+        <div className="grid grid-cols-1 gap-md md:grid-cols-2">
+          <div className="rounded-lg bg-surface-container-low p-md">
+            <p className="font-label-sm text-on-surface-variant">
+              Solicitudes activas
+            </p>
+            <p className="mt-sm text-headline-lg-mobile text-on-surface">24</p>
+          </div>
+          
+          <div className="rounded-lg bg-surface-container-low p-md">
+            <p className="font-label-sm text-on-surface-variant">
+              Recolecciones completadas
+            </p>
+            <p className="mt-sm text-headline-lg-mobile text-on-surface">18</p>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+  );
 }

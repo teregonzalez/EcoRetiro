@@ -1,15 +1,142 @@
-import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import { useLocation, useNavigate } from "react-router-dom";
 import DashboardShell from "../DashboardShell/DashboardShell";
+
 const navItems = [
-    { label: "Dashboard", icon: "dashboard" },
-    { label: "Residuos", icon: "recycling", active: true },
-    { label: "Rutas", icon: "local_shipping" },
+  { label: "Dashboard", icon: "dashboard" },
+  { label: "Residuos", icon: "recycling", active: true },
+  { label: "Rutas", icon: "local_shipping" },
 ];
-export default function PymeWasteEntryError({ username, onLogout, }) {
-    const navigate = useNavigate();
-    const location = useLocation();
-    const state = (location.state ?? {});
-    return (_jsx(DashboardShell, { appName: "EcoCircular", panelTitle: "Panel PYME", subtitle: "Estado de validacion del ingreso", username: username, roleLabel: "Generador PYME", navItems: navItems, activeTopTab: "Logistica", onLogout: onLogout, children: _jsxs("div", { className: "relative overflow-hidden rounded-2xl border border-outline-variant bg-surface p-lg", children: [_jsx("div", { className: "pointer-events-none absolute left-1/2 top-0 h-[420px] w-[420px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-gradient-to-br from-error/10 via-error/5 to-transparent blur-3xl" }), _jsxs("div", { className: "relative mx-auto flex max-w-3xl flex-col items-center text-center", children: [_jsxs("div", { className: "group relative mb-lg", children: [_jsx("div", { className: "absolute inset-0 scale-150 rounded-full bg-error/20 blur-xl transition-transform duration-700 group-hover:scale-110" }), _jsx("div", { className: "relative flex h-28 w-28 items-center justify-center rounded-full bg-surface-container-highest shadow-xl", children: _jsx("span", { className: "material-symbols-outlined animate-bounce text-[58px] text-error", children: "warning" }) }), _jsx("div", { className: "absolute -right-1 -top-1 h-4 w-4 animate-ping rounded-full bg-error" })] }), _jsxs("div", { className: "mb-lg space-y-sm", children: [_jsx("span", { className: "font-label-sm uppercase tracking-[0.2em] text-error", children: "Error de Registro" }), _jsx("h1", { className: "font-display-lg text-on-surface", children: "No pudimos procesar la solicitud" }), _jsx("p", { className: "mx-auto max-w-lg text-on-surface-variant", children: "Hubo una interrupcion durante la validacion del ingreso. Revisa los datos e intenta nuevamente." })] }), _jsxs("div", { className: "mb-xl flex w-full items-start gap-md rounded-xl border-l-4 border-error/50 bg-surface-container-low p-md text-left shadow-sm", children: [_jsx("span", { className: "material-symbols-outlined mt-1 text-error", children: "dns" }), _jsxs("div", { className: "min-w-0", children: [_jsx("span", { className: "mb-1 block font-label-sm text-on-surface-variant", children: "Motivo del sistema:" }), _jsx("code", { className: "block truncate rounded bg-error/5 px-2 py-1 font-label-sm text-error", children: state.errorMessage ??
-                                                "ERR_LOGISTICS_SERVER_CONNECTION_TIMEOUT:503" }), _jsx("p", { className: "mt-2 text-sm italic text-on-surface-variant", children: "Si el error persiste, intenta nuevamente en unos minutos o contacta soporte tecnico." })] })] }), _jsxs("div", { className: "flex w-full flex-col items-center gap-md sm:w-auto sm:flex-row", children: [_jsxs("button", { type: "button", onClick: () => navigate("/dashboard/pyme/residuos/nuevo"), className: "group relative w-full overflow-hidden rounded-full bg-secondary px-xl py-sm font-label-sm text-on-secondary shadow-lg transition-all hover:-translate-y-0.5 hover:shadow-secondary/25 active:translate-y-0 sm:w-auto", children: [_jsxs("span", { className: "relative z-10 flex items-center justify-center gap-sm", children: [_jsx("span", { className: "material-symbols-outlined text-[18px] transition-transform duration-500 group-hover:rotate-180", children: "refresh" }), "Reintentar"] }), _jsx("span", { className: "absolute inset-0 translate-y-full bg-white/10 transition-transform group-hover:translate-y-0" })] }), _jsxs("button", { type: "button", onClick: () => navigate("/dashboard"), className: "flex w-full items-center justify-center gap-sm rounded-full bg-surface-container-high px-xl py-sm font-label-sm text-on-surface-variant transition-colors hover:bg-surface-variant sm:w-auto", children: [_jsx("span", { className: "material-symbols-outlined text-[18px]", children: "home" }), "Volver al Inicio"] })] })] }), _jsx("section", { className: "mt-xl border-t border-surface-variant/30 pt-lg", children: _jsxs("div", { className: "grid grid-cols-1 gap-lg md:grid-cols-3", children: [_jsxs("article", { className: "flex flex-col gap-sm", children: [_jsx("div", { className: "flex h-10 w-10 items-center justify-center rounded-lg bg-surface-container-highest", children: _jsx("span", { className: "material-symbols-outlined text-secondary", children: "support_agent" }) }), _jsx("h3", { className: "font-label-sm text-on-surface", children: "Asistencia Tecnica" }), _jsx("p", { className: "text-sm text-on-surface-variant", children: "Si el error persiste, contacta al equipo de soporte de EcoRetiro." })] }), _jsxs("article", { className: "flex flex-col gap-sm", children: [_jsx("div", { className: "flex h-10 w-10 items-center justify-center rounded-lg bg-surface-container-highest", children: _jsx("span", { className: "material-symbols-outlined text-secondary", children: "database" }) }), _jsx("h3", { className: "font-label-sm text-on-surface", children: "Datos Protegidos" }), _jsx("p", { className: "text-sm text-on-surface-variant", children: "Los datos del formulario se mantienen en pantalla para reintentar rapidamente." })] }), _jsxs("article", { className: "flex flex-col gap-sm", children: [_jsx("div", { className: "flex h-10 w-10 items-center justify-center rounded-lg bg-surface-container-highest", children: _jsx("span", { className: "material-symbols-outlined text-secondary", children: "network_check" }) }), _jsx("h3", { className: "font-label-sm text-on-surface", children: "Estado de Red" }), _jsxs("p", { className: "flex items-center gap-xs text-sm text-on-surface-variant", children: [_jsx("span", { className: "h-2 w-2 animate-pulse rounded-full bg-error" }), "Servidor logistico: inestable"] })] })] }) })] }) }));
+
+export default function PymeWasteEntryError({ username, onLogout }) {
+  const navigate = useNavigate();
+  const location = useLocation();
+  
+  // Extraemos el estado y definimos un error por defecto si no viene en la navegación
+  const state = location.state ?? {};
+  const errorMessage = state.errorMessage ?? "ERR_LOGISTICS_SERVER_CONNECTION_TIMEOUT:503";
+
+  return (
+    <DashboardShell
+      appName="EcoCircular"
+      panelTitle="Panel PYME"
+      subtitle="Estado de validación del ingreso"
+      username={username}
+      roleLabel="Generador PYME"
+      navItems={navItems}
+      activeTopTab="Logistica"
+      onLogout={onLogout}
+    >
+      <div className="relative overflow-hidden rounded-2xl border border-outline-variant bg-surface p-lg">
+        
+        {/* Efecto de fondo (Gradiente y difuminado) */}
+        <div className="pointer-events-none absolute left-1/2 top-0 h-[420px] w-[420px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-gradient-to-br from-error/10 via-error/5 to-transparent blur-3xl" />
+
+        <div className="relative mx-auto flex max-w-3xl flex-col items-center text-center">
+          
+          {/* Sección del Ícono de Error */}
+          <div className="group relative mb-lg">
+            <div className="absolute inset-0 scale-150 rounded-full bg-error/20 blur-xl transition-transform duration-700 group-hover:scale-110" />
+            <div className="relative flex h-28 w-28 items-center justify-center rounded-full bg-surface-container-highest shadow-xl">
+              <span className="material-symbols-outlined animate-bounce text-[58px] text-error">
+                warning
+              </span>
+            </div>
+            <div className="absolute -right-1 -top-1 h-4 w-4 animate-ping rounded-full bg-error" />
+          </div>
+
+          {/* Sección de Texto Principal */}
+          <div className="mb-lg space-y-sm">
+            <span className="font-label-sm uppercase tracking-[0.2em] text-error">
+              Error de Registro
+            </span>
+            <h1 className="font-display-lg text-on-surface">
+              No pudimos procesar la solicitud
+            </h1>
+            <p className="mx-auto max-w-lg text-on-surface-variant">
+              Hubo una interrupción durante la validación del ingreso. Revisa los datos e intenta nuevamente.
+            </p>
+          </div>
+
+          {/* Caja de Detalles del Error */}
+          <div className="mb-xl flex w-full items-start gap-md rounded-xl border-l-4 border-error/50 bg-surface-container-low p-md text-left shadow-sm">
+            <span className="material-symbols-outlined mt-1 text-error">dns</span>
+            <div className="min-w-0">
+              <span className="mb-1 block font-label-sm text-on-surface-variant">
+                Motivo del sistema:
+              </span>
+              <code className="block truncate rounded bg-error/5 px-2 py-1 font-label-sm text-error">
+                {errorMessage}
+              </code>
+              <p className="mt-2 text-sm italic text-on-surface-variant">
+                Si el error persiste, intenta nuevamente en unos minutos o contacta soporte técnico.
+              </p>
+            </div>
+          </div>
+
+          {/* Botones de Acción */}
+          <div className="flex w-full flex-col items-center gap-md sm:w-auto sm:flex-row">
+            <button
+              type="button"
+              onClick={() => navigate("/dashboard/pyme/residuos/nuevo")}
+              className="group relative w-full overflow-hidden rounded-full bg-secondary px-xl py-sm font-label-sm text-on-secondary shadow-lg transition-all hover:-translate-y-0.5 hover:shadow-secondary/25 active:translate-y-0 sm:w-auto"
+            >
+              <span className="relative z-10 flex items-center justify-center gap-sm">
+                <span className="material-symbols-outlined text-[18px] transition-transform duration-500 group-hover:rotate-180">
+                  refresh
+                </span>
+                Reintentar
+              </span>
+              <span className="absolute inset-0 translate-y-full bg-white/10 transition-transform group-hover:translate-y-0" />
+            </button>
+
+            <button
+              type="button"
+              onClick={() => navigate("/dashboard")}
+              className="flex w-full items-center justify-center gap-sm rounded-full bg-surface-container-high px-xl py-sm font-label-sm text-on-surface-variant transition-colors hover:bg-surface-variant sm:w-auto"
+            >
+              <span className="material-symbols-outlined text-[18px]">home</span>
+              Volver al Inicio
+            </button>
+          </div>
+        </div>
+
+        {/* Sección Inferior de Ayuda e Información */}
+        <section className="mt-xl border-t border-surface-variant/30 pt-lg">
+          <div className="grid grid-cols-1 gap-lg md:grid-cols-3">
+            <article className="flex flex-col gap-sm">
+              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-surface-container-highest">
+                <span className="material-symbols-outlined text-secondary">support_agent</span>
+              </div>
+              <h3 className="font-label-sm text-on-surface">Asistencia Técnica</h3>
+              <p className="text-sm text-on-surface-variant">
+                Si el error persiste, contacta al equipo de soporte de EcoRetiro.
+              </p>
+            </article>
+
+            <article className="flex flex-col gap-sm">
+              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-surface-container-highest">
+                <span className="material-symbols-outlined text-secondary">database</span>
+              </div>
+              <h3 className="font-label-sm text-on-surface">Datos Protegidos</h3>
+              <p className="text-sm text-on-surface-variant">
+                Los datos del formulario se mantienen en pantalla para reintentar rápidamente.
+              </p>
+            </article>
+
+            <article className="flex flex-col gap-sm">
+              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-surface-container-highest">
+                <span className="material-symbols-outlined text-secondary">network_check</span>
+              </div>
+              <h3 className="font-label-sm text-on-surface">Estado de Red</h3>
+              <p className="flex items-center gap-xs text-sm text-on-surface-variant">
+                <span className="h-2 w-2 animate-pulse rounded-full bg-error" />
+                Servidor logístico: inestable
+              </p>
+            </article>
+          </div>
+        </section>
+
+      </div>
+    </DashboardShell>
+  );
 }

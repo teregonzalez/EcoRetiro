@@ -60,7 +60,6 @@ export default function AdminDashboard({
       username={username}
       roleLabel="Administrador"
       navItems={navItems}
-      topTabs={["Resumen", "Usuarios", "Analitica"]}
       activeTopTab="Resumen"
       onLogout={onLogout}
     >

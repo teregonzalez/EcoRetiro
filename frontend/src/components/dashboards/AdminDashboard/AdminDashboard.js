@@ -44,7 +44,6 @@ export default function AdminDashboard({ userId, username, onLogout }) {
       username={username}
       roleLabel="Administrador"
       navItems={navItems}
-      topTabs={["Resumen", "Usuarios", "Analítica"]}
       activeTopTab="Resumen"
       onLogout={onLogout}
     >

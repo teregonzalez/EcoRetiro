@@ -16,4 +16,19 @@ describe("LoginForm", () => {
     fireEvent.click(screen.getByRole("button", { name: "Cerrar registro" }));
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
   });
+
+  test("muestra y cierra el modal de recuperación de contraseña", () => {
+    render(<LoginForm onLoginSuccess={jest.fn()} />);
+
+    fireEvent.click(screen.getByRole("button", { name: "¿Olvidó su clave?" }));
+    expect(
+      screen.getByRole("dialog", { name: "Recuperar contraseña" }),
+    ).toBeInTheDocument();
+    expect(screen.getByLabelText("Correo electrónico")).toBeInTheDocument();
+
+    fireEvent.click(
+      screen.getByRole("button", { name: "Cerrar recuperación de contraseña" }),
+    );
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+  });
 });

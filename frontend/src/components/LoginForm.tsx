@@ -1,4 +1,5 @@
 // src/components/LoginForm.tsx
+import { FormEvent, useState } from "react";
 import { useLoginForm } from "../hooks/useLoginForm";
 import { UserRole } from "../App";
 
@@ -7,6 +8,9 @@ interface LoginFormProps {
 }
 
 export default function LoginForm({ onLoginSuccess }: LoginFormProps) {
+  const [isPasswordRecoveryOpen, setIsPasswordRecoveryOpen] = useState(false);
+  const [recoveryEmail, setRecoveryEmail] = useState("");
+  const [recoveryMessage, setRecoveryMessage] = useState("");
   // Extraemos la lógica separada del hook
   const {
     username,
@@ -26,6 +30,13 @@ export default function LoginForm({ onLoginSuccess }: LoginFormProps) {
     handleSubmit,
     toggleRegister,
   } = useLoginForm({ onLoginSuccess });
+
+  const handlePasswordRecovery = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setRecoveryMessage(
+      "Si el correo está registrado, recibirá las instrucciones para restablecer su contraseña.",
+    );
+  };
 
   return (
     <>
@@ -105,12 +116,17 @@ export default function LoginForm({ onLoginSuccess }: LoginFormProps) {
               Recordarme
             </span>
           </label>
-          <a
+          <button
+            type="button"
+            onClick={() => {
+              setRecoveryEmail(username);
+              setRecoveryMessage("");
+              setIsPasswordRecoveryOpen(true);
+            }}
             className="text-[14px] text-secondary font-bold hover:underline transition-colors"
-            href="#"
           >
             ¿Olvidó su clave?
-          </a>
+          </button>
         </div>
 
         <button
@@ -260,6 +276,82 @@ export default function LoginForm({ onLoginSuccess }: LoginFormProps) {
               </div>
             </form>
           </div>
+        </div>
+      )}
+
+      {isPasswordRecoveryOpen && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-on-surface/40 p-margin backdrop-blur-sm"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="password-recovery-title"
+        >
+          <form
+            onSubmit={handlePasswordRecovery}
+            className="w-full max-w-md overflow-hidden rounded-xl bg-surface-container-lowest shadow-xl ring-1 ring-outline/10"
+          >
+            <div className="flex items-center justify-between border-b border-outline/10 p-md">
+              <div>
+                <h2 id="password-recovery-title" className="font-headline-lg-mobile text-on-surface">
+                  Recuperar contraseña
+                </h2>
+                <p className="mt-xs text-body-md text-on-surface-variant">
+                  Solicite las instrucciones de restablecimiento.
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setIsPasswordRecoveryOpen(false)}
+                className="flex h-10 w-10 items-center justify-center rounded-full text-on-surface-variant transition-colors hover:bg-surface-container"
+                aria-label="Cerrar recuperación de contraseña"
+              >
+                <span className="material-symbols-outlined">close</span>
+              </button>
+            </div>
+            <div className="space-y-md p-md">
+              <div className="space-y-xs">
+                <label className="font-label-sm text-on-surface-variant" htmlFor="recovery-email">
+                  Correo electrónico
+                </label>
+                <input
+                  id="recovery-email"
+                  className="input-field"
+                  placeholder="nombre@empresa.com"
+                  type="email"
+                  value={recoveryEmail}
+                  onChange={(event) => setRecoveryEmail(event.target.value)}
+                  required
+                  autoFocus
+                />
+              </div>
+              <div className="flex gap-sm rounded-lg bg-surface-container-low p-sm text-on-surface-variant">
+                <span className="material-symbols-outlined text-secondary">info</span>
+                <p className="font-label-sm font-normal">
+                  Enviaremos un enlace seguro para crear una nueva contraseña.
+                </p>
+              </div>
+              {recoveryMessage && (
+                <p className="rounded-lg bg-tertiary-fixed/40 p-sm font-label-sm text-on-tertiary-fixed">
+                  {recoveryMessage}
+                </p>
+              )}
+            </div>
+            <div className="flex items-center justify-end gap-sm bg-surface-container-low/50 p-md">
+              <button
+                type="button"
+                onClick={() => setIsPasswordRecoveryOpen(false)}
+                className="rounded-full px-md py-sm font-label-sm text-on-surface-variant transition-colors hover:bg-surface-container-high"
+              >
+                Cancelar
+              </button>
+              <button
+                type="submit"
+                className="rounded-full bg-primary px-md py-sm font-label-sm text-on-primary shadow-sm transition-colors hover:bg-primary-container"
+              >
+                Enviar instrucciones
+              </button>
+            </div>
+          </form>
         </div>
       )}
     </>

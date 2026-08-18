@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import DashboardShell from "../DashboardShell/DashboardShell";
 import ReportsView from "../ReportsView";
 import RoutesView from "../RoutesView";
+import ActivityHistoryView from "../ActivityHistoryView";
 import PymeWasteSpotlightView from "./PymeWasteSpotlightView";
 import {
   fetchPymeDashboard,
@@ -90,6 +91,12 @@ export default function PymeDashboard({
       active: activeTab === "Reportes",
       onClick: () => setActiveTab("Reportes"),
     },
+    {
+      label: "Historial",
+      icon: "history",
+      active: activeTab === "Historial",
+      onClick: () => setActiveTab("Historial"),
+    },
   ];
 
   useEffect(() => {
@@ -147,6 +154,8 @@ export default function PymeDashboard({
           subtitle="Consulta indicadores de impacto, solicitudes y desempeño ambiental de tu empresa."
           roleLabel="Generador PYME"
         />
+      ) : activeTab === "Historial" ? (
+        <ActivityHistoryView />
       ) : (
         <>
           {loading && (

@@ -4,6 +4,9 @@ import {
   fetchAdminDashboard,
   type AdminDashboardData,
 } from "../../../api/dashboard";
+import AdminReportsView from "./AdminReportsView";
+import AdminWasteCatalogView from "./AdminWasteCatalogView";
+import ActivityHistoryView from "../ActivityHistoryView";
 
 interface AdminDashboardProps {
   userId: number;
@@ -79,6 +82,7 @@ export default function AdminDashboard({
     { label: "Dashboard", icon: "dashboard", active: activeNav === "Dashboard", onClick: () => setActiveNav("Dashboard") },
     { label: "Usuarios", icon: "groups", active: activeNav === "Usuarios", onClick: () => setActiveNav("Usuarios") },
     { label: "Reportes", icon: "analytics", active: activeNav === "Reportes", onClick: () => setActiveNav("Reportes") },
+    { label: "Catálogo de residuos", icon: "inventory_2", active: activeNav === "Catálogo de residuos", onClick: () => setActiveNav("Catálogo de residuos") },
     { label: "Historial", icon: "history", active: activeNav === "Historial", onClick: () => setActiveNav("Historial") },
     { label: "Rutas", icon: "local_shipping", active: activeNav === "Rutas", onClick: () => setActiveNav("Rutas") },
   ];
@@ -473,7 +477,15 @@ export default function AdminDashboard({
       activeTopTab="Resumen"
       onLogout={onLogout}
     >
-      {activeNav === "Usuarios" ? renderUsersView() : renderDashboardView()}
+      {activeNav === "Usuarios"
+        ? renderUsersView()
+        : activeNav === "Reportes"
+          ? <AdminReportsView />
+          : activeNav === "Catálogo de residuos"
+            ? <AdminWasteCatalogView />
+            : activeNav === "Historial"
+              ? <ActivityHistoryView />
+          : renderDashboardView()}
     </DashboardShell>
   );
 }

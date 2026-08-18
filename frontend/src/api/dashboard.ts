@@ -25,6 +25,30 @@ export interface AdminDashboardData {
   wasteTrend: AdminWasteTrend[];
 }
 
+export interface AdminManagedWasteReport {
+  id: number;
+  tipo: string;
+  cantidad: number;
+  unidad: string;
+  empresaGeneradora: string;
+  empresaRecicladora: string;
+  fechaGestion: string | null;
+}
+
+export interface AdminManagedWasteReportDetail extends AdminManagedWasteReport {
+  estado: string;
+  fechaPublicacion: string | null;
+  fechaRecoleccion: string | null;
+  fechaProcesamiento: string | null;
+  certificado: string | null;
+}
+
+export interface WasteCategory {
+  id: number;
+  name: string;
+  unit: string;
+}
+
 export interface PymeProfile {
   empresa: string;
   contacto: string;
@@ -90,6 +114,33 @@ export interface RecyclerDashboardData {
 
 export const fetchAdminDashboard = async (): Promise<AdminDashboardData> => {
   const response = await axios.get("/api/dashboard/admin");
+  return response.data;
+};
+
+export const fetchAdminManagedWasteReports = async (): Promise<
+  AdminManagedWasteReport[]
+> => {
+  const response = await axios.get("/api/dashboard/admin/reports");
+  return response.data;
+};
+
+export const fetchAdminManagedWasteReport = async (
+  reportId: number,
+): Promise<AdminManagedWasteReportDetail> => {
+  const response = await axios.get(`/api/dashboard/admin/reports/${reportId}`);
+  return response.data;
+};
+
+export const fetchWasteCategories = async (): Promise<WasteCategory[]> => {
+  const response = await axios.get("/api/waste/categories");
+  return response.data;
+};
+
+export const createWasteCategory = async (category: {
+  name: string;
+  unit: string;
+}): Promise<WasteCategory> => {
+  const response = await axios.post("/api/waste/categories", category);
   return response.data;
 };
 

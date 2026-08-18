@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import DashboardShell from "../DashboardShell/DashboardShell";
 import ReportsView from "../ReportsView";
 import RoutesView from "../RoutesView";
+import ActivityHistoryView from "../ActivityHistoryView";
 import {
   fetchRecyclerDashboard,
   type RecyclerDashboardData,
@@ -83,6 +84,12 @@ export default function RecyclerDashboard({
       active: activeTab === "Reportes",
       onClick: () => setActiveTab("Reportes"),
     },
+    {
+      label: "Historial",
+      icon: "history",
+      active: activeTab === "Historial",
+      onClick: () => setActiveTab("Historial"),
+    },
   ];
 
   useEffect(() => {
@@ -92,7 +99,8 @@ export default function RecyclerDashboard({
       tabFromState === "Inventario" ||
       tabFromState === "Residuos" ||
       tabFromState === "Rutas" ||
-      tabFromState === "Reportes"
+      tabFromState === "Reportes" ||
+      tabFromState === "Historial"
     ) {
       setActiveTab(tabFromState);
     }
@@ -184,6 +192,8 @@ export default function RecyclerDashboard({
           subtitle="Monitorea rendimiento, capacidad y cumplimiento operativo de la red recicladora."
           roleLabel="Empresa Recicladora"
         />
+      ) : activeTab === "Historial" ? (
+        <ActivityHistoryView />
       ) : (
         <>
           {loading && (

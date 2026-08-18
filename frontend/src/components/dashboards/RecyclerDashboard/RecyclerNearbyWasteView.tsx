@@ -13,6 +13,14 @@ interface WasteLocationState {
   unit?: string;
 }
 
+const mockVehicles = [
+  { plate: "AB-CD-12", label: "Camión liviano" },
+  { plate: "BK-PL-34", label: "Camión recolector" },
+  { plate: "CF-GH-56", label: "Camión mediano" },
+  { plate: "DV-KR-78", label: "Furgón de carga" },
+  { plate: "FT-XC-90", label: "Camión compactador" },
+];
+
 export default function RecyclerNearbyWasteView({
   username,
   onLogout,
@@ -29,6 +37,7 @@ export default function RecyclerNearbyWasteView({
   const [estimatedLoad, setEstimatedLoad] = useState(String(total || ""));
   const [priority, setPriority] = useState("Media");
   const [notes, setNotes] = useState("");
+  const [vehiclePlate, setVehiclePlate] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
 
@@ -57,6 +66,12 @@ export default function RecyclerNearbyWasteView({
       onClick: () =>
         navigate("/dashboard", { state: { recyclerTab: "Reportes" } }),
     },
+    {
+      label: "Historial",
+      icon: "history",
+      onClick: () =>
+        navigate("/dashboard", { state: { recyclerTab: "Historial" } }),
+    },
   ];
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -67,7 +82,7 @@ export default function RecyclerNearbyWasteView({
     setTimeout(() => {
       setSubmitting(false);
       setSuccessMessage(
-        "Solicitud de retiro enviada al generador y al modulo logistico.",
+        `Retiro asignado al vehículo ${vehiclePlate} y enviado al generador y al módulo logístico.`,
       );
     }, 1200);
   };
@@ -102,7 +117,7 @@ export default function RecyclerNearbyWasteView({
         <div className="relative z-10 flex min-h-[calc(100vh-220px)] items-start justify-center overflow-y-auto bg-on-surface/10 p-sm md:items-center md:bg-on-surface/20 md:p-gutter md:backdrop-blur-sm">
           <div className="my-sm w-full max-w-3xl overflow-hidden rounded-xl bg-surface-container-lowest shadow-xl md:my-gutter md:max-h-[calc(100vh-260px)] md:overflow-y-auto">
             <div className="flex flex-col md:flex-row">
-              <aside className="relative hidden w-1/3 bg-secondary p-lg text-on-secondary md:flex md:flex-col md:justify-end">
+              <aside className="relative hidden w-1/3 bg-secondary p-lg text-on-secondary md:flex md:flex-col md:justify-center">
                 <div className="pointer-events-none absolute inset-0 opacity-20">
                   <svg
                     className="h-full w-full"
@@ -162,11 +177,12 @@ export default function RecyclerNearbyWasteView({
                 <form className="space-y-md" onSubmit={handleSubmit}>
                   <div className="grid grid-cols-1 gap-md md:grid-cols-2">
                     <div className="space-y-sm">
-                      <label className="font-label-sm text-on-surface-variant">
+                      <label htmlFor="estimated-load" className="font-label-sm text-on-surface-variant">
                         CANTIDAD A RETIRAR
                       </label>
                       <div className="relative">
                         <input
+                          id="estimated-load"
                           type="number"
                           min="0"
                           step="0.1"
@@ -184,11 +200,12 @@ export default function RecyclerNearbyWasteView({
                     </div>
 
                     <div className="space-y-sm">
-                      <label className="font-label-sm text-on-surface-variant">
+                      <label htmlFor="pickup-date" className="font-label-sm text-on-surface-variant">
                         FECHA ESTIMADA DE RETIRO
                       </label>
                       <div className="relative">
                         <input
+                          id="pickup-date"
                           type="date"
                           value={pickupDate}
                           onChange={(event) =>
@@ -201,6 +218,31 @@ export default function RecyclerNearbyWasteView({
                           calendar_today
                         </span>
                       </div>
+                    </div>
+                  </div>
+
+                  <div className="space-y-sm">
+                    <label htmlFor="vehicle-plate" className="font-label-sm text-on-surface-variant">
+                      ASIGNAR VEHÍCULO
+                    </label>
+                    <div className="relative">
+                      <select
+                        id="vehicle-plate"
+                        value={vehiclePlate}
+                        onChange={(event) => setVehiclePlate(event.target.value)}
+                        className="w-full appearance-none rounded-xl bg-surface-container px-md py-sm pr-xl text-on-surface outline-none transition-all focus:ring-2 focus:ring-secondary/20"
+                        required
+                      >
+                        <option value="">Seleccione una patente</option>
+                        {mockVehicles.map((vehicle) => (
+                          <option key={vehicle.plate} value={vehicle.plate}>
+                            {vehicle.plate} - {vehicle.label}
+                          </option>
+                        ))}
+                      </select>
+                      <span className="material-symbols-outlined pointer-events-none absolute right-md top-1/2 -translate-y-1/2 text-on-surface-variant">
+                        local_shipping
+                      </span>
                     </div>
                   </div>
 

@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
 import {
   BrowserRouter as Router,
   Routes,
@@ -40,20 +41,71 @@ interface AuthSession {
   role: UserRole;
 }
 
+const AUTH_TOKEN_KEY = "recycling_auth_token";
+const AUTH_SESSION_KEY = "recycling_user_session";
+
+const setBearerToken = (token?: string) => {
+  if (token) {
+    axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+    localStorage.setItem(AUTH_TOKEN_KEY, token);
+  } else {
+    delete axios.defaults.headers.common.Authorization;
+    localStorage.removeItem(AUTH_TOKEN_KEY);
+  }
+};
+
+const readStoredSession = (): AuthSession | null => {
+  try {
+    const rawSession = localStorage.getItem(AUTH_SESSION_KEY);
+    if (!rawSession) return null;
+
+    const parsed = JSON.parse(rawSession) as AuthSession;
+    if (!parsed?.userId || !parsed?.username || !parsed?.role) {
+      return null;
+    }
+
+    const token = localStorage.getItem(AUTH_TOKEN_KEY);
+    if (token) {
+      setBearerToken(token);
+    }
+
+    return parsed;
+  } catch {
+    return null;
+  }
+};
+
 // Separamos el contenido en un sub-componente para poder usar los hooks de react-router-dom (useNavigate, useLocation)
 function AppContent() {
-  const [session, setSession] = useState<AuthSession | null>(null);
+  const [session, setSession] = useState<AuthSession | null>(() => readStoredSession());
 
   const navigate = useNavigate();
   const location = useLocation();
 
-  const handleLoginSuccess = (id: number, user: string, role: UserRole) => {
-    setSession({ userId: id, username: user, role });
+  useEffect(() => {
+    const token = localStorage.getItem(AUTH_TOKEN_KEY);
+    if (token) {
+      setBearerToken(token);
+    }
+  }, []);
+
+  const handleLoginSuccess = (
+    id: number,
+    user: string,
+    role: UserRole,
+    token?: string,
+  ) => {
+    const nextSession = { userId: id, username: user, role };
+    setSession(nextSession);
+    localStorage.setItem(AUTH_SESSION_KEY, JSON.stringify(nextSession));
+    setBearerToken(token);
     navigate("/dashboard"); // Redirige al panel protegido tras el login
   };
 
   const handleLogout = () => {
     setSession(null);
+    localStorage.removeItem(AUTH_SESSION_KEY);
+    setBearerToken();
     navigate("/"); // Devuelve al usuario a la página de inicio
   };
 

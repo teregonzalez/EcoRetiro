@@ -3,11 +3,19 @@ import { useState } from "react";
 import axios from "axios";
 import { UserRole } from "../App";
 
+const AUTH_TOKEN_KEY = "recycling_auth_token";
+
 interface UseLoginFormProps {
-  onLoginSuccess: (userId: number, username: string, role: UserRole) => void;
+  onLoginSuccess: (
+    userId: number,
+    username: string,
+    role: UserRole,
+    token?: string,
+  ) => void;
 }
 
 interface LoginResponse {
+  token?: string;
   userId: number;
   correo: string;
   rol: string;
@@ -27,6 +35,10 @@ const normalizeRole = (rawRole: string): UserRole => {
 export const useLoginForm = ({ onLoginSuccess }: UseLoginFormProps) => {
   const [username, setUsername] = useState(""); // Lo trataremos como el correo
   const [password, setPassword] = useState("");
+  const [fullName, setFullName] = useState("");
+  const [role, setRole] = useState("");
+  const [company, setCompany] = useState("");
+  const [companyRut, setCompanyRut] = useState("");
   const [error, setError] = useState("");
   const [isRegistering, setIsRegistering] = useState(false);
 
@@ -37,9 +49,20 @@ export const useLoginForm = ({ onLoginSuccess }: UseLoginFormProps) => {
     try {
       const endpoint = isRegistering ? "/api/auth/register" : "/api/auth/login";
 
-      // En el backend ahora esperamos "correo" en lugar de "username"
       const payload = isRegistering
-        ? { correo: username, password } // *Ver nota abajo sobre el registro
+        ? {
+            correo: username,
+            password,
+            nombreContacto: fullName,
+            rol:
+              role === "Generador"
+                ? "Empresa_Generadora"
+                : role === "Receptor"
+                  ? "Empresa_Recicladora"
+                  : role,
+            razonSocial: company,
+            rutEmpresa: companyRut,
+          }
         : { correo: username, password };
 
       const response = await axios.post<LoginResponse>(endpoint, payload);
@@ -48,14 +71,23 @@ export const useLoginForm = ({ onLoginSuccess }: UseLoginFormProps) => {
         setError("");
         setUsername("");
         setPassword("");
+        setFullName("");
+        setRole("");
+        setCompany("");
+        setCompanyRut("");
         setIsRegistering(false);
         alert("¡Registro exitoso! Por favor inicia sesión.");
       } else {
-        // El backend ahora devuelve response.data.correo
+        if (response.data.token) {
+          localStorage.setItem(AUTH_TOKEN_KEY, response.data.token);
+          axios.defaults.headers.common.Authorization = `Bearer ${response.data.token}`;
+        }
+
         onLoginSuccess(
           response.data.userId,
           response.data.correo,
           normalizeRole(response.data.rol),
+          response.data.token,
         );
       }
     } catch (err: any) {
@@ -76,6 +108,14 @@ export const useLoginForm = ({ onLoginSuccess }: UseLoginFormProps) => {
     setUsername,
     password,
     setPassword,
+    fullName,
+    setFullName,
+    role,
+    setRole,
+    company,
+    setCompany,
+    companyRut,
+    setCompanyRut,
     error,
     isRegistering,
     handleSubmit,

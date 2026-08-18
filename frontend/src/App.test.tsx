@@ -57,6 +57,7 @@ jest.mock('./components/dashboards/RecyclerDashboard/RecyclerEditProfileView', (
 
 describe('App Component - Routing and Sessions', () => {
   beforeEach(() => {
+    localStorage.clear();
     window.history.pushState({}, 'Test page', '/');
   });
 

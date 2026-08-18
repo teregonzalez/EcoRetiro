@@ -2,6 +2,7 @@ import express from 'express';
 import request from 'supertest';
 import wasteRouter from './waste';
 import { dbAll, dbGet, dbRun } from '../models/database';
+import { signAuthToken } from '../middleware/authMiddleware';
 
 jest.mock('../models/database', () => ({
   dbRun: jest.fn(),
@@ -12,6 +13,7 @@ jest.mock('../models/database', () => ({
 const mockedDbGet = dbGet as jest.MockedFunction<typeof dbGet>;
 const mockedDbRun = dbRun as jest.MockedFunction<typeof dbRun>;
 const mockedDbAll = dbAll as jest.MockedFunction<typeof dbAll>;
+const adminToken = signAuthToken({ id: 1, correo: 'admin@test.com', role: 'Administrador' });
 
 const buildApp = () => {
   const app = express();
@@ -89,6 +91,33 @@ describe('waste routes', () => {
 
     expect(res.status).toBe(200);
     expect(res.body).toHaveLength(1);
+  });
+
+  test('POST /waste/categories creates a category for an administrator', async () => {
+    mockedDbGet
+      .mockResolvedValueOnce(undefined)
+      .mockResolvedValueOnce({ id: 6, name: 'Vidrio', unit: 'kg' });
+    mockedDbRun.mockResolvedValueOnce(undefined);
+
+    const res = await request(buildApp())
+      .post('/waste/categories')
+      .set('Authorization', `Bearer ${adminToken}`)
+      .send({ name: 'Vidrio', unit: 'kg' });
+
+    expect(res.status).toBe(201);
+    expect(res.body).toMatchObject({ id: 6, name: 'Vidrio', unit: 'kg' });
+    expect(mockedDbRun).toHaveBeenCalledTimes(1);
+  });
+
+  test('POST /waste/categories rejects duplicate names', async () => {
+    mockedDbGet.mockResolvedValueOnce({ ID_Categoria: 6 });
+
+    const res = await request(buildApp())
+      .post('/waste/categories')
+      .set('Authorization', `Bearer ${adminToken}`)
+      .send({ name: 'Vidrio', unit: 'kg' });
+
+    expect(res.status).toBe(409);
   });
 
   test('GET /waste/inventory returns grouped inventory', async () => {

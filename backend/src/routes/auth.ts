@@ -1,6 +1,7 @@
 import express from 'express';
 import bcrypt from 'bcrypt';
 import { dbRun, dbGet } from '../models/database.js';
+import { signAuthToken } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
@@ -55,11 +56,20 @@ router.post('/login', async (req, res) => {
       return res.status(401).json({ error: 'Credenciales inválidas' });
     }
 
+    const frontendRole = FRONTEND_ROLE_MAP[user.Nombre_Rol] || 'PYME';
+    const token = signAuthToken({
+      id: user.ID_Usuario,
+      correo: user.Correo,
+      role: frontendRole,
+      rolInterno: user.Nombre_Rol,
+    });
+
     res.json({
       success: true,
+      token,
       userId: user.ID_Usuario,
       correo: user.Correo,
-      rol: FRONTEND_ROLE_MAP[user.Nombre_Rol] || 'PYME',
+      rol: frontendRole,
       rolInterno: user.Nombre_Rol,
       estadoCuenta: user.Estado_Cuenta,
     });

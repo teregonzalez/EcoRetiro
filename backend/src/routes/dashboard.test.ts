@@ -2,6 +2,7 @@ import express from 'express';
 import request from 'supertest';
 import dashboardRouter from './dashboard';
 import { dbAll, dbGet } from '../models/database';
+import { signAuthToken } from '../middleware/authMiddleware';
 
 jest.mock('../models/database', () => ({
   dbGet: jest.fn(),
@@ -10,6 +11,8 @@ jest.mock('../models/database', () => ({
 
 const mockedDbGet = dbGet as jest.MockedFunction<typeof dbGet>;
 const mockedDbAll = dbAll as jest.MockedFunction<typeof dbAll>;
+
+const validToken = signAuthToken({ id: 1, correo: 'admin@test.com', role: 'Administrador' });
 
 const buildApp = () => {
   const app = express();
@@ -34,7 +37,9 @@ describe('dashboard routes', () => {
       .mockResolvedValueOnce([{ type: 'Metal', total: 300 }]);
 
     const app = buildApp();
-    const res = await request(app).get('/dashboard/admin');
+    const res = await request(app)
+      .get('/dashboard/admin')
+      .set('Authorization', `Bearer ${validToken}`);
 
     expect(res.status).toBe(200);
     expect(res.body.metrics.totalUsers).toBe(7);
@@ -42,11 +47,53 @@ describe('dashboard routes', () => {
     expect(res.body.users[0].rol).toBe('Reciclador');
   });
 
+  test('GET /dashboard/admin/reports returns managed waste reports', async () => {
+    mockedDbAll.mockResolvedValueOnce([
+      {
+        id: 9,
+        tipo: 'Metal',
+        cantidad: 120,
+        unidad: 'kg',
+        empresaGeneradora: 'Pyme Uno',
+        empresaRecicladora: 'Recicla Ltda.',
+        fechaGestion: '2026-08-10',
+      },
+    ]);
+
+    const res = await request(buildApp())
+      .get('/dashboard/admin/reports')
+      .set('Authorization', `Bearer ${validToken}`);
+
+    expect(res.status).toBe(200);
+    expect(res.body[0]).toMatchObject({ id: 9, tipo: 'Metal' });
+  });
+
+  test('GET /dashboard/admin/reports/:reportId returns the selected report', async () => {
+    mockedDbGet.mockResolvedValueOnce({
+      id: 9,
+      tipo: 'Metal',
+      cantidad: 120,
+      unidad: 'kg',
+      estado: 'Gestionado',
+      empresaGeneradora: 'Pyme Uno',
+      empresaRecicladora: 'Recicla Ltda.',
+    });
+
+    const res = await request(buildApp())
+      .get('/dashboard/admin/reports/9')
+      .set('Authorization', `Bearer ${validToken}`);
+
+    expect(res.status).toBe(200);
+    expect(res.body).toMatchObject({ id: 9, estado: 'Gestionado' });
+  });
+
   test('GET /dashboard/pyme/:userId returns empty payload when company does not exist', async () => {
     mockedDbGet.mockResolvedValueOnce({ ID_Empresa: null });
     const app = buildApp();
 
-    const res = await request(app).get('/dashboard/pyme/8');
+    const res = await request(app)
+      .get('/dashboard/pyme/8')
+      .set('Authorization', `Bearer ${validToken}`);
     expect(res.status).toBe(200);
     expect(res.body.profile).toBeNull();
     expect(res.body.history).toEqual([]);
@@ -68,7 +115,9 @@ describe('dashboard routes', () => {
     ]);
 
     const app = buildApp();
-    const res = await request(app).get('/dashboard/pyme/15');
+    const res = await request(app)
+      .get('/dashboard/pyme/15')
+      .set('Authorization', `Bearer ${validToken}`);
 
     expect(res.status).toBe(200);
     expect(res.body.metrics.totalEntries).toBe(4);
@@ -79,7 +128,9 @@ describe('dashboard routes', () => {
     mockedDbGet.mockResolvedValueOnce(undefined);
     const app = buildApp();
 
-    const res = await request(app).get('/dashboard/reciclador/2');
+    const res = await request(app)
+      .get('/dashboard/reciclador/2')
+      .set('Authorization', `Bearer ${validToken}`);
     expect(res.status).toBe(200);
     expect(res.body.metrics.capacityTotal).toBe(0);
   });
@@ -98,7 +149,9 @@ describe('dashboard routes', () => {
       .mockResolvedValueOnce([{ material: 'Metal', percent: 80 }]);
 
     const app = buildApp();
-    const res = await request(app).get('/dashboard/reciclador/44');
+    const res = await request(app)
+      .get('/dashboard/reciclador/44')
+      .set('Authorization', `Bearer ${validToken}`);
 
     expect(res.status).toBe(200);
     expect(res.body.metrics.processedToday).toBe(3);

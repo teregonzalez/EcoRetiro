@@ -1,7 +1,10 @@
 import express from 'express';
 import { dbAll, dbGet } from '../models/database.js';
+import { authenticateToken } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
+
+router.use(authenticateToken);
 
 router.get('/admin', async (_req, res) => {
 	try {
@@ -62,6 +65,71 @@ router.get('/admin', async (_req, res) => {
 		});
 	} catch (error) {
 		console.error('Error en /dashboard/admin:', error);
+		res.status(500).json({ error: 'Error interno del servidor' });
+	}
+});
+
+router.get('/admin/reports', async (_req, res) => {
+	try {
+		const reports = await dbAll(
+			`SELECT
+				s.ID_Solicitud AS id,
+				c.Nombre_Residuo AS tipo,
+				s.Volumen_Cantidad AS cantidad,
+				c.Unidad_Medida AS unidad,
+				generadora.Razon_Social AS empresaGeneradora,
+				COALESCE(recicladora.Razon_Social, 'Sin asignar') AS empresaRecicladora,
+				COALESCE(s.Fecha_Procesamiento, s.Fecha_Recoleccion, s.Fecha_Publicacion) AS fechaGestion
+			 FROM Solicitudes_Retiro s
+			 JOIN Catalogo_Residuos c ON c.ID_Categoria = s.ID_Categoria
+			 JOIN Empresas generadora ON generadora.ID_Empresa = s.ID_Empresa_Generadora
+			 LEFT JOIN Empresas recicladora ON recicladora.ID_Empresa = s.ID_Empresa_Recicladora
+			 WHERE s.Estado_Tracking = 'Gestionado'
+			 ORDER BY fechaGestion DESC, s.ID_Solicitud DESC`
+		);
+
+		res.json(reports);
+	} catch (error) {
+		console.error('Error en /dashboard/admin/reports:', error);
+		res.status(500).json({ error: 'Error interno del servidor' });
+	}
+});
+
+router.get('/admin/reports/:reportId', async (req, res) => {
+	try {
+		const reportId = Number(req.params.reportId);
+		if (!Number.isInteger(reportId) || reportId <= 0) {
+			return res.status(400).json({ error: 'Identificador de reporte invalido' });
+		}
+
+		const report = await dbGet(
+			`SELECT
+				s.ID_Solicitud AS id,
+				c.Nombre_Residuo AS tipo,
+				s.Volumen_Cantidad AS cantidad,
+				c.Unidad_Medida AS unidad,
+				s.Estado_Tracking AS estado,
+				generadora.Razon_Social AS empresaGeneradora,
+				COALESCE(recicladora.Razon_Social, 'Sin asignar') AS empresaRecicladora,
+				s.Fecha_Publicacion AS fechaPublicacion,
+				s.Fecha_Recoleccion AS fechaRecoleccion,
+				s.Fecha_Procesamiento AS fechaProcesamiento,
+				s.URL_Certificado AS certificado
+			 FROM Solicitudes_Retiro s
+			 JOIN Catalogo_Residuos c ON c.ID_Categoria = s.ID_Categoria
+			 JOIN Empresas generadora ON generadora.ID_Empresa = s.ID_Empresa_Generadora
+			 LEFT JOIN Empresas recicladora ON recicladora.ID_Empresa = s.ID_Empresa_Recicladora
+			 WHERE s.ID_Solicitud = ? AND s.Estado_Tracking = 'Gestionado'`,
+			[reportId]
+		);
+
+		if (!report) {
+			return res.status(404).json({ error: 'Reporte no encontrado' });
+		}
+
+		res.json(report);
+	} catch (error) {
+		console.error('Error en /dashboard/admin/reports/:reportId:', error);
 		res.status(500).json({ error: 'Error interno del servidor' });
 	}
 });

@@ -1,5 +1,6 @@
 import express from 'express';
 import { dbRun, dbGet, dbAll } from '../models/database.js';
+import { authenticateToken } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
@@ -122,6 +123,58 @@ router.get('/categories', async (_req, res) => {
     res.json(categories || []);
   } catch (error) {
     console.error('Error en /categories:', error);
+    res.status(500).json({ error: 'Error interno del servidor' });
+  }
+});
+
+router.post('/categories', authenticateToken, async (req, res) => {
+  try {
+    const authenticatedRequest = req as express.Request & {
+      user?: { userId: number; role: string };
+    };
+    const { name, unit } = req.body;
+    const normalizedName = typeof name === 'string' ? name.trim() : '';
+    const normalizedUnit = typeof unit === 'string' ? unit.trim() : '';
+
+    if (authenticatedRequest.user?.role !== 'Administrador') {
+      return res.status(403).json({ error: 'No tienes permisos para crear categorías' });
+    }
+
+    if (!normalizedName || !normalizedUnit) {
+      return res.status(400).json({ error: 'El nombre y la unidad son requeridos' });
+    }
+
+    const existingCategory = await dbGet(
+      `SELECT ID_Categoria
+       FROM Catalogo_Residuos
+       WHERE lower(Nombre_Residuo) = lower(?)`,
+      [normalizedName]
+    );
+
+    if (existingCategory) {
+      return res.status(409).json({ error: 'Ya existe una categoría con ese nombre' });
+    }
+
+    await dbRun(
+      `INSERT INTO Catalogo_Residuos (
+        ID_Usuario_Administrador,
+        Nombre_Residuo,
+        Unidad_Medida,
+        Estado_Categoria
+      ) VALUES (?, ?, ?, 'Activa')`,
+      [authenticatedRequest.user.userId, normalizedName, normalizedUnit]
+    );
+
+    const category = await dbGet(
+      `SELECT ID_Categoria as id, Nombre_Residuo as name, Unidad_Medida as unit
+       FROM Catalogo_Residuos
+       WHERE lower(Nombre_Residuo) = lower(?)`,
+      [normalizedName]
+    );
+
+    res.status(201).json(category);
+  } catch (error) {
+    console.error('Error en POST /categories:', error);
     res.status(500).json({ error: 'Error interno del servidor' });
   }
 });

@@ -46,7 +46,7 @@ describe('auth routes', () => {
     expect(res.body.error).toContain('Credenciales');
   });
 
-  test('POST /auth/login returns mapped role when credentials are valid', async () => {
+  test('POST /auth/login returns mapped role and JWT when credentials are valid', async () => {
     mockedDbGet.mockResolvedValueOnce({
       ID_Usuario: 10,
       Correo: 'pyme@test.com',
@@ -63,6 +63,7 @@ describe('auth routes', () => {
 
     expect(res.status).toBe(200);
     expect(res.body.success).toBe(true);
+    expect(res.body.token).toBeTruthy();
     expect(res.body.rol).toBe('PYME');
     expect(res.body.rolInterno).toBe('Empresa_Generadora');
   });

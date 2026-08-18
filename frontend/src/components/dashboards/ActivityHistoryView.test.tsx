@@ -15,5 +15,10 @@ describe("ActivityHistoryView", () => {
 
     expect(screen.getByText("Ruta completada")).toBeInTheDocument();
     expect(screen.queryByText("Residuo ingresado")).not.toBeInTheDocument();
+
+    fireEvent.change(screen.getByLabelText("Filtrar por actor"), {
+      target: { value: "sin coincidencias" },
+    });
+    expect(screen.getByText("No hay actividades que coincidan con los filtros.")).toBeInTheDocument();
   });
 });

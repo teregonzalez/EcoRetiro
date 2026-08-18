@@ -3,6 +3,15 @@ import '@testing-library/jest-dom';
 import ReportsView from './ReportsView';
 
 describe('ReportsView', () => {
+  it('does nothing when the export window cannot be opened', () => {
+    const openSpy = jest.spyOn(window, 'open').mockReturnValue(null);
+    render(<ReportsView title="Reporte" subtitle="Resumen" roleLabel="Administrador" />);
+
+    fireEvent.click(screen.getByRole('button', { name: /exportar reporte/i }));
+    expect(openSpy).toHaveBeenCalled();
+    openSpy.mockRestore();
+  });
+
   it('exports the report as a PDF when the button is clicked', () => {
     jest.useFakeTimers();
 

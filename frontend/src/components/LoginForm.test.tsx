@@ -61,6 +61,20 @@ describe("LoginForm", () => {
     expect(localStorage.getItem("recycling_auth_token")).toBe("token-prueba");
   });
 
+  test("normaliza un rol no reconocido como PYME", async () => {
+    const onLoginSuccess = jest.fn();
+    mockedAxios.post.mockResolvedValueOnce({
+      data: { userId: 8, correo: "usuario@test.com", rol: "RolInterno" },
+    });
+    render(<LoginForm onLoginSuccess={onLoginSuccess} />);
+
+    fireEvent.change(screen.getByLabelText("Usuario / Correo"), { target: { value: "usuario@test.com" } });
+    fireEvent.change(screen.getByLabelText("Contraseña"), { target: { value: "clave123" } });
+    fireEvent.click(screen.getByRole("button", { name: "Iniciar Sesión" }));
+
+    await waitFor(() => expect(onLoginSuccess).toHaveBeenCalledWith(8, "usuario@test.com", "PYME", undefined));
+  });
+
   test("registra una cuenta y muestra el mensaje de recuperación solicitado", async () => {
     const alertSpy = jest.spyOn(window, "alert").mockImplementation(() => undefined);
     mockedAxios.post.mockResolvedValueOnce({ data: { success: true } });
@@ -82,6 +96,14 @@ describe("LoginForm", () => {
     });
     expect(alertSpy).toHaveBeenCalled();
     alertSpy.mockRestore();
+  });
+
+  test("solicita RUT para roles de empresa", () => {
+    render(<LoginForm onLoginSuccess={jest.fn()} />);
+    fireEvent.click(screen.getByRole("button", { name: "Solicitar Registro" }));
+    fireEvent.change(screen.getByLabelText("Rol"), { target: { value: "Generador" } });
+
+    expect(screen.getByLabelText("RUT de la empresa")).toBeRequired();
   });
 
   test("muestra errores de autenticación y confirma una solicitud de recuperación", async () => {

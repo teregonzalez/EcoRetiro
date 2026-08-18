@@ -36,12 +36,14 @@ test('navega, responde al scroll y permite cerrar sesión', () => {
   expect(screen.getByText('EcoRetiro').closest('header')).toHaveClass('shadow-md');
 
   fireEvent.click(screen.getByRole('button', { name: 'Inicio' }));
+  fireEvent.click(screen.getByRole('button', { name: 'Sobre nosotros' }));
   fireEvent.click(screen.getByRole('button', { name: 'Contacto' }));
   fireEvent.click(screen.getByText('EcoRetiro'));
   fireEvent.click(screen.getByRole('button', { name: 'Salir' }));
 
   expect(setCurrentView).toHaveBeenNthCalledWith(1, 'menu');
-  expect(setCurrentView).toHaveBeenNthCalledWith(2, 'contact');
-  expect(setCurrentView).toHaveBeenNthCalledWith(3, 'menu');
+  expect(setCurrentView).toHaveBeenNthCalledWith(2, 'about');
+  expect(setCurrentView).toHaveBeenNthCalledWith(3, 'contact');
+  expect(setCurrentView).toHaveBeenNthCalledWith(4, 'menu');
   expect(onLogout).toHaveBeenCalledTimes(1);
 });

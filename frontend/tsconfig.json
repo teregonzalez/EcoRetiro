@@ -12,6 +12,7 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
     "jsx": "react-jsx",
+    "noEmit": true,
     "resolveJsonModule": true,
     "moduleResolution": "node",
     "types": ["vite/client", "node"],
